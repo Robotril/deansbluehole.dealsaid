@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Safety & Dean's Blue Hole</title>
+    <!-- Favicon provided by user -->
+    <link rel="icon" type="image/png" href="oceanfavicon.png">
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tab Active State */
+        .tab-btn.active {
+            color: #0ea5e9; /* Sky blue 500 */
+            border-bottom: 2px solid #0ea5e9;
+            background-color: rgba(14, 165, 233, 0.1);
+        }
+        
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo / Title -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img src="oceanfavicon.png" alt="Logo" class="h-10 w-10 rounded-full border border-blue-100 p-1">
+                    <h1 class="text-xl font-bold text-blue-900 tracking-tight hidden sm:block">Ocean Awareness</h1>
+                    <h1 class="text-xl font-bold text-blue-900 tracking-tight sm:hidden">Ocean Safety</h1>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-1 h-full">
+                    <button onclick="switchTab('cpr')" class="tab-btn active px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        CPR for Water
+                    </button>
+                    <button onclick="switchTab('history')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Dean's Blue Hole
+                    </button>
+                    <button onclick="switchTab('ocean-safety')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Ocean Safety
+                    </button>
+                    <button onclick="switchTab('diving-safety')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Diving & Snorkeling
+                    </button>
+                    <button onclick="switchTab('gallery')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Gallery
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-slate-500 hover:text-blue-600 focus:outline-none p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 overflow-hidden shadow-lg absolute w-full z-50">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="switchTab('cpr')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">CPR for Water</button>
+                <button onclick="switchTab('history')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Dean's Blue Hole History</button>
+                <button onclick="switchTab('ocean-safety')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Ocean Safety Tips</button>
+                <button onclick="switchTab('diving-safety')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Diving & Snorkeling</button>
+                <button onclick="switchTab('gallery')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Gallery</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- TAB 1: CPR for Water -->
+        <section id="cpr" class="tab-content fade-in">
+            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 p-3 rounded-full text-red-500">
+                            <i class="fas fa-heart-pulse text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-slate-900">CPR for Drowning Emergencies</h2>
+                    </div>
+                    <div class="bg-red-50 text-red-700 px-4 py-2 rounded-lg text-sm font-semibold border border-red-200">
+                        <i class="fas fa-exclamation-circle mr-2"></i> Rescue Breaths First
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Main Steps -->
+                    <div class="md:col-span-2 space-y-6">
+                        <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                            <ol class="space-y-4">
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">1</span>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800">Ensure the scene is safe</h4>
+                                        <p class="text-slate-600 text-sm">Do not enter water if it puts you in danger. Bring the person to a safe, firm surface.</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">2</span>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800">Check for responsiveness</h4>
+                                        <p class="text-slate-600 text-sm">Tap and shout: “Are you OK?” If unresponsive, proceed.</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">3</span>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800">Call 911 immediately</h4>
+                                        <p class="text-slate-600 text-sm">Or direct someone else to call. Early activation is critical.</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">4</span>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800">Check for breathing</h4>
+                                        <p class="text-slate-600 text-sm">Open airway. Look, listen, feel for max 10 seconds. Gasping is NOT normal breathing.</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4 bg-red-50 p-3 rounded-lg -ml-3 border-l-4 border-red-500">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full font-bold">5</span>
+                                    <div>
+                                        <h4 class="font-bold text-red-800">Start CPR: Rescue Breaths FIRST</h4>
+                                        <p class="text-red-700 text-sm">Unlike cardiac arrest, drowning is oxygen deprivation. <strong>Give 2 rescue breaths before compressions.</strong> Ensure chest rises.</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">6</span>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800">Begin Chest Compressions</h4>
+                                        <ul class="text-slate-600 text-sm list-disc pl-4 mt-1">
+                                            <li>Push hard & fast in center of chest.</li>
+                                            <li>Depth: 2 inches (5 cm).</li>
+                                            <li>Rate: 100–120 bpm.</li>
+                                            <li><strong>Cycle: 30 compressions → 2 breaths → repeat.</strong></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Info -->
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-5 rounded-xl border border-blue-100">
+                            <h3 class="font-bold text-blue-900 mb-2"><i class="fas fa-clock mr-2"></i>Duration</h3>
+                            <p class="text-sm text-blue-800 mb-3">If you are alone and trained, provide CPR for <strong>2 minutes</strong> before leaving to get help.</p>
+                            <p class="text-sm text-blue-800">Continue until they breathe, a professional takes over, or you are exhausted.</p>
+                        </div>
+
+                        <div class="bg-yellow-50 p-5 rounded-xl border border-yellow-100">
+                            <h3 class="font-bold text-yellow-900 mb-2"><i class="fas fa-bolt mr-2"></i>AED Usage</h3>
+                            <p class="text-sm text-yellow-800">Use an AED as soon as available. Turn it on and follow voice prompts.</p>
+                        </div>
+
+                         <div class="bg-orange-50 p-5 rounded-xl border border-orange-100">
+                            <h3 class="font-bold text-orange-900 mb-2"><i class="fas fa-head-side-cough mr-2"></i>Vomiting?</h3>
+                            <p class="text-sm text-orange-800">Common in drowning. Turn person to side, clear mouth, return to CPR immediately.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Dean's Blue Hole History -->
+        <section id="history" class="tab-content hidden fade-in">
+            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-blue-900 p-3 rounded-full text-white">
+                        <i class="fas fa-water text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-slate-900">History of Dean's Blue Hole</h2>
+                </div>
+
+                <!-- Hero Image Updated with User Photo -->
+                <div class="relative h-64 md:h-80 w-full rounded-xl mb-8 overflow-hidden bg-slate-200">
+                    <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (5).jpg" alt="Dean's Blue Hole" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                        <div class="text-white">
+                            <h3 class="text-2xl font-bold">The World's Deepest Blue Hole (Second Deepest)</h3>
+                            <p class="opacity-90">Long Island, Bahamas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="prose max-w-none text-slate-600">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Formation & Geography</h3>
+                        <p class="mb-4">
+                            Blue holes are mysterious geological remnants of the Ice Age—vast, vertical sinkholes formed when ancient caverns in limestone collapsed and were later flooded as sea levels rose. Their striking dark-navy coloration, visible even from the air, comes from their extreme depth and narrow openings that plunge into expansive underwater voids.
+                        </p>
+                        <p class="mb-4">
+                             Among the many blue holes found worldwide, few compare to the mesmerizing beauty and significance of Dean’s Blue Hole, located on Long Island in the Bahamas.
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-blue-500 my-4">
+                            <p class="italic text-slate-700">"At 202 meters (663 feet) deep, Dean’s Blue Hole is the second deepest known blue hole in the world."</p>
+                        </div>
+                         <p class="mb-4">
+                            Its entrance, a relatively modest 30 meters across, widens dramatically into a cavern nearly 100 meters in diameter, enclosed on three sides by a natural rock amphitheater and on the fourth by a brilliant turquoise lagoon.
+                        </p>
+                    </div>
+
+                    <div class="prose max-w-none text-slate-600">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Freediving & Records</h3>
+                        <p class="mb-4">
+                            Dean’s Blue Hole is famous as the annual home of the <strong>Vertical Blue Freediving Competition</strong>, one of the most prestigious events in the sport. Competitors travel from around the globe to witness world-class athletes attempt to reach staggering depths on a single breath.
+                        </p>
+                        <p class="mb-4">
+                            The site has hosted numerous record-breaking dives, including William Trubridge’s finless descent to 92 meters in 2010. However, it has also seen tragedy, such as the loss of Nicholas Mevoli in 2013, underscoring the risks of the sport.
+                        </p>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Today</h3>
+                        <p>
+                            Today, Dean’s Blue Hole remains a place of wonder—an irresistible blend of natural beauty, geological mystery, and human ambition. It invites adventurers to be bold but curious, respecting the techniques and safety practices essential for exploring such profound depths.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Ocean Safety Tips -->
+        <section id="ocean-safety" class="tab-content hidden fade-in">
+            <div class="space-y-8">
+                <!-- General Ocean Safety -->
+                <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-teal-100 p-3 rounded-full text-teal-600">
+                            <i class="fas fa-life-ring text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-slate-900">General Ocean Safety Tips</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">1. Know conditions before entering:</strong>
+                                    <p class="text-slate-600 text-sm">Check surf, tides, currents, and visibility. Avoid storms.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">2. Swim near a lifeguard:</strong>
+                                    <p class="text-slate-600 text-sm">Most drownings occur on unguarded beaches.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">3. Understand Rip Currents:</strong>
+                                    <p class="text-slate-600 text-sm">Look for choppy channels or foam moving seaward. If caught, swim parallel to shore.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">4. Don't swim alone:</strong>
+                                    <p class="text-slate-600 text-sm">Always use the buddy system.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">5. Know your limits:</strong>
+                                    <p class="text-slate-600 text-sm">Don't swim out farther than you can comfortably return.</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="space-y-4">
+                             <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">6. Enter water slowly:</strong>
+                                    <p class="text-slate-600 text-sm">Avoid cold shock and check for drop-offs.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">7. Stay aware of marine life:</strong>
+                                    <p class="text-slate-600 text-sm">Shuffle feet for stingrays. Don't touch coral.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">8. Avoid alcohol:</strong>
+                                    <p class="text-slate-600 text-sm">It impairs judgment and reaction time.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">9. Wear appropriate gear:</strong>
+                                    <p class="text-slate-600 text-sm">Fins, wetsuits, and bright colors for visibility.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">10. Protect against sun:</strong>
+                                    <p class="text-slate-600 text-sm">Hydrate and use sunscreen.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Blue Hole Specific Safety -->
+                <div class="bg-indigo-900 rounded-2xl shadow-sm p-6 md:p-10 border border-indigo-800 text-white">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-indigo-700 p-3 rounded-full text-white">
+                            <i class="fas fa-exclamation-triangle text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold">Additional Safety for Blue Holes</h2>
+                    </div>
+                    <p class="mb-6 opacity-90">Blue holes have unique hazards: extreme depth, vertical drops, unusual currents, and low visibility.</p>
+
+                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">1. Advanced Environments</strong>
+                            Only strong swimmers/divers should enter deep sections.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">2. Sudden Depth Changes</strong>
+                            Stay near edges unless trained.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">3. Watch for Currents</strong>
+                            Avoid "siphon-like" currents at narrow openings.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">4. Never Dive Alone</strong>
+                            Use a buddy who stays at surface if you go deep.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">5. Monitor Buoyancy</strong>
+                            You can descend faster than expected.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">6. Keep Exit in Sight</strong>
+                            Vertical walls can distort orientation.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">7. Snorkeling Caution</strong>
+                            Stay above the rim; strong pulls can occur near center.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">8. Avoid Center if Untrained</strong>
+                            Safest area is the outer shallow basin.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">9. Temperature Shifts</strong>
+                            Watch for thermoclines and dark zones.
+                        </div>
+                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
+                            <strong class="block text-indigo-200 mb-1">10. Respect Warnings</strong>
+                            Follow all posted signage and rules.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: Diving and Snorkeling Safety -->
+        <section id="diving-safety" class="tab-content hidden fade-in">
+            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="bg-sky-100 p-3 rounded-full text-sky-600">
+                        <i class="fas fa-mask text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-slate-900">Diving & Snorkeling Safety</h2>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Freediving Column -->
+                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-lungs text-sky-500"></i> Freediving
+                        </h3>
+                        <div class="space-y-4 flex-grow text-sm text-slate-600">
+                            <div>
+                                <strong class="text-slate-900 block mb-1">Before Diving</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Never freedive alone.</li>
+                                    <li>Rest and breathe normally; <strong>do NOT hyperventilate</strong>.</li>
+                                    <li>Check conditions.</li>
+                                    <li>Warm up gently.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900 block mb-1">During Dive</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Equalize early and often.</li>
+                                    <li>Move slowly to save energy.</li>
+                                    <li>Know limits, turn back early.</li>
+                                    <li>Never ascend too fast.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900 block mb-1">At Surface</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Recovery breaths.</li>
+                                    <li>Signal "OK" to buddy.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Snorkeling Column -->
+                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-swimmer text-orange-500"></i> Snorkeling
+                        </h3>
+                        <div class="space-y-4 flex-grow text-sm text-slate-600">
+                            <div>
+                                <strong class="text-slate-900 block mb-1">Safety & Environment</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Stay within sight of shore/boat.</li>
+                                    <li>Choose calm areas.</li>
+                                    <li>Use bright colors for visibility.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900 block mb-1">Technique</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Relax breathing.</li>
+                                    <li>Use correctly sized fins.</li>
+                                    <li>Avoid kicking sand/coral.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900 block mb-1">Awareness</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Look for boats frequently.</li>
+                                    <li>Do not touch marine life.</li>
+                                    <li>If tired, float on back.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scuba Column -->
+                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-tint text-blue-600"></i> Recreational Scuba
+                        </h3>
+                        <div class="space-y-4 flex-grow text-sm text-slate-600">
+                            <div>
+                                <strong class="text-slate-900 block mb-1">Before Dive</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Check gear carefully.</li>
+                                    <li>Review hand signals with buddy.</li>
+                                    <li>Plan depth, time, route.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900 block mb-1">During Dive</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Equalize frequently.</li>
+                                    <li>Maintain buoyancy.</li>
+                                    <li>Monitor air supply and buddy.</li>
+                                    <li>Move calmly to conserve air.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900 block mb-1">After Dive</strong>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>Hydrate.</li>
+                                    <li>Follow no-fly rules.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: Gallery -->
+        <section id="gallery" class="tab-content hidden fade-in">
+            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-purple-100 p-3 rounded-full text-purple-600">
+                        <i class="fas fa-images text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-slate-900">Gallery</h2>
+                </div>
+
+                <p class="text-slate-600 mb-6">Explore the breathtaking beauty of Dean's Blue Hole and its surroundings.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Image 1 -->
+                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64">
+                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM.jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
+                    </div>
+                    <!-- Image 2 -->
+                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64">
+                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (1).jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
+                    </div>
+                    <!-- Image 3 -->
+                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64">
+                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (2).jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
+                    </div>
+                    <!-- Image 4 -->
+                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64">
+                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (3).jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
+                    </div>
+                    <!-- Image 5 -->
+                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64">
+                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (4).jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
+                    </div>
+                    <!-- Image 6 -->
+                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64">
+                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (5).jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
+                    </div>
+                     <!-- Image 7 -->
+                     <div class="group relative overflow-hidden rounded-xl shadow-md h-64 md:col-span-2 lg:col-span-1">
+                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (6).jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Ocean Awareness Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Tab Functionality -->
+    <script>
+        function switchTab(tabId) {
+            // 1. Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // 2. Show the selected tab content
+            const selectedContent = document.getElementById(tabId);
+            if (selectedContent) {
+                selectedContent.classList.remove('hidden');
+                // Scroll to top of tab content for better UX on mobile
+                if (window.innerWidth < 768) {
+                   selectedContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            // 3. Update tab button styles (Desktop)
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(tabId)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 4. Close mobile menu if open
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Initialize first tab
+        switchTab('cpr');
+    </script>
+</body>
+</html>

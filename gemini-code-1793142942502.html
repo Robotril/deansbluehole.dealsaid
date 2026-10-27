@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dean's Blue Hole Safety and History</title>
+    <!-- Favicon provided by user -->
+    <link rel="icon" type="image/png" href="oceanfavicon.png">
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tab Active State */
+        .tab-btn.active {
+            color: #0ea5e9; /* Sky blue 500 */
+            border-bottom: 2px solid #0ea5e9;
+            background-color: rgba(14, 165, 233, 0.1);
+        }
+        
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo / Title -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img src="oceanfavicon.png" alt="Logo" class="h-10 w-10 rounded-full border border-blue-100 p-1">
+                    <h1 class="text-xl font-bold text-blue-900 tracking-tight hidden sm:block">Dean's Blue Hole Safety and History</h1>
+                    <h1 class="text-lg font-bold text-blue-900 tracking-tight sm:hidden">Dean's Blue Hole Safety</h1>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-1 h-full">
+                    <button onclick="switchTab('cpr')" class="tab-btn active px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        CPR for Water
+                    </button>
+                    <button onclick="switchTab('history')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        History
+                    </button>
+                    <button onclick="switchTab('ocean-safety')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Ocean Safety
+                    </button>
+                    <button onclick="switchTab('diving-safety')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Diving & Snorkeling
+                    </button>
+                    <button onclick="switchTab('gallery')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Gallery
+                    </button>
+                    <button onclick="switchTab('scholarship')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
+                        Scholarship
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-slate-500 hover:text-blue-600 focus:outline-none p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 overflow-hidden shadow-lg absolute w-full z-50">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="switchTab('cpr')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">CPR for Water</button>
+                <button onclick="switchTab('history')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">History</button>
+                <button onclick="switchTab('ocean-safety')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Ocean Safety Tips</button>
+                <button onclick="switchTab('diving-safety')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Diving & Snorkeling</button>
+                <button onclick="switchTab('gallery')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Gallery</button>
+                <button onclick="switchTab('scholarship')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Scholarship</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- TAB 1: CPR for Water -->
+        <section id="cpr" class="tab-content fade-in">
+            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 p-3 rounded-full text-red-500">
+                            <i class="fas fa-heart-pulse text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-slate-900">CPR for Drowning Emergencies</h2>
+                    </div>
+                    <div class="bg-red-50 text-red-700 px-4 py-2 rounded-lg text-sm font-semibold border border-red-200">
+                        <i class="fas fa-exclamation-circle mr-2"></i> Rescue Breaths First
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Main Steps -->
+                    <div class="md:col-span-2 space-y-6">
+                        <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                            <ol class="space-y-4">
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">1</span>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800">Ensure the scene is safe</h4>
+                                        <p class="text-slate-600 text-sm">Do not enter water if it puts you in danger. Bring the person to a safe, firm surface.</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4">
+                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">2</span>
+                                    <div>
+                                        <h4 class="font-bold text-slate-800">Check for responsiveness</h4>
+                                        <p class="text-slate-600 text-sm">Tap and shout: “Are you OK?” If unresponsive, proceed.</p>

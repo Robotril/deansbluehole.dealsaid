@@ -186,3 +186,8 @@ body[data-tab="safety"] #portals{display:grid}
 .pacer-btn:active{transform:scale(.97)}
 .pacer.running .pacer-btn{background:var(--coral);color:#2a0606}
 @media (prefers-reduced-motion:reduce){.pacer.beat .pacer-count{transform:none}}
+
+/* Learn Free tab: opens the nested MGT course site at /learn/ */
+.learn-link{color:var(--turq)!important;font-family:'Figtree',sans-serif;font-weight:700;text-decoration:none}
+.learn-link:hover{color:var(--foam)!important;border-bottom-color:var(--turq)!important}
+#mobile-menu .learn-link:hover{background:rgba(79,224,224,.08)!important}

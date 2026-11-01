@@ -174,3 +174,15 @@ body[data-tab="safety"] #portals{display:grid}
 #portals button i{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;margin-bottom:1rem;font-size:1.2rem;
   color:#03263d;background:radial-gradient(circle at 35% 30%,#d6fffb,#4fe0e0 60%,#139fc0)}
 #portals button:hover{transform:translateY(-8px);border-color:var(--turq);box-shadow:0 0 38px -4px rgba(79,224,224,.55),0 24px 44px -20px #000}
+
+/* ---------- CPR rhythm pacer ---------- */
+.pacer-count{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:3.75rem;line-height:1;min-width:2ch;text-align:center;
+  color:var(--turq);font-variant-numeric:tabular-nums;transition:transform 90ms ease-out,color .2s ease,text-shadow .2s ease}
+.pacer.beat .pacer-count{transform:scale(1.15);text-shadow:0 0 22px rgba(79,224,224,.7)}
+.pacer.breathe .pacer-count{color:var(--sun);text-shadow:0 0 22px rgba(255,217,138,.6)}
+.pacer.running{border-color:var(--turq)!important;box-shadow:0 0 30px -8px rgba(79,224,224,.55)}
+.pacer-btn{background:var(--turq);color:#03263d;transition:transform .14s ease-out,filter .18s ease}
+.pacer-btn:hover{filter:brightness(1.08)}
+.pacer-btn:active{transform:scale(.97)}
+.pacer.running .pacer-btn{background:var(--coral);color:#2a0606}
+@media (prefers-reduced-motion:reduce){.pacer.beat .pacer-count{transform:none}}

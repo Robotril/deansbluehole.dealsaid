@@ -47,7 +47,7 @@
 
   var doors = [['history','fa-water',"History of Dean's Blue Hole"],['gallery','fa-images','Gallery'],
     ['work','fa-newspaper','Follow the impact'],['about','fa-hand-holding-heart',"About Deal's Aid"],
-    ['scholarship','fa-graduation-cap','Scholarship Application']];
+    ['scholarship','fa-gift','Giveaway Application']];
   var portals = document.createElement('nav');
   portals.id = 'portals';
   portals.innerHTML = doors.map(function (d) {

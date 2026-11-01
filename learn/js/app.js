@@ -196,41 +196,49 @@ function courseCard(c, opts = {}) {
     </div></a>`;
 }
 function crumbs(list) { return `<nav class="crumbs" aria-label="Breadcrumb">${list.map(([t, h]) => h ? `<a href="${h}">${t}</a>` : `<span aria-current="page">${t}</span>`).join('<span class="sep">/</span>')}</nav>`; }
+const FORMSPREE = 'https://formspree.io/f/mwllojgb';
 function msgForm(kind) {
   const vol = kind === 'volunteer';
-  return `<form class="card form" id="msg-form" novalidate>
+  return `<form class="card form" id="msg-form" action="${FORMSPREE}" method="POST" novalidate>
     <h3>${vol ? 'Tell us you want to help' : 'Send us a message'}</h3>
     <div class="field"><label for="mf-name">Your name</label><input id="mf-name" name="name" autocomplete="name" required></div>
     <div class="field"><label for="mf-email">Your email</label><input id="mf-email" name="email" type="email" autocomplete="email" required></div>
-    ${vol ? `<fieldset class="field"><legend>I'm interested in</legend><div class="checks">
+    ${vol ? `<div class="field"><label for="mf-phone">Phone (optional)</label><input id="mf-phone" name="phone" type="tel" autocomplete="tel"></div>
+    <fieldset class="field"><legend>I'm interested in</legend><div class="checks">
       <label><input type="checkbox" name="role" value="Library work" checked> Library work</label>
       <label><input type="checkbox" name="role" value="Tutoring"> Tutoring</label>
       <label><input type="checkbox" name="role" value="Teaching a course"> Teaching a course</label></div></fieldset>` : ''}
-    <div class="field"><label for="mf-msg">${vol ? 'When are you free, and what do you enjoy?' : 'Message'}</label><textarea id="mf-msg" name="msg" rows="5" required></textarea></div>
+    <div class="field"><label for="mf-msg">${vol ? 'When are you free, and what do you enjoy?' : 'Message'}</label><textarea id="mf-msg" name="message" rows="5" required></textarea></div>
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
     <p class="form-err" role="alert" hidden></p>
-    <button class="btn" type="submit">${vol ? 'Prepare my email' : 'Prepare my email'}</button>
-    <div class="ready" hidden></div>
+    <button class="btn" type="submit">${vol ? 'Send my application' : 'Send message'}</button>
+    <div class="ready" role="status" hidden></div>
   </form>`;
 }
 function mountMsgForm(el, kind) {
   const f = $('#msg-form', el); if (!f) return;
-  f.onsubmit = e => {
+  const vol = kind === 'volunteer';
+  f.onsubmit = async e => {
     e.preventDefault();
-    const d = new FormData(f), err = $('.form-err', f);
-    const name = (d.get('name') || '').trim(), email = (d.get('email') || '').trim(), msg = (d.get('msg') || '').trim();
+    const d = new FormData(f), err = $('.form-err', f), btn = $('button[type="submit"]', f);
+    const name = (d.get('name') || '').trim(), email = (d.get('email') || '').trim(), msg = (d.get('message') || '').trim();
     if (!name || !/^\S+@\S+\.\S+$/.test(email) || !msg) { err.hidden = false; err.textContent = 'Fill in your name, a valid email and a message, then try again.'; return; }
     err.hidden = true;
-    const roles = d.getAll('role');
-    const subject = kind === 'volunteer' ? 'Volunteer with Deal\'s Aid' : 'Message from the MGT website';
-    const body = `${msg}\n\n${roles.length ? 'Interested in: ' + roles.join(', ') + '\n' : ''}From: ${name} (${email})`;
-    const ready = $('.ready', f);
-    ready.hidden = false;
-    ready.innerHTML = `<p><strong>Your email is ready.</strong> Send it to <span class="mono">${EMAIL}</span> with your email app, or copy it and paste it anywhere.</p>
-      <div class="row"><a class="btn sm" href="mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}">Open in email app</a><button type="button" class="btn ghost sm" data-copy>Copy message</button></div>`;
-    $('[data-copy]', ready).onclick = async ev => {
-      try { await navigator.clipboard.writeText(`To: ${EMAIL}\nSubject: ${subject}\n\n${body}`); ev.target.textContent = 'Copied'; }
-      catch (x) { ev.target.textContent = 'Copy blocked. Select the text above instead'; }
-    };
+    const roles = d.getAll('role'); d.delete('role');
+    if (vol) d.set('interested in', roles.join(', ') || 'Not specified');
+    d.set('form', vol ? 'Volunteer (dealsaid.org/learn)' : 'Contact (dealsaid.org/learn)');
+    d.set('_subject', vol ? 'New Volunteer Application' : 'New Contact Message');
+    btn.disabled = true; const label = btn.textContent; btn.textContent = 'Sending…';
+    try {
+      const r = await fetch(FORMSPREE, { method: 'POST', body: d, headers: { Accept: 'application/json' } });
+      if (!r.ok) { const j = await r.json().catch(() => ({})); throw new Error((j.errors || []).map(x => x.message).join(' ') || 'The form service returned an error.'); }
+      $$('.field, button[type="submit"]', f).forEach(x => x.hidden = true);
+      const ready = $('.ready', f); ready.hidden = false;
+      ready.innerHTML = `<p><strong>Thanks, ${esc(name.split(' ')[0])}. Your ${vol ? 'application' : 'message'} was sent.</strong> We'll reply to ${esc(email)}.</p>`;
+    } catch (x) {
+      btn.disabled = false; btn.textContent = label;
+      err.hidden = false; err.textContent = `Your ${vol ? 'application' : 'message'} didn't send. ${x.message || ''} Check your connection and try again, or email ${EMAIL}.`;
+    }
   };
 }
 

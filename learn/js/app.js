@@ -155,7 +155,7 @@ function header(area, h) {
       <a href="#driving"${on('driving')}>Driving Test Review</a>
       <a href="#volunteer"${on('volunteer')}>Volunteer</a>
       <a href="#contact"${on('contact')}>Contact</a>
-      <a href="../" class="quiet">Dean's Blue Hole</a>
+      <a href="../index.html" class="quiet">Dean's Blue Hole</a>
       <span class="nav-sep"></span>
       ${u ? `<a class="btn sm" href="#members">Member area</a>` : `<a href="#login"${on('login')}>Log in</a><a class="btn sm" href="#signup">Join free</a>`}
     </nav></div>`;
@@ -174,7 +174,7 @@ function footer() {
     <div><a class="logo" href="#home">${logoMark()}<span class="logo-word">MGT</span></a>
     <p class="foot-note">Grow your mental landscape. Free courses for all ages, built by the Deal's Aid non-profit organization.</p></div>
     <div><p class="foot-h">Explore</p><a href="#about">About</a><a href="#services">Services</a><a href="#driving">Driving Test Review</a><a href="#members">Premium Learning</a></div>
-    <div><p class="foot-h">Get involved</p><a href="#volunteer">Volunteer</a><a href="#contact">Contact</a><a href="#signup">Create a free account</a><a href="../">Dean's Blue Hole site</a></div>
+    <div><p class="foot-h">Get involved</p><a href="#volunteer">Volunteer</a><a href="#contact">Contact</a><a href="#signup">Create a free account</a><a href="../index.html">Dean's Blue Hole site</a></div>
     <div><p class="foot-h">Reach us</p><a href="mailto:${EMAIL}">${EMAIL}</a><a href="tel:${TEL}">${PHONE}</a><span class="foot-small">Text or call</span></div>
   </div><div class="wrap foot-base"><span>© ${new Date().getFullYear()} Deal's Aid · MGT</span><span>Preview build: accounts and progress are saved in this browser only.</span></div></footer>`;
 }

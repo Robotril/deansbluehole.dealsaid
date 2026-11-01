@@ -1,1003 +1,458 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dean's Blue Hole Safety and History</title>
-    <!-- Favicon provided by user -->
-    <link rel="icon" type="image/png" href="oceanfavicon.png">
-    
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        /* Custom Animations */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Tab Active State */
-        .tab-btn.active {
-            color: #0ea5e9; /* Sky blue 500 */
-            border-bottom: 2px solid #0ea5e9;
-            background-color: rgba(14, 165, 233, 0.1);
-        }
-        
-        /* Mobile Menu Transitions */
-        #mobile-menu {
-            transition: max-height 0.3s ease-in-out;
-        }
-
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dean's Blue Hole Safety and History · Deal's Aid</title>
+  <meta name="description" content="How to swim, snorkel and dive Dean's Blue Hole safely, what to do if someone goes under, and the story of the second-deepest blue hole in the world. By Deal's Aid, Long Island, Bahamas.">
+  <meta name="theme-color" content="#04121f">
+  <meta property="og:title" content="Dean's Blue Hole Safety and History">
+  <meta property="og:description" content="202 metres deep. Know the rules before you go in.">
+  <meta property="og:image" content="img/hole-aerial.jpg">
+  <link rel="icon" type="image/png" href="oceanfavicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=3">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body>
+<a class="skip" href="#rules">Skip to the safety rules</a>
 
-    <!-- Header & Navigation -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo / Title -->
-                <div class="flex-shrink-0 flex items-center gap-3">
-                    <img src="oceanfavicon.png" alt="Logo" class="h-10 w-10 rounded-full border border-blue-100 p-1">
-                    <h1 class="text-xl font-bold text-blue-900 tracking-tight hidden sm:block">Dean's Blue Hole Safety and History</h1>
-                    <h1 class="text-lg font-bold text-blue-900 tracking-tight sm:hidden">Dean's Blue Hole Safety</h1>
-                </div>
+<!-- ============ First screen ============ -->
+<header class="hero" id="top">
+  <div class="hero-photo">
+    <img src="img/hole-aerial.jpg" width="1600" height="1200" alt="Dean's Blue Hole from the cliff: a dark navy circle in a turquoise lagoon, with the freediving platform floating at its edge" fetchpriority="high">
+  </div>
+  <nav class="hero-nav" aria-label="Main">
+    <a class="mark" href="#top">Deal's Aid</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <ul id="nav-links">
+      <li><a href="#rules">Safety</a></li>
+      <li><a href="#history">History</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#work">Our work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#apply">Scholarship</a></li>
+    </ul>
+  </nav>
+  <div class="hero-band">
+    <div class="hero-row">
+      <p>Safety and history for the second-deepest blue hole on Earth, at Long Island, Bahamas.</p>
+      <a class="btn" href="#rules">Read the safety rules <span class="arr" aria-hidden="true">→</span></a>
+    </div>
+    <h1 aria-label="Dean's Blue Hole">Dean's Blue Hole</h1>
+  </div>
+</header>
 
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-1 h-full">
-                    <button onclick="switchTab('safety')" class="tab-btn active px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
-                        Safety
-                    </button>
-                    <button onclick="switchTab('history')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
-                        History
-                    </button>
-                    <button onclick="switchTab('gallery')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
-                        Gallery
-                    </button>
-                    <button onclick="switchTab('work')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
-                        Our Work
-                    </button>
-                    <button onclick="switchTab('about')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
-                        About
-                    </button>
-                    <button onclick="switchTab('scholarship')" class="tab-btn px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
-                        Scholarship
-                    </button>
-                </nav>
+<main>
 
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button onclick="toggleMobileMenu()" class="text-slate-500 hover:text-blue-600 focus:outline-none p-2">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+<!-- ============ The rules, as a posted sheet ============ -->
+<section class="rules" id="rules" aria-labelledby="rules-h">
+  <div class="rules-photo"><img src="img/lagoon-wide.jpg" width="1200" height="1600" alt="" loading="lazy"></div>
+  <div class="grid">
+    <div class="rules-intro rv">
+      <h2 id="rules-h">Before you go in</h2>
+      <p>Blue holes have hazards a beach does not: a sheer drop to 202 metres, unusual currents, cold layers and dark water. Read these at the rim.</p>
+    </div>
+    <article class="sheet rv" style="--i:1" aria-label="Safety rules for Dean's Blue Hole">
+      <h3 class="sheet-title">Dean's Blue Hole safety</h3>
+      <p class="note">Ten rules for swimmers, snorkelers and divers</p>
 
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 overflow-hidden shadow-lg absolute w-full z-50">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <button onclick="switchTab('safety')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Safety</button>
-                <button onclick="switchTab('history')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">History</button>
-                <button onclick="switchTab('gallery')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Gallery</button>
-                <button onclick="switchTab('work')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">Our Work</button>
-                <button onclick="switchTab('about')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 border-b border-slate-100">About</button>
-                <button onclick="switchTab('scholarship')" class="w-full text-left block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Scholarship</button>
-            </div>
-        </div>
-    </header>
+      <div class="sheet-group">
+        <h4>The water</h4>
+        <ul>
+          <li><b>This is an advanced environment</b><span>Only strong swimmers and trained divers should go over the deep section.</span></li>
+          <li><b>The bottom disappears</b><span>The floor drops away suddenly. Stay near the edges unless you are trained.</span></li>
+          <li><b>Watch for currents</b><span>Avoid siphon-like pulls at narrow openings in the rock.</span></li>
+          <li><b>Expect temperature shifts</b><span>Thermoclines and dark zones arrive without warning as you go down.</span></li>
+        </ul>
+      </div>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <div class="sheet-group">
+        <h4>Your dive</h4>
+        <ul>
+          <li><b>Never dive alone</b><span>Keep a buddy at the surface whenever you go deep.</span></li>
+          <li><b>Watch your buoyancy</b><span>You can sink faster than you expect.</span></li>
+          <li><b>Keep the exit in sight</b><span>The vertical walls can confuse which way is up and out.</span></li>
+        </ul>
+      </div>
 
-        <!-- TAB 1: Safety (CPR, Ocean Safety, Diving & Snorkeling) -->
-        <section id="safety" class="tab-content fade-in">
-            <div class="space-y-8">
-                <div class="flex flex-wrap items-center gap-3">
-                    <span class="text-sm font-semibold text-slate-500 mr-1">Jump to:</span>
-                    <button onclick="jumpTo('safety-cpr')" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 shadow-sm transition-colors"><i class="fas fa-heart-pulse text-red-500"></i> CPR for Water</button>
-                    <button onclick="jumpTo('safety-ocean')" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 shadow-sm transition-colors"><i class="fas fa-life-ring text-teal-500"></i> Ocean Safety</button>
-                    <button onclick="jumpTo('safety-diving')" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 shadow-sm transition-colors"><i class="fas fa-mask text-sky-500"></i> Diving &amp; Snorkeling</button>
-                </div>
-                <div id="safety-cpr" class="scroll-mt-24">
-            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-red-100 p-3 rounded-full text-red-500">
-                            <i class="fas fa-heart-pulse text-2xl"></i>
-                        </div>
-                        <h2 class="text-3xl font-bold text-slate-900">CPR for Drowning Emergencies</h2>
-                    </div>
-                    <div class="bg-red-50 text-red-700 px-4 py-2 rounded-lg text-sm font-semibold border border-red-200">
-                        <i class="fas fa-exclamation-circle mr-2"></i> Rescue Breaths First
-                    </div>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Main Steps -->
-                    <div class="md:col-span-2 space-y-6">
-                        <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                            <ol class="space-y-4">
-                                <li class="flex gap-4">
-                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">1</span>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800">Ensure the scene is safe</h4>
-                                        <p class="text-slate-600 text-sm">Do not enter water if it puts you in danger. Bring the person to a safe, firm surface.</p>
-                                    </div>
-                                </li>
-                                <li class="flex gap-4">
-                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">2</span>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800">Check for responsiveness</h4>
-                                        <p class="text-slate-600 text-sm">Tap and shout: “Are you OK?” If unresponsive, proceed.</p>
-                                    </div>
-                                </li>
-                                <li class="flex gap-4">
-                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">3</span>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800">Call 911 immediately</h4>
-                                        <p class="text-slate-600 text-sm">Or direct someone else to call. Early activation is critical.</p>
-                                    </div>
-                                </li>
-                                <li class="flex gap-4">
-                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">4</span>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800">Check for breathing</h4>
-                                        <p class="text-slate-600 text-sm">Open airway. Look, listen, feel for max 10 seconds. Gasping is NOT normal breathing.</p>
-                                    </div>
-                                </li>
-                                <li class="flex gap-4 bg-red-50 p-3 rounded-lg -ml-3 border-l-4 border-red-500">
-                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full font-bold">5</span>
-                                    <div>
-                                        <h4 class="font-bold text-red-800">Start CPR: Rescue Breaths FIRST</h4>
-                                        <p class="text-red-700 text-sm">Unlike cardiac arrest, drowning is oxygen deprivation. <strong>Give 2 rescue breaths before compressions.</strong> Ensure chest rises.</p>
-                                    </div>
-                                </li>
-                                <li class="flex gap-4">
-                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-full font-bold">6</span>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800">Begin Chest Compressions</h4>
-                                        <ul class="text-slate-600 text-sm list-disc pl-4 mt-1">
-                                            <li>Push hard & fast in center of chest.</li>
-                                            <li>Depth: 2 inches (5 cm).</li>
-                                            <li>Rate: 100–120 bpm.</li>
-                                            <li><strong>Cycle: 30 compressions → 2 breaths → repeat.</strong></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
+      <div class="sheet-group">
+        <h4>At the rim</h4>
+        <ul>
+          <li><b>Snorkel above the rim</b><span>Strong pulls can occur near the centre.</span></li>
+          <li><b>Avoid the centre if untrained</b><span>The safest water is the outer, shallow basin.</span></li>
+          <li><b>Respect the warnings</b><span>Follow every posted sign and rule at the site.</span></li>
+        </ul>
+      </div>
 
-                    <!-- Sidebar Info -->
-                    <div class="space-y-6">
-                        <div class="bg-blue-50 p-5 rounded-xl border border-blue-100">
-                            <h3 class="font-bold text-blue-900 mb-2"><i class="fas fa-clock mr-2"></i>Duration</h3>
-                            <p class="text-sm text-blue-800 mb-3">If you are alone and trained, provide CPR for <strong>2 minutes</strong> before leaving to get help.</p>
-                            <p class="text-sm text-blue-800">Continue until they breathe, a professional takes over, or you are exhausted.</p>
-                        </div>
+      <p class="close">Rescue equipment hangs at the rim.<br>Know where it is before you swim.</p>
+    </article>
+  </div>
+</section>
 
-                        <div class="bg-yellow-50 p-5 rounded-xl border border-yellow-100">
-                            <h3 class="font-bold text-yellow-900 mb-2"><i class="fas fa-bolt mr-2"></i>AED Usage</h3>
-                            <p class="text-sm text-yellow-800">Use an AED as soon as available. Turn it on and follow voice prompts.</p>
-                        </div>
-
-                         <div class="bg-orange-50 p-5 rounded-xl border border-orange-100">
-                            <h3 class="font-bold text-orange-900 mb-2"><i class="fas fa-head-side-cough mr-2"></i>Vomiting?</h3>
-                            <p class="text-sm text-orange-800">Common in drowning. Turn person to side, clear mouth, return to CPR immediately.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-                <div id="safety-ocean" class="scroll-mt-24"><div class="space-y-8">
-                <!-- General Ocean Safety -->
-                <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-teal-100 p-3 rounded-full text-teal-600">
-                            <i class="fas fa-life-ring text-2xl"></i>
-                        </div>
-                        <h2 class="text-3xl font-bold text-slate-900">General Ocean Safety Tips</h2>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <ul class="space-y-4">
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">1. Know conditions before entering:</strong>
-                                    <p class="text-slate-600 text-sm">Check surf, tides, currents, and visibility. Avoid storms.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">2. Swim near a lifeguard:</strong>
-                                    <p class="text-slate-600 text-sm">Most drownings occur on unguarded beaches.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">3. Understand Rip Currents:</strong>
-                                    <p class="text-slate-600 text-sm">Look for choppy channels or foam moving seaward. If caught, swim parallel to shore.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">4. Don't swim alone:</strong>
-                                    <p class="text-slate-600 text-sm">Always use the buddy system.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">5. Know your limits:</strong>
-                                    <p class="text-slate-600 text-sm">Don't swim out farther than you can comfortably return.</p>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="space-y-4">
-                             <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">6. Enter water slowly:</strong>
-                                    <p class="text-slate-600 text-sm">Avoid cold shock and check for drop-offs.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">7. Stay aware of marine life:</strong>
-                                    <p class="text-slate-600 text-sm">Shuffle feet for stingrays. Don't touch coral.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">8. Avoid alcohol:</strong>
-                                    <p class="text-slate-600 text-sm">It impairs judgment and reaction time.</p>
-                                </div>
-                            </li>
-                             <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">9. Wear appropriate gear:</strong>
-                                    <p class="text-slate-600 text-sm">Fins, wetsuits, and bright colors for visibility.</p>
-                                </div>
-                            </li>
-                             <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-teal-500 mt-1"></i>
-                                <div>
-                                    <strong class="text-slate-800">10. Protect against sun:</strong>
-                                    <p class="text-slate-600 text-sm">Hydrate and use sunscreen.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Blue Hole Specific Safety -->
-                <div class="bg-indigo-900 rounded-2xl shadow-sm p-6 md:p-10 border border-indigo-800 text-white">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-indigo-700 p-3 rounded-full text-white">
-                            <i class="fas fa-exclamation-triangle text-2xl"></i>
-                        </div>
-                        <h2 class="text-3xl font-bold">Additional Safety for Blue Holes</h2>
-                    </div>
-                    <p class="mb-6 opacity-90">Blue holes have unique hazards: extreme depth, vertical drops, unusual currents, and low visibility.</p>
-
-                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">1. Advanced Environments</strong>
-                            Only strong swimmers/divers should enter deep sections.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">2. Sudden Depth Changes</strong>
-                            Stay near edges unless trained.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">3. Watch for Currents</strong>
-                            Avoid "siphon-like" currents at narrow openings.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">4. Never Dive Alone</strong>
-                            Use a buddy who stays at surface if you go deep.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">5. Monitor Buoyancy</strong>
-                            You can descend faster than expected.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">6. Keep Exit in Sight</strong>
-                            Vertical walls can distort orientation.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">7. Snorkeling Caution</strong>
-                            Stay above the rim; strong pulls can occur near center.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">8. Avoid Center if Untrained</strong>
-                            Safest area is the outer shallow basin.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">9. Temperature Shifts</strong>
-                            Watch for thermoclines and dark zones.
-                        </div>
-                        <div class="bg-indigo-800 bg-opacity-50 p-4 rounded-lg">
-                            <strong class="block text-indigo-200 mb-1">10. Respect Warnings</strong>
-                            Follow all posted signage and rules.
-                        </div>
-                    </div>
-                </div>
-            </div></div>
-                <div id="safety-diving" class="scroll-mt-24">
-            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="bg-sky-100 p-3 rounded-full text-sky-600">
-                        <i class="fas fa-mask text-2xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-900">Diving & Snorkeling Safety</h2>
-                </div>
-
-                <div class="grid lg:grid-cols-3 gap-8">
-                    <!-- Freediving Column -->
-                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <i class="fas fa-lungs text-sky-500"></i> Freediving
-                        </h3>
-                        <div class="space-y-4 flex-grow text-sm text-slate-600">
-                            <div>
-                                <strong class="text-slate-900 block mb-1">Before Diving</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Never freedive alone.</li>
-                                    <li>Rest and breathe normally; <strong>do NOT hyperventilate</strong>.</li>
-                                    <li>Check conditions.</li>
-                                    <li>Warm up gently.</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <strong class="text-slate-900 block mb-1">During Dive</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Equalize early and often.</li>
-                                    <li>Move slowly to save energy.</li>
-                                    <li>Know limits, turn back early.</li>
-                                    <li>Never ascend too fast.</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <strong class="text-slate-900 block mb-1">At Surface</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Recovery breaths.</li>
-                                    <li>Signal "OK" to buddy.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Snorkeling Column -->
-                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <i class="fas fa-swimmer text-orange-500"></i> Snorkeling
-                        </h3>
-                        <div class="space-y-4 flex-grow text-sm text-slate-600">
-                            <div>
-                                <strong class="text-slate-900 block mb-1">Safety & Environment</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Stay within sight of shore/boat.</li>
-                                    <li>Choose calm areas.</li>
-                                    <li>Use bright colors for visibility.</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <strong class="text-slate-900 block mb-1">Technique</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Relax breathing.</li>
-                                    <li>Use correctly sized fins.</li>
-                                    <li>Avoid kicking sand/coral.</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <strong class="text-slate-900 block mb-1">Awareness</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Look for boats frequently.</li>
-                                    <li>Do not touch marine life.</li>
-                                    <li>If tired, float on back.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Scuba Column -->
-                    <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <i class="fas fa-tint text-blue-600"></i> Recreational Scuba
-                        </h3>
-                        <div class="space-y-4 flex-grow text-sm text-slate-600">
-                            <div>
-                                <strong class="text-slate-900 block mb-1">Before Dive</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Check gear carefully.</li>
-                                    <li>Review hand signals with buddy.</li>
-                                    <li>Plan depth, time, route.</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <strong class="text-slate-900 block mb-1">During Dive</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Equalize frequently.</li>
-                                    <li>Maintain buoyancy.</li>
-                                    <li>Monitor air supply and buddy.</li>
-                                    <li>Move calmly to conserve air.</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <strong class="text-slate-900 block mb-1">After Dive</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li>Hydrate.</li>
-                                    <li>Follow no-fly rules.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: Dean's Blue Hole History -->
-        <section id="history" class="tab-content hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="bg-blue-900 p-3 rounded-full text-white">
-                        <i class="fas fa-water text-2xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-900">History of Dean's Blue Hole</h2>
-                </div>
-
-                <!-- Hero Image -->
-                <div class="relative h-64 md:h-80 w-full rounded-xl mb-8 overflow-hidden bg-slate-200">
-                    <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (5).jpeg" alt="Dean's Blue Hole" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-                        <div class="text-white">
-                            <h3 class="text-2xl font-bold">The World's Deepest Blue Hole (Second Deepest)</h3>
-                            <p class="opacity-90">Long Island, Bahamas</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-10">
-                    <div class="prose max-w-none text-slate-600">
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Formation & Geography</h3>
-                        <p class="mb-4">
-                            Blue holes are mysterious geological remnants of the Ice Age—vast, vertical sinkholes formed when ancient caverns in limestone collapsed and were later flooded as sea levels rose. Their striking dark-navy coloration, visible even from the air, comes from their extreme depth and narrow openings that plunge into expansive underwater voids.
-                        </p>
-                        <p class="mb-4">
-                             Among the many blue holes found worldwide, few compare to the mesmerizing beauty and significance of Dean’s Blue Hole, located on Long Island in the Bahamas.
-                        </p>
-                        <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-blue-500 my-4">
-                            <p class="italic text-slate-700">"At 202 meters (663 feet) deep, Dean’s Blue Hole is the second deepest known blue hole in the world."</p>
-                        </div>
-                         <p class="mb-4">
-                            Its entrance, a relatively modest 30 meters across, widens dramatically into a cavern nearly 100 meters in diameter, enclosed on three sides by a natural rock amphitheater and on the fourth by a brilliant turquoise lagoon.
-                        </p>
-                    </div>
-
-                    <div class="prose max-w-none text-slate-600">
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Freediving & Records</h3>
-                        <p class="mb-4">
-                            Dean’s Blue Hole is famous as the annual home of the <strong>Vertical Blue Freediving Competition</strong>, one of the most prestigious events in the sport. Competitors travel from around the globe to witness world-class athletes attempt to reach staggering depths on a single breath.
-                        </p>
-                        <p class="mb-4">
-                            The site has hosted numerous record-breaking dives, including William Trubridge’s finless descent to 92 meters in 2010. However, it has also seen tragedy, such as the loss of Nicholas Mevoli in 2013, underscoring the risks of the sport.
-                        </p>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3">Today</h3>
-                        <p>
-                            Today, Dean’s Blue Hole remains a place of wonder—an irresistible blend of natural beauty, geological mystery, and human ambition. It invites adventurers to be bold but curious, respecting the techniques and safety practices essential for exploring such profound depths.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 5: Gallery -->
-        <section id="gallery" class="tab-content hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="bg-purple-100 p-3 rounded-full text-purple-600">
-                        <i class="fas fa-images text-2xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-900">Gallery</h2>
-                </div>
-
-                <p class="text-slate-600 mb-6">Explore the breathtaking beauty of Dean's Blue Hole and its surroundings. Click any photo to view it larger, or any video to play it.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('WhatsApp Image 2025-11-25 at 8.54.27 PM.jpeg')">
-                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM.jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('WhatsApp Image 2025-11-25 at 8.54.27 PM (1).jpeg')">
-                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (1).jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('WhatsApp Image 2025-11-25 at 8.54.27 PM (2).jpeg')">
-                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (2).jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('WhatsApp Image 2025-11-25 at 8.54.27 PM (3).jpeg')">
-                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (3).jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('WhatsApp Image 2025-11-25 at 8.54.27 PM (4).jpeg')">
-                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (4).jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('WhatsApp Image 2025-11-25 at 8.54.27 PM (5).jpeg')">
-                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (5).jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('WhatsApp Image 2025-11-25 at 8.54.27 PM (6).jpeg')">
-                        <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (6).jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_20251221_141519_20251221_111724.jpeg')">
-                        <img src="IMG_20251221_141519_20251221_111724.jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_20251221_141825_20251220_144838.jpeg')">
-                        <img src="IMG_20251221_141825_20251220_144838.jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_20251221_141813_20251221_110949.jpeg')">
-                        <img src="IMG_20251221_141813_20251221_110949.jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_20251221_141842_20251220_134124.jpeg')">
-                        <img src="IMG_20251221_141842_20251220_134124.jpeg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Dean's Blue Hole">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_1580.jpeg')">
-                        <img src="IMG_1580.jpeg" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Crystal-clear blue pool inside a limestone cave">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_20251220_155848_20251220_134255.jpeg')">
-                        <img src="IMG_20251220_155848_20251220_134255.jpeg" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Shark swimming in open blue water">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_20251220_160052_20240101_221638_01.jpeg')">
-                        <img src="IMG_20251220_160052_20240101_221638_01.jpeg" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Yellowtail snappers along the reef wall">
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer" onclick="openModal('IMG_20251221_141923_20240101_221222_01.jpeg')">
-                        <img src="IMG_20251221_141923_20240101_221222_01.jpeg" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Freediver silhouette descending with a fish below">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB: Our Work / News -->
-        <section id="work" class="tab-content hidden fade-in">
-            <div class="space-y-8">
-                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900 via-blue-800 to-sky-600 text-white p-8 md:p-12 shadow-sm">
-                    <div class="absolute -right-10 -top-10 w-56 h-56 rounded-full bg-white/10"></div>
-                    <div class="absolute right-24 -bottom-16 w-44 h-44 rounded-full bg-white/10"></div>
-                    <div class="relative max-w-2xl">
-                        <div class="inline-flex items-center gap-2 bg-white/15 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-4"><i class="fas fa-newspaper"></i> Our Work &amp; News</div>
-                        <h2 class="text-3xl md:text-4xl font-bold mb-3">Follow the impact</h2>
-                        <p class="text-blue-100 text-lg">From laptop giveaways to a community library to safety upgrades at Dean's Blue Hole, here is where you can track what Deal's Aid has been up to.</p>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <a href="https://www.instagram.com/p/DdMiDDMJo4m/?psln=MWhwMXowaGdwcjJhag==" target="_blank" rel="noopener" class="group md:col-span-1 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                        <div class="bg-gradient-to-br from-pink-500 to-orange-400 p-6 flex items-center justify-between text-white">
-                            <i class="fa-brands fa-instagram text-4xl"></i>
-                            <span class="bg-white/25 backdrop-blur text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full">Safety</span>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Instagram</p>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">Sign &amp; safety equipment at Dean's Blue Hole</h3>
-                            <p class="text-slate-600 text-sm flex-grow">We erected a sign and put up safety equipment at Dean's Blue Hole in Long Island, making it safer for divers and swimmers.</p>
-                            <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-600 group-hover:gap-3 transition-all">View on Instagram <i class="fas fa-arrow-right text-xs"></i></span>
-                        </div>
-                    </a>
-                    <a href="https://www.facebook.com/share/1CHnicMtYP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="group md:col-span-1 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                        <div class="bg-gradient-to-br from-blue-600 to-blue-400 p-6 flex items-center justify-between text-white">
-                            <i class="fa-brands fa-facebook text-4xl"></i>
-                            <span class="bg-white/25 backdrop-blur text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full">In the News</span>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Facebook</p>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">Covered by Long Island news</h3>
-                            <p class="text-slate-600 text-sm flex-grow">A Long Island news platform in The Bahamas covered our work on Dean's Blue Hole safety.</p>
-                            <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-600 group-hover:gap-3 transition-all">Read on Facebook <i class="fas fa-arrow-right text-xs"></i></span>
-                        </div>
-                    </a>
-                    <a href="https://www.instagram.com/p/DM02KcRyvPr/?vrfl=NG4xdjdobDZqa2tz" target="_blank" rel="noopener" class="group md:col-span-1 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                        <div class="bg-gradient-to-br from-pink-500 to-orange-400 p-6 flex items-center justify-between text-white">
-                            <i class="fa-brands fa-instagram text-4xl"></i>
-                            <span class="bg-white/25 backdrop-blur text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full">Giveaway</span>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Instagram</p>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">Our first laptop giveaway</h3>
-                            <p class="text-slate-600 text-sm flex-grow">Our very first laptop giveaway, putting technology in the hands of students.</p>
-                            <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-600 group-hover:gap-3 transition-all">View on Instagram <i class="fas fa-arrow-right text-xs"></i></span>
-                        </div>
-                    </a>
-                    <a href="https://www.instagram.com/reel/DL2NkXkgjxB/?obrf=aTh5b3RrZXBqbjNu" target="_blank" rel="noopener" class="group md:col-span-1 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                        <div class="bg-gradient-to-br from-pink-500 to-orange-400 p-6 flex items-center justify-between text-white">
-                            <i class="fa-brands fa-instagram text-4xl"></i>
-                            <span class="bg-white/25 backdrop-blur text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full">Giveaway</span>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Instagram</p>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">Side Quest Crew promotes the giveaway</h3>
-                            <p class="text-slate-600 text-sm flex-grow">The Side Quest Crew helped spread the word about our first laptop giveaway.</p>
-                            <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-600 group-hover:gap-3 transition-all">Watch the reel <i class="fas fa-arrow-right text-xs"></i></span>
-                        </div>
-                    </a>
-                    <a href="https://www.instagram.com/p/DK0jcuNpm3G/?img_index=6&amp;dlrf=MTIxMWh4NG83M2xiaQ==" target="_blank" rel="noopener" class="group md:col-span-1 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                        <div class="bg-gradient-to-br from-pink-500 to-orange-400 p-6 flex items-center justify-between text-white">
-                            <i class="fa-brands fa-instagram text-4xl"></i>
-                            <span class="bg-white/25 backdrop-blur text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full">Education</span>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Instagram</p>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">A library for kids in the community</h3>
-                            <p class="text-slate-600 text-sm flex-grow">We created a library for kids in the community off Market Street, equipped with books and computers.</p>
-                            <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-600 group-hover:gap-3 transition-all">View on Instagram <i class="fas fa-arrow-right text-xs"></i></span>
-                        </div>
-                    </a>
-                </div>
-
-                <p class="text-center text-sm text-slate-500">More updates coming soon. Follow us on social media to stay in the loop.</p>
-            </div>
-        </section>
-
-        <!-- TAB: About -->
-        <section id="about" class="tab-content hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="bg-blue-100 p-3 rounded-full text-blue-600">
-                        <i class="fas fa-hand-holding-heart text-2xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-900">About Deal's Aid</h2>
-                </div>
-
-                <p class="text-slate-600 text-lg mb-8 max-w-3xl">
-                    Deal's Aid is a youth-led non-profit organization officially registered with the Government of The Bahamas in <strong>2024</strong>, dedicated to feeding, educating, and empowering our community.
-                </p>
-
-                <!-- Leadership -->
-                <h3 class="text-2xl font-bold text-slate-900 mb-4">Meet the Team</h3>
-                <div class="grid md:grid-cols-2 gap-6 mb-10">
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                        <div class="bg-slate-100 cursor-pointer" onclick="openModal('IMG_9722.jpeg')">
-                            <img src="IMG_9722.jpeg" alt="Robert Deal III" class="w-full h-auto block">
-                        </div>
-                        <div class="p-5">
-                            <h4 class="text-xl font-bold text-slate-900">Robert Deal III</h4>
-                            <p class="text-sky-600 font-semibold text-sm mb-2">President</p>
-                            <p class="text-slate-600 text-sm">A student at Purdue University studying Economics and Mathematics, Robert is the current president of Deal's Aid.</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                        <div class="bg-slate-100 cursor-pointer" onclick="openModal('IMG_8741.jpeg')">
-                            <img src="IMG_8741.jpeg" alt="Rickia Johnson" class="w-full h-auto block">
-                        </div>
-                        <div class="p-5">
-                            <h4 class="text-xl font-bold text-slate-900">Rickia Johnson</h4>
-                            <p class="text-sky-600 font-semibold text-sm mb-2">Secretary</p>
-                            <p class="text-slate-600 text-sm">A student at the University of The Bahamas studying Law, Rickia serves as the secretary of Deal's Aid.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Story -->
-                <h3 class="text-2xl font-bold text-slate-900 mb-4">What We've Done</h3>
-                <div class="grid sm:grid-cols-2 gap-5">
-                    <div class="sm:col-span-2 bg-teal-50 border border-teal-100 rounded-xl p-5">
-                        <div class="text-teal-500 text-2xl mb-2"><i class="fas fa-life-ring"></i></div>
-                        <h4 class="font-bold text-teal-900 mb-1">Dean's Blue Hole Safety Project</h4>
-                        <p class="text-sm text-teal-800">We raised money to erect a sign and safety equipment at Dean's Blue Hole in Long Island, making it safer for divers and swimmers.</p>
-                    </div>
-                    <div class="bg-orange-50 border border-orange-100 rounded-xl p-5">
-                        <div class="text-orange-500 text-2xl mb-2"><i class="fas fa-utensils"></i></div>
-                        <h4 class="font-bold text-orange-900 mb-1">Where It Started</h4>
-                        <p class="text-sm text-orange-800">We began by handing out food at Retirement Park, getting meals directly to neighbors who needed them.</p>
-                    </div>
-                    <div class="bg-sky-50 border border-sky-100 rounded-xl p-5">
-                        <div class="text-sky-500 text-2xl mb-2"><i class="fas fa-book-open"></i></div>
-                        <h4 class="font-bold text-sky-900 mb-1">Community Library</h4>
-                        <p class="text-sm text-sky-800">We created a library for kids in the community off Market Street, equipped with books and computers.</p>
-                    </div>
-                    <div class="bg-green-50 border border-green-100 rounded-xl p-5">
-                        <div class="text-green-500 text-2xl mb-2"><i class="fas fa-carrot"></i></div>
-                        <h4 class="font-bold text-green-900 mb-1">Hands for Hunger Guide</h4>
-                        <p class="text-sm text-green-800">We worked with <em>Hands for Hunger</em>, an independent charity, to launch a guide for those who need it, with cheap recipes and ways to stay cool in the hot summer.</p>
-                    </div>
-                    <div class="bg-purple-50 border border-purple-100 rounded-xl p-5">
-                        <div class="text-purple-500 text-2xl mb-2"><i class="fas fa-laptop"></i></div>
-                        <h4 class="font-bold text-purple-900 mb-1">Laptop Giveaway</h4>
-                        <p class="text-sm text-purple-800">We held a laptop giveaway to help put technology in the hands of students.</p>
-                    </div>
-                </div>
-
-                <div class="mt-5 bg-blue-900 text-white rounded-xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h4 class="text-xl font-bold mb-1"><i class="fas fa-graduation-cap mr-2"></i>dealsaid.org</h4>
-                        <p class="text-blue-100 text-sm">A place where anyone can learn for free, with courses ranging from raising chickens to investing and math.</p>
-                    </div>
-                    <a href="https://dealsaid.org" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-white text-blue-900 font-bold px-5 py-2.5 rounded-xl hover:bg-blue-50 transition-colors whitespace-nowrap">
-                        Visit Site <i class="fas fa-external-link-alt text-xs"></i>
-                    </a>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer bg-slate-900" onclick="openVideo('videos/dive-1.mp4')">
-                        <img src="dive-1.jpg" loading="lazy" class="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105" alt="Shipwreck resting on the sandy seafloor">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="w-16 h-16 rounded-full bg-black/55 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-white text-2xl"><i class="fas fa-play ml-1"></i></span>
-                        </div>
-                        <span class="absolute top-3 left-3 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-full"><i class="fas fa-video mr-1"></i> Video</span>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer bg-slate-900" onclick="openVideo('videos/dive-2.mp4')">
-                        <img src="dive-2.jpg" loading="lazy" class="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105" alt="Sea turtle gliding along the reef wall">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="w-16 h-16 rounded-full bg-black/55 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-white text-2xl"><i class="fas fa-play ml-1"></i></span>
-                        </div>
-                        <span class="absolute top-3 left-3 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-full"><i class="fas fa-video mr-1"></i> Video</span>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer bg-slate-900" onclick="openVideo('videos/dive-3.mp4')">
-                        <img src="dive-3.jpg" loading="lazy" class="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105" alt="Sea turtle resting on the reef">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="w-16 h-16 rounded-full bg-black/55 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-white text-2xl"><i class="fas fa-play ml-1"></i></span>
-                        </div>
-                        <span class="absolute top-3 left-3 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-full"><i class="fas fa-video mr-1"></i> Video</span>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-xl shadow-md h-64 cursor-pointer bg-slate-900" onclick="openVideo('videos/dive-4.mp4')">
-                        <img src="dive-4.jpg" loading="lazy" class="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105" alt="Open turquoise water">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="w-16 h-16 rounded-full bg-black/55 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-white text-2xl"><i class="fas fa-play ml-1"></i></span>
-                        </div>
-                        <span class="absolute top-3 left-3 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-full"><i class="fas fa-video mr-1"></i> Video</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 6: Scholarship -->
-        <section id="scholarship" class="tab-content hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-slate-100 max-w-4xl mx-auto">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="bg-amber-100 p-3 rounded-full text-amber-600">
-                        <i class="fas fa-graduation-cap text-2xl"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-3xl font-bold text-slate-900">Scholarship Application</h2>
-                        <p class="text-slate-600 text-sm mt-1">Please fill out all required fields to submit your application.</p>
-                    </div>
-                </div>
-
-                <!-- Formspree Basic HTML Form Integration -->
-                <form action="https://formspree.io/f/mwllojgb" method="POST" class="space-y-6">
-                    
-                    <!-- Hidden configuration field for email subject -->
-                    <input type="hidden" name="_subject" value="New Scholarship Application Submission">
-
-                    <!-- Full Name & Age -->
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="fullName" class="block text-sm font-semibold text-slate-800 mb-2">Full Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="fullName" name="Applicant Name" required placeholder="Enter full name" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                        </div>
-                        <div>
-                            <label for="age" class="block text-sm font-semibold text-slate-800 mb-2">Age <span class="text-red-500">*</span></label>
-                            <input type="number" id="age" name="Applicant Age" required min="1" max="100" placeholder="Enter your age" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                        </div>
-                    </div>
-
-                    <!-- Question 1: Sea Animal -->
-                    <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 space-y-3">
-                        <label for="seaAnimal" class="block text-sm font-semibold text-slate-900">
-                            If you could be any sea animal, which one would you be and why? <span class="text-red-500">*</span>
-                        </label>
-                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-800 font-medium">
-                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts—no AI usage allowed! Answer must be <strong>250 words or fewer</strong>.
-                        </div>
-                        <textarea id="seaAnimal" name="Sea Animal Essay" required rows="9" data-wordlimit="250" placeholder="Write your response here (up to 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
-                        <p id="seaAnimalCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words</p>
-                    </div>
-
-                    <!-- Question 2: Prime Minister -->
-                    <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 space-y-3">
-                        <label for="primeMinister" class="block text-sm font-semibold text-slate-900">
-                            What would your Bahamas look like if you were Prime Minister? <span class="text-red-500">*</span>
-                        </label>
-                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-800 font-medium">
-                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts—no AI usage allowed! Answer must be <strong>250 words or fewer</strong>.
-                        </div>
-                        <textarea id="primeMinister" name="Prime Minister Essay" required rows="9" data-wordlimit="250" placeholder="Write your response here (up to 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
-                        <p id="primeMinisterCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words</p>
-                    </div>
-
-                    <!-- Proof of School Age Link -->
-                    <div class="bg-blue-50 p-5 rounded-xl border border-blue-200 space-y-2">
-                        <label class="block text-sm font-semibold text-blue-900">
-                            Proof of School Age Document <span class="text-red-500">*</span>
-                        </label>
-                        <p class="text-xs text-blue-700">
-                            Please upload your proof of school age (Passport, NIB Card, or School Uniform photo) using our official upload link below:
-                        </p>
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfKFqP0ydety-epEUsa8rg2jM3DmjuGqctFqbkDDCn4CmWazg/viewform?usp=publish-editor" target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 bg-white px-4 py-2.5 rounded-xl border border-blue-300 shadow-sm transition-colors">
-                            <i class="fas fa-external-link-alt"></i> Open Proof of Age Upload Form (Google Form)
-                        </a>
-                    </div>
-
-                    <!-- Parent / Guardian Contact Information -->
-                    <div class="bg-red-50/50 p-5 rounded-xl border border-red-200 space-y-4">
-                        <div>
-                            <h4 class="text-sm font-bold text-red-900 flex items-center gap-2">
-                                <i class="fas fa-user-shield text-red-600"></i> Parent / Guardian Contact Details (Required)
-                            </h4>
-                            <p class="text-xs text-red-700 mt-1">
-                                <strong>IMPORTANT:</strong> This MUST be a parent or guardian email/contact number. This will be used to notify you and send a confirmation if you win!
-                            </p>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="parentEmail" class="block text-xs font-semibold text-slate-800 mb-1">Parent/Guardian Email Address <span class="text-red-500">*</span></label>
-                                <!-- Using name="_replyto" routes Formspree auto-responses/confirmations to this parent email address -->
-                                <input type="email" id="parentEmail" name="_replyto" required placeholder="parent@example.com" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                            </div>
-                            <div>
-                                <label for="parentPhone" class="block text-xs font-semibold text-slate-800 mb-1">Parent/Guardian Phone Number <span class="text-red-500">*</span></label>
-                                <input type="tel" id="parentPhone" name="Parent Contact Number" required placeholder="(242) 555-0199" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
-                        <i class="fas fa-paper-plane"></i> Submit Application
-                    </button>
-
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Gallery Image Lightbox Modal -->
-    <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4" onclick="closeModal()">
-        <div class="relative max-w-4xl max-h-full" onclick="event.stopPropagation()">
-            <button class="absolute -top-10 right-0 text-white text-3xl hover:text-slate-300 focus:outline-none" onclick="closeModal()">
-                <i class="fas fa-times"></i>
-            </button>
-            <img id="modalImg" src="" class="max-h-[85vh] max-w-full rounded-lg shadow-2xl object-contain bg-black">
-            <video id="modalVideo" controls playsinline preload="metadata" class="hidden max-h-[85vh] max-w-full rounded-lg shadow-2xl bg-black"></video>
-        </div>
+<!-- ============ CPR ============ -->
+<section class="cpr" id="cpr" aria-labelledby="cpr-h">
+  <div class="grid">
+    <div class="cpr-head rv">
+      <h2 id="cpr-h">If someone goes under</h2>
+      <p>Drowning is a lack of oxygen, not a heart problem first. That changes the order: breaths come before compressions.</p>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-8 mt-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p>Deans Blue Hole Safety and History a site created by Deal's Aid</p>
+    <div class="stage st1">
+      <div class="ph wipe"><img src="img/cave-pool.jpg" width="1200" height="1600" alt="A clear blue pool inside a limestone cave near the blue hole" loading="lazy"></div>
+      <div class="tx rv">
+        <p><strong>First, get them out safely.</strong> Do not enter the water if it puts you in danger. Bring the person to a firm, safe surface.</p>
+        <p><strong>Check for a response.</strong> Tap and shout "Are you OK?"</p>
+        <p><strong>Call 911</strong>, or point at someone and tell them to call. Early help matters more than anything.</p>
+      </div>
+    </div>
+
+    <div class="stage st2">
+      <div class="ph wipe"><img src="img/freediver.jpg" width="1600" height="900" alt="A freediver seen from below, descending through blue water" loading="lazy" style="object-position:30% 50%"></div>
+      <div class="tx rv">
+        <p><strong>Then check breathing</strong> for no more than 10 seconds. Open the airway; look, listen and feel. Gasping is not normal breathing.</p>
+        <p><strong>Give 2 rescue breaths first.</strong> Watch for the chest to rise. This is the step most people skip.</p>
+      </div>
+    </div>
+
+    <div class="stage st3">
+      <div class="ph wipe"><img src="img/rim-shoreline.jpg" width="1200" height="1600" alt="The rim of Dean's Blue Hole from the cliff, with the lagoon and shoreline beyond" loading="lazy" style="object-position:50% 55%"></div>
+      <div class="tx rv">
+        <p><strong>Then start compressions.</strong> Push hard and fast in the centre of the chest, 2 inches (5 cm) deep, 100 to 120 a minute. 30 compressions, 2 breaths, repeat.</p>
+        <div class="pacer" id="pacer" role="group" aria-label="Compression pacer">
+          <div class="pacer-count" id="pacerCount" aria-hidden="true">30</div>
+          <div>
+            <p class="pacer-state" id="pacerState" aria-live="polite">Practise the rhythm: 110 a minute.<small>Press start, then push on each beat.</small></p>
+            <p class="pacer-cycle" id="pacerCycle">30 compressions, then 2 breaths</p>
+            <button class="btn" type="button" id="pacerBtn" aria-pressed="false">Start the pacer</button>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </div>
 
-    <!-- JavaScript for Tab Functionality & Gallery Modal -->
-    <script>
-        function switchTab(tabId) {
-            // 1. Hide all tab contents
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => {
-                content.classList.add('hidden');
-            });
+  <div class="cpr-wrap">
+    <div class="cpr-facts">
+      <div class="grid">
+        <div class="rv"><h3>How long</h3><p>If you are alone and trained, give CPR for 2 minutes before leaving to get help. Keep going until they breathe, a professional takes over, or you are exhausted.</p></div>
+        <div class="rv" style="--i:1"><h3>Use an AED</h3><p>As soon as one arrives, switch it on and follow its voice prompts.</p></div>
+        <div class="rv" style="--i:2"><h3>If they vomit</h3><p>It is common after drowning. Turn them on their side, clear the mouth, and go straight back to CPR.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            // 2. Show the selected tab content
-            const selectedContent = document.getElementById(tabId);
-            if (selectedContent) {
-                selectedContent.classList.remove('hidden');
-                // Scroll to top of tab content for better UX on mobile
-                if (window.innerWidth < 768) {
-                   selectedContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
+<!-- ============ Open water: stepping statements ============ -->
+<section class="ocean" id="ocean" aria-labelledby="ocean-h">
+  <div class="ocean-stage">
+    <img src="img/shark-far.jpg" width="2000" height="1125" alt="" loading="lazy">
+    <div class="ocean-scrim"></div>
+    <div class="ocean-pics" aria-hidden="true">
+      <img class="pl" src="img/beach.jpg" alt="" loading="lazy">
+      <img class="pr" src="img/snapper.jpg" alt="" loading="lazy">
+    </div>
+    <div class="ocean-inner">
+      <div class="ocean-list">
+        <h2 id="ocean-h">Ten rules for open water</h2>
+        <ol id="oceanList">
+          <li data-d="Check surf, tides, currents and visibility. Stay out when a storm is coming." data-l="img/beach.jpg" data-r="img/snapper.jpg">Know the conditions</li>
+          <li data-d="Most drownings happen on beaches with no lifeguard." data-l="img/rim-boats.jpg" data-r="img/wreck-bow.jpg">Swim near a lifeguard</li>
+          <li data-d="Look for choppy channels or foam moving out to sea. If one takes you, swim parallel to the shore." data-l="img/lagoon-wide.jpg" data-r="img/dive-4.jpg">Understand rip currents</li>
+          <li data-d="Always use the buddy system." data-l="img/robert.jpg" data-r="img/freediver.jpg">Never swim alone</li>
+          <li data-d="Do not swim out farther than you can comfortably swim back." data-l="img/rim-portrait.jpg" data-r="img/shark.jpg">Know your limits</li>
+          <li data-d="Go in slowly to avoid cold shock, and feel for drop-offs." data-l="img/beach.jpg" data-r="img/dive-2.jpg">Enter slowly</li>
+          <li data-d="Shuffle your feet for stingrays. Do not touch coral." data-l="img/cave-pool.jpg" data-r="img/turtle.jpg">Mind the marine life</li>
+          <li data-d="Alcohol slows your judgement and your reactions." data-l="img/rim-boats-2.jpg" data-r="img/wreck-deck.jpg">Skip the alcohol</li>
+          <li data-d="Fins, a wetsuit, and bright colours so others can see you." data-l="img/rim-shoreline.jpg" data-r="img/dive-1.jpg">Wear the right gear</li>
+          <li data-d="Drink water and wear sunscreen." data-l="img/beach.jpg" data-r="img/dive-3.jpg">Protect against the sun</li>
+        </ol>
+        <p class="ocean-detail" id="oceanDetail" aria-live="polite">Check surf, tides, currents and visibility. Stay out when a storm is coming.</p>
+      </div>
+    </div>
+  </div>
+  <div class="ocean-marks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+</section>
 
-            // 3. Update tab button styles (Desktop)
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
-                    btn.classList.add('active');
-                }
-            });
+<!-- ============ Disciplines ============ -->
+<section class="disc" id="diving" aria-labelledby="disc-h">
+  <div class="grid">
+    <div class="disc-photo wipe"><img src="img/wreck-bow.jpg" width="2000" height="1125" alt="A shipwreck resting on the sand in clear turquoise water" loading="lazy" style="object-position:38% 50%"></div>
+    <div class="disc-body">
+      <h2 id="disc-h" class="rv">Freedive, snorkel, scuba</h2>
+      <p class="rv" style="--i:1">Each way of going under has its own checklist. Run through yours before every entry.</p>
 
-            // 4. Close mobile menu if open
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (!mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-            }
-        }
+      <div class="disc-item rv">
+        <h3>Freediving</h3>
+        <div class="disc-cols">
+          <div><h4>Before</h4><ul><li>Never freedive alone.</li><li>Rest and breathe normally. Do not hyperventilate.</li><li>Check conditions.</li><li>Warm up gently.</li></ul></div>
+          <div><h4>During</h4><ul><li>Equalise early and often.</li><li>Move slowly to save energy.</li><li>Know your limit and turn early.</li><li>Never ascend too fast.</li></ul></div>
+          <div><h4>At the surface</h4><ul><li>Take recovery breaths.</li><li>Signal "OK" to your buddy.</li></ul></div>
+        </div>
+      </div>
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
+      <div class="disc-item rv">
+        <h3>Snorkeling</h3>
+        <div class="disc-cols">
+          <div><h4>Where</h4><ul><li>Stay in sight of the shore or boat.</li><li>Choose calm water.</li><li>Wear bright colours.</li></ul></div>
+          <div><h4>How</h4><ul><li>Breathe slowly and relax.</li><li>Use fins that fit.</li><li>Do not kick sand or coral.</li></ul></div>
+          <div><h4>Stay aware</h4><ul><li>Look up for boats often.</li><li>Do not touch marine life.</li><li>If tired, float on your back.</li></ul></div>
+        </div>
+      </div>
 
-        // Gallery Lightbox Functions
-        function openModal(imgSrc) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImg');
-            const modalVideo = document.getElementById('modalVideo');
-            modalVideo.pause();
-            modalVideo.classList.add('hidden');
-            modalImg.classList.remove('hidden');
-            modalImg.src = imgSrc;
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        }
+      <div class="disc-item rv">
+        <h3>Recreational scuba</h3>
+        <div class="disc-cols">
+          <div><h4>Before</h4><ul><li>Check your gear carefully.</li><li>Review hand signals with your buddy.</li><li>Plan depth, time and route.</li></ul></div>
+          <div><h4>During</h4><ul><li>Equalise often.</li><li>Hold your buoyancy.</li><li>Watch your air and your buddy.</li><li>Move calmly to save air.</li></ul></div>
+          <div><h4>After</h4><ul><li>Drink water.</li><li>Follow the no-fly rules.</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function openVideo(videoSrc) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImg');
-            const modalVideo = document.getElementById('modalVideo');
-            modalImg.classList.add('hidden');
-            modalVideo.classList.remove('hidden');
-            modalVideo.src = videoSrc;
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            const p = modalVideo.play();
-            if (p && p.catch) p.catch(() => {});
-        }
+<!-- ============ 202 metres ============ -->
+<section class="depth" aria-labelledby="depth-h">
+  <div class="depth-fig">
+    <img src="img/rim-boats.jpg" width="1200" height="1600" alt="The blue hole from the clifftop, deep navy water inside a ring of shallow turquoise" loading="lazy">
+    <div class="scrim-top"></div>
+    <div class="scrim"></div>
+    <h2 id="depth-h">How deep it goes</h2>
+    <p class="depth-num" aria-label="202 metres"><span id="depthNum">202</span><small>M</small></p>
+    <p class="why">663 feet straight down: the second-deepest known blue hole in the world.</p>
+  </div>
+  <div class="depth-more grid">
+    <div class="rv"><b>30 m</b><span>across the entrance at the surface</span></div>
+    <div class="rv" style="--i:1"><b>100 m</b><span>wide in the cavern below it</span></div>
+  </div>
+</section>
 
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            const modalVideo = document.getElementById('modalVideo');
-            modalVideo.pause();
-            modalVideo.removeAttribute('src');
-            modalVideo.load();
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Restore background scrolling
-        }
+<!-- ============ History ============ -->
+<section class="history" id="history" aria-labelledby="hist-h">
+  <div class="grid">
+    <div class="history-head">
+      <h2 id="hist-h" class="rv">An Ice Age sinkhole</h2>
+    </div>
+    <p class="lead rv" style="--i:1">Blue holes formed when caverns in the limestone collapsed and were flooded as sea levels rose after the last Ice Age. Their dark navy colour, visible even from the air, comes from that depth.</p>
+  </div>
 
-        function jumpTo(id) {
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+  <div class="grid mosaic">
+    <div class="mosaic-photo wipe">
+      <img src="img/rim-portrait.jpg" width="1200" height="1600" alt="Dean's Blue Hole ringed by its rock amphitheatre, with the lagoon opening to the sea" loading="lazy" style="object-position:50% 60%">
+      <p class="paper">Its entrance, a modest 30 metres across, opens into a cavern nearly 100 metres wide, closed on three sides by a natural rock amphitheatre and on the fourth by a turquoise lagoon.</p>
+    </div>
+    <div class="mosaic-side rv" style="--i:1">
+      <div class="tile">
+        <svg viewBox="0 0 300 220" role="img" aria-label="Outline of Long Island, Bahamas, with Dean's Blue Hole marked near Clarence Town">
+          <path fill="#ffffff" d="M38 14 l10 -4 8 8 6 14 10 12 4 10 12 10 14 8 6 12 14 12 10 6 6 12 16 14 10 10 4 10 14 10 8 12 12 8 14 14 6 10 -4 4 -14 -4 -12 -10 -10 -8 -12 -6 -6 -10 -14 -12 -10 -10 -6 -12 -14 -10 -10 -12 -8 -8 -10 -12 -12 -8 -8 -12 -10 -10 -6 -12 -10 -14 -6 -16 z"/>
+          <circle cx="216" cy="160" r="7" fill="#f7941d"/>
+          <text x="196" y="208" text-anchor="end" fill="#ffffff" font-family="EB Garamond, Georgia, serif" font-size="16">Dean's Blue Hole</text>
+        </svg>
+        <span class="cap">Long Island, Bahamas</span>
+      </div>
+      <dl class="facts">
+        <div><dt>Depth</dt><dd>202 m · 663 ft</dd></div>
+        <div><dt>Entrance</dt><dd>30 m across</dd></div>
+        <div><dt>Island</dt><dd>Long Island, Bahamas</dd></div>
+        <div><dt>Known for</dt><dd>Vertical Blue freediving</dd></div>
+      </dl>
+    </div>
+  </div>
 
-        // Scholarship essay word counters (max 250 words)
-        const MAX_WORDS = 250;
-        function countWords(t) { const m = t.trim().match(/\S+/g); return m ? m.length : 0; }
-        document.querySelectorAll('textarea[data-wordlimit]').forEach(ta => {
-            const counter = document.getElementById(ta.id + 'Count');
-            const update = () => {
-                const n = countWords(ta.value);
-                counter.textContent = n + ' / ' + MAX_WORDS + ' words';
-                const over = n > MAX_WORDS;
-                counter.classList.toggle('text-red-600', over);
-                counter.classList.toggle('text-slate-500', !over);
-                ta.setCustomValidity(over ? 'Please keep your answer to ' + MAX_WORDS + ' words or fewer.' : '');
-            };
-            ta.addEventListener('input', update);
-            update();
-        });
+  <div class="grid history-text">
+    <div class="rv">
+      <h3>Freediving and records</h3>
+      <p>The hole is the yearly home of Vertical Blue, one of the most respected competitions in freediving. Athletes come from around the world to reach extraordinary depths on a single breath. William Trubridge swam to 92 metres here without fins in 2010. The sport has its cost too: Nicholas Mevoli died after a dive here in 2013.</p>
+    </div>
+    <div class="rv" style="--i:1">
+      <h3>Today</h3>
+      <p>Dean's Blue Hole is still a place of wonder: natural beauty, geological mystery and human ambition in one circle of water. It invites people to be bold and curious, and to respect the techniques and safety practices that deep water demands.</p>
+    </div>
+    <blockquote class="rv" style="--i:2">Among the many blue holes found around the world, few compare with the beauty and significance of this one.</blockquote>
+  </div>
+</section>
 
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+<!-- ============ Gallery ============ -->
+<section class="gallery" id="gallery" aria-labelledby="gal-h">
+  <div class="grid">
+    <h2 id="gal-h" class="rv">Gallery</h2>
+    <p class="intro rv" style="--i:1">At the rim and below the surface around Long Island. Select a photograph to see it larger, or a clip to play it.</p>
+  </div>
 
-        // Initialize first tab on page load
-        switchTab('safety');
-    </script>
-    <script src="ocean.js?v=2"></script>
+  <div class="grid gpair">
+    <figure class="g a1"><button type="button" data-full="img/rim-boats-2.jpg" aria-label="Enlarge: the blue hole from the cliff"><div class="fr wipe"><img src="img/rim-boats-2.jpg" width="1200" height="1600" alt="The blue hole from the cliff, with the platform and boats at its edge" loading="lazy"></div></button><figcaption>The platform at the rim</figcaption></figure>
+    <figure class="g a2"><button type="button" data-video="dive-3.mp4" aria-label="Play clip: a sea turtle resting on the reef"><div class="fr wipe"><video src="dive-3.mp4" poster="img/dive-3.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video><span class="play">Play clip</span></div></button><figcaption>A sea turtle resting on the reef</figcaption></figure>
+  </div>
+
+  <div class="grid gpair">
+    <figure class="g b1"><button type="button" data-full="img/wreck-deck.jpg" aria-label="Enlarge: wreck deck"><div class="fr wipe"><img src="img/wreck-deck.jpg" width="2000" height="1125" alt="The deck of a sunken boat covered in coral" loading="lazy"></div></button><figcaption>A wreck's deck, grown over</figcaption></figure>
+    <figure class="g b2"><button type="button" data-full="img/cave-pool.jpg" aria-label="Enlarge: cave pool"><div class="fr wipe"><img src="img/cave-pool.jpg" width="1200" height="1600" alt="Crystal-clear blue pool inside a limestone cave" loading="lazy"></div></button><figcaption>A pool inside the limestone</figcaption></figure>
+  </div>
+
+  <div class="grid gpair mir">
+    <figure class="g a1"><button type="button" data-full="img/beach.jpg" aria-label="Enlarge: the beach"><div class="fr wipe"><img src="img/beach.jpg" width="1200" height="1600" alt="Clear water over white sand on the beach beside the hole" loading="lazy"></div></button><figcaption>The beach beside the hole</figcaption></figure>
+    <figure class="g a2"><button type="button" data-full="img/shark.jpg" aria-label="Enlarge: shark"><div class="fr wipe"><img src="img/shark.jpg" width="1600" height="900" alt="A shark swimming in open blue water" loading="lazy"></div></button><figcaption>A shark in open water</figcaption></figure>
+  </div>
+
+  <div class="grid gpair mir">
+    <figure class="g b1"><button type="button" data-video="dive-1.mp4" aria-label="Play clip: shipwreck on the seafloor"><div class="fr wipe"><img src="img/dive-1.jpg" width="1280" height="720" alt="A shipwreck resting on the sandy seafloor" loading="lazy"><span class="play">Play clip</span></div></button><figcaption>Shipwreck on the sand</figcaption></figure>
+    <figure class="g b2"><button type="button" data-full="img/snapper.jpg" aria-label="Enlarge: yellowtail snappers"><div class="fr wipe"><img src="img/snapper.jpg" width="1600" height="900" alt="Yellowtail snappers along the reef wall" loading="lazy" style="object-position:40% 50%"></div></button><figcaption>Yellowtail snappers on the wall</figcaption></figure>
+  </div>
+
+  <div class="grid gpair">
+    <figure class="g a1"><button type="button" data-video="dive-2.mp4" aria-label="Play clip: sea turtle gliding along the reef wall"><div class="fr wipe"><img src="img/dive-2.jpg" width="1280" height="720" alt="A sea turtle gliding along the reef wall" loading="lazy"><span class="play">Play clip</span></div></button><figcaption>A turtle along the wall</figcaption></figure>
+    <figure class="g a2"><button type="button" data-full="img/turtle.jpg" aria-label="Enlarge: turtle among sea fans"><div class="fr wipe"><img src="img/turtle.jpg" width="2000" height="1125" alt="A green turtle among sea fans on the sandy bottom" loading="lazy"></div></button><figcaption>Among the sea fans</figcaption></figure>
+  </div>
+
+  <div class="grid gpair">
+    <figure class="g b1"><button type="button" data-full="img/freediver.jpg" aria-label="Enlarge: freediver"><div class="fr wipe"><img src="img/freediver.jpg" width="1600" height="900" alt="Freediver silhouette descending with a fish below" loading="lazy"></div></button><figcaption>A freediver heading down</figcaption></figure>
+    <figure class="g b2"><button type="button" data-video="dive-4.mp4" aria-label="Play clip: open turquoise water"><div class="fr wipe"><img src="img/dive-4.jpg" width="1280" height="720" alt="Open turquoise water" loading="lazy" style="object-position:60% 50%"><span class="play">Play clip</span></div></button><figcaption>Open water</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============ Our work ============ -->
+<section class="work" id="work" aria-labelledby="work-h">
+  <div class="work-head">
+    <h2 id="work-h" class="rv">Our work and news</h2>
+    <p class="rv" style="--i:1">From laptop giveaways to a community library to safety upgrades at the hole: follow what Deal's Aid has been doing.</p>
+  </div>
+  <ol class="work-list">
+    <li class="rv"><a href="https://www.instagram.com/p/DdMiDDMJo4m/?psln=MWhwMXowaGdwcjJhag==" target="_blank" rel="noopener"><span class="nm">A sign and rescue gear at the hole</span><span class="meta"><span>We put up a safety sign and rescue equipment at Dean's Blue Hole for divers and swimmers.</span><span>Instagram ↗</span></span></a></li>
+    <li class="rv"><a href="https://www.facebook.com/share/1CHnicMtYP/?mibextid=wwXIfr" target="_blank" rel="noopener"><span class="nm">Covered by Long Island news</span><span class="meta"><span>A Long Island news outlet in The Bahamas reported on our safety work at the hole.</span><span>Facebook ↗</span></span></a></li>
+    <li class="rv"><a href="https://www.instagram.com/p/DM02KcRyvPr/?vrfl=NG4xdjdobDZqa2tz" target="_blank" rel="noopener"><span class="nm">Our first laptop giveaway</span><span class="meta"><span>Putting technology in the hands of students.</span><span>Instagram ↗</span></span></a></li>
+    <li class="rv"><a href="https://www.instagram.com/reel/DL2NkXkgjxB/?obrf=aTh5b3RrZXBqbjNu" target="_blank" rel="noopener"><span class="nm">The Side Quest Crew spreads the word</span><span class="meta"><span>The Side Quest Crew helped promote the first giveaway.</span><span>Reel ↗</span></span></a></li>
+    <li class="rv"><a href="https://www.instagram.com/p/DK0jcuNpm3G/?img_index=6&amp;dlrf=MTIxMWh4NG83M2xiaQ==" target="_blank" rel="noopener"><span class="nm">A library for kids</span><span class="meta"><span>Books and computers for children in the community, off Market Street.</span><span>Instagram ↗</span></span></a></li>
+  </ol>
+  <p class="more">More updates soon. Follow Deal's Aid on social media to keep up.</p>
+</section>
+
+<!-- ============ About ============ -->
+<section class="about" id="about" aria-labelledby="about-h">
+  <h2 id="about-h" class="rv">About Deal's Aid</h2>
+  <p class="lead rv" style="--i:1">A youth-led non-profit, registered with the Government of The Bahamas in 2024, working to feed, educate and empower our community.</p>
+
+  <div class="grid team">
+    <div class="person rv">
+      <div class="fr wipe"><img src="img/robert.jpg" width="1200" height="1600" alt="Robert Deal III on a boat on the water" loading="lazy" style="object-position:50% 30%"></div>
+      <h3>Robert Deal III</h3>
+      <p class="role">President</p>
+      <p>Studies Economics and Mathematics at Purdue University.</p>
+    </div>
+    <div class="person rv" style="--i:1">
+      <div class="fr wipe"><img src="img/rickia.jpg" width="1125" height="1393" alt="Rickia Johnson" loading="lazy" style="object-position:50% 25%"></div>
+      <h3>Rickia Johnson</h3>
+      <p class="role">Secretary</p>
+      <p>Studies Law at the University of The Bahamas.</p>
+    </div>
+    <div class="about-tile rv" style="--i:2">
+      <div>
+        <p class="big">2024</p>
+        <p>The year Deal's Aid was officially registered in The Bahamas.</p>
+      </div>
+      <dl>
+        <div><dt>Led by</dt><dd>Students</dd></div>
+        <div><dt>Mission</dt><dd>Food and education</dd></div>
+        <div><dt>Started at</dt><dd>Retirement Park</dd></div>
+        <div><dt>Free courses</dt><dd><a href="https://dealsaid.org" target="_blank" rel="noopener">dealsaid.org</a></dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="grid done">
+    <h3 class="done-title rv">What we've done</h3>
+    <ul>
+      <li class="rv"><h4>Dean's Blue Hole safety</h4><p>We raised money to put up a sign and safety equipment at the hole, making it safer for divers and swimmers.</p></li>
+      <li class="rv" style="--i:1"><h4>Where it started</h4><p>Handing out food at Retirement Park, getting meals straight to neighbours who needed them.</p></li>
+      <li class="rv"><h4>Community library</h4><p>A library for kids off Market Street, with books and computers.</p></li>
+      <li class="rv" style="--i:1"><h4>Hands for Hunger guide</h4><p>With Hands for Hunger, an independent charity, we launched a guide with cheap recipes and ways to stay cool in the summer heat.</p></li>
+      <li class="rv"><h4>Laptop giveaway</h4><p>Putting technology in the hands of students.</p></li>
+      <li class="rv" style="--i:1"><h4>dealsaid.org</h4><p>Free courses for anyone, from raising chickens to investing and maths. <a href="https://dealsaid.org" target="_blank" rel="noopener">Visit the site ↗</a></p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ Scholarship ============ -->
+<section class="apply" id="apply" aria-labelledby="apply-h">
+  <div class="apply-photo"><img src="img/lagoon-wide.jpg" width="1200" height="1600" alt="" loading="lazy"></div>
+  <div class="apply-inner">
+    <div class="card rv">
+      <h2 id="apply-h">Scholarship application</h2>
+      <p>Two short essays and a parent or guardian's contact. Every field is required.</p>
+
+      <form action="https://formspree.io/f/mwllojgb" method="POST">
+        <input type="hidden" name="_subject" value="New Scholarship Application Submission">
+        <div class="two">
+          <div class="field"><label for="fullName">Full name</label><input type="text" id="fullName" name="Applicant Name" required autocomplete="name"></div>
+          <div class="field"><label for="age">Age</label><input type="number" id="age" name="Applicant Age" required min="1" max="100" inputmode="numeric"></div>
+        </div>
+
+        <div class="field">
+          <label for="seaAnimal">If you could be any sea animal, which one would you be, and why?</label>
+          <textarea id="seaAnimal" name="Sea Animal Essay" required rows="8" data-wordlimit="250" aria-describedby="seaAnimalHint seaAnimalCount"></textarea>
+          <p class="hint" id="seaAnimalHint">250 words or fewer, in your own words. We check for AI-written answers.</p>
+          <p class="count" id="seaAnimalCount">0 / 250 words</p>
+        </div>
+
+        <div class="field">
+          <label for="primeMinister">What would your Bahamas look like if you were Prime Minister?</label>
+          <textarea id="primeMinister" name="Prime Minister Essay" required rows="8" data-wordlimit="250" aria-describedby="primeMinisterHint primeMinisterCount"></textarea>
+          <p class="hint" id="primeMinisterHint">250 words or fewer, in your own words. We check for AI-written answers.</p>
+          <p class="count" id="primeMinisterCount">0 / 250 words</p>
+        </div>
+
+        <div class="field">
+          <span class="lbl">Proof of school age</span>
+          <p class="hint">Upload a passport, NIB card or a photo in school uniform through our secure form.</p>
+          <a class="proof" href="https://docs.google.com/forms/d/e/1FAIpQLSfKFqP0ydety-epEUsa8rg2jM3DmjuGqctFqbkDDCn4CmWazg/viewform?usp=publish-editor" target="_blank" rel="noopener">Open the proof-of-age upload form ↗</a>
+        </div>
+
+        <div class="guardian">
+          <p><strong>Parent or guardian details.</strong> These must belong to a parent or guardian. We use them to confirm your application and to tell you if you win.</p>
+          <div class="two">
+            <div class="field"><label for="parentEmail">Email</label><input type="email" id="parentEmail" name="_replyto" required autocomplete="email"></div>
+            <div class="field"><label for="parentPhone">Phone number</label><input type="tel" id="parentPhone" name="Parent Contact Number" required autocomplete="tel" placeholder="(242) 555-0199"></div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">Submit application <span class="arr" aria-hidden="true">→</span></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ Footer: the back of the card ============ -->
+<footer class="foot">
+  <div class="post">
+    <div class="post-in">
+      <div>
+        <p class="sign">Swim it safely</p>
+        <p class="msg">Dean's Blue Hole Safety and History is a site made by Deal's Aid, a youth-led non-profit in The Bahamas. See you at the rim.</p>
+      </div>
+      <div class="post-right">
+        <div class="stamp"><img src="img/hole-aerial.jpg" alt="" loading="lazy" style="object-position:40% 60%"></div>
+        <ul>
+          <li><a href="https://dealsaid.org" target="_blank" rel="noopener">dealsaid.org</a></li>
+          <li><a href="https://www.instagram.com/p/DdMiDDMJo4m/" target="_blank" rel="noopener">Deal's Aid on Instagram</a></li>
+          <li><a href="https://www.facebook.com/share/1CHnicMtYP/?mibextid=wwXIfr" target="_blank" rel="noopener">Long Island news on Facebook</a></li>
+          <li><a href="#apply">Apply for the scholarship</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="imprint">© <span id="yr">2026</span> Deal's Aid · Long Island, Bahamas · In an emergency, call 911</p>
+  </div>
+  <p class="foot-name" id="footName" aria-hidden="true">Dean's Blue Hole</p>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Enlarged view">
+  <button class="lb-close" type="button" id="lbClose">Close</button>
+  <img id="lbImg" alt="" hidden>
+  <video id="lbVid" controls playsinline hidden></video>
+</div>
+
+<script src="site.js?v=3"></script>
 </body>
 </html>

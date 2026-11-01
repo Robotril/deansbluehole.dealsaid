@@ -195,16 +195,23 @@
     var s = (fr ? 2 : 1.15) * (grp ? 1.25 : 1), n = grp ? (fr ? 3 : 2) : (fr ? 9 : 8), m = [];
     for (var k = 0; k < n; k++) m.push({ dx: -k * (grp ? 60 : 26) * s * dir + Math.random() * 18, dy: (Math.random() - .5) * (grp ? 40 : 90) * s, p: Math.random() * 6 });
     things.push({ layer: layer, kind: 'school', fn: grp ? grouper : snapper, x: dir > 0 ? -160 : W + 160,
-      y: H * (.15 + Math.random() * .65), dir: dir, v: (fr ? 2.6 : 1.2) * (grp ? .7 : 1), s: s, a: fr ? .97 : .6, m: m });
+      y: H * (.15 + Math.random() * .65), dir: dir, v: (fr ? 6.5 : 2.4) * (grp ? .7 : 1), s: s, a: fr ? .97 : .6, m: m });
   }
   function bigShark(layer) {
     var fr = layer === 'front', dir = Math.random() < .5 ? 1 : -1;
     things.push({ layer: layer, kind: 'shark', x: dir > 0 ? -400 : W + 400, y: H * (.25 + Math.random() * .5),
-      dir: dir, v: fr ? 2 : .7, s: fr ? 3.4 : 1.9, a: fr ? .93 : .3, m: [], ph: 0 });
+      dir: dir, v: fr ? 5 : 1.4, s: fr ? 3.4 : 1.9, a: fr ? .93 : .3, m: [], ph: 0 });
   }
+  // Tab switches send fish across. Capped so fast tab switching never clogs the screen:
+  // at most 2 groups in front, 3 behind, and a short gap between new groups.
+  var MAX_FRONT = 2, MAX_BACK = 3, COOLDOWN = 600, lastSwim = -1e9;
+  function count(layer) { return things.filter(function (t) { return t.layer === layer; }).length; }
   window.oceanSwim = function () {
-    if (Math.random() < .6) school('front'); else bigShark('front');
-    if (Math.random() < .35) school('back');
+    var now = performance.now();
+    if (now - lastSwim < COOLDOWN) return;
+    lastSwim = now;
+    if (count('front') < MAX_FRONT) { if (Math.random() < .6) school('front'); else bigShark('front'); }
+    if (count('back') < MAX_BACK && Math.random() < .35) school('back');
   };
   setTimeout(function () { school('back'); }, 700);
   setTimeout(function () { school('back'); }, 4200);

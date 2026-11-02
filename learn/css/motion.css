@@ -1,0 +1,90 @@
+/* MGT motion layer: kinetic headline, tilting cards, scroll reveals, and the robot. Loaded after site.css. */
+:root { --robo-frame: #5BA9CC; --robo-frame-dark: #3F86A8; --robo-face: #F6A93B; --robo-body: #EE7A3C; --robo-ink: #1B2433; --robo-antenna: #6B4A3A; }
+
+/* ---------- kinetic headline: letters grow up out of the map ---------- */
+.hero-h .kw { display: inline-block; white-space: nowrap; }
+.hero-h .kg { display: inline-block; transform-origin: 50% 100%; animation: grow .95s cubic-bezier(.16,1,.3,1) both; animation-delay: calc(var(--i) * 38ms + 160ms); }
+@keyframes grow { 0% { opacity: 0; transform: translateY(.35em) scaleY(.2) skewX(-8deg); filter: blur(6px); } 55% { filter: blur(0); } 100% { opacity: 1; transform: none; } }
+.hero-h .kw.hl .kg { animation-name: growHl; }
+@keyframes growHl { 0% { opacity: 0; transform: translateY(.45em) scaleY(.1) rotate(-6deg); filter: blur(8px); } 60% { transform: translateY(-.06em) scaleY(1.06); filter: blur(0); } 100% { opacity: 1; transform: none; } }
+
+/* ---------- cards tilt toward the pointer, light follows ---------- */
+.tilt { transform-style: preserve-3d; will-change: transform; }
+.ccard.tilt:hover, .cat-tile.tilt:hover, .lang-card.tilt:hover, .aud-card.tilt:hover {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px);
+  transition: transform .12s linear, box-shadow .35s, border-color .35s;
+}
+.tilt::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .35s;
+  background: radial-gradient(220px circle at var(--sx, 50%) var(--sy, 30%), rgba(255,255,255,.28), transparent 65%); mix-blend-mode: soft-light; z-index: 3; }
+.tilt:hover::after { opacity: 1; }
+.cat-tile, .aud-card, .lang-card { position: relative; }
+
+/* ---------- reveal on scroll (only for things below the fold) ---------- */
+.rv { opacity: .001; transform: translateY(28px); }
+.rv.rv-in { opacity: 1; transform: none; transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); transition-delay: var(--rd, 0ms); }
+
+/* ---------- the robot ---------- */
+.robo { position: relative; width: 100%; aspect-ratio: 120 / 156; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.robo svg { width: 100%; height: 100%; overflow: visible; display: block; filter: drop-shadow(0 18px 22px rgba(0,0,0,.35)); }
+.robo .r-all { transform-box: view-box; transform-origin: 60px 150px; animation: bob 4.2s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-6px) rotate(1.2deg); } }
+.robo .r-bulb { animation: bulb 2.4s ease-in-out infinite; }
+.robo .r-bulb + .r-bulb { animation-delay: 1.2s; }
+@keyframes bulb { 0%, 100% { fill: #F2B705; } 50% { fill: #FFF3B0; } }
+.robo .r-lid { transform-box: fill-box; transform-origin: 50% 0; transform: scaleY(0); }
+.robo.blink .r-lid { animation: blink .18s ease-in-out; }
+@keyframes blink { 50% { transform: scaleY(1); } }
+.robo .r-arm-r { transform-box: view-box; transform-origin: 92px 114px; transition: transform .4s cubic-bezier(.16,1,.3,1); }
+.robo.wave .r-arm-r { animation: wave 1.3s ease-in-out; }
+@keyframes wave { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-150deg); } 35% { transform: rotate(-120deg); } 50% { transform: rotate(-155deg); } 65% { transform: rotate(-120deg); } 80% { transform: rotate(-150deg); } }
+.robo .r-arm-l { transform-box: view-box; transform-origin: 28px 114px; }
+.robo.cheer .r-arm-l { animation: cheerL .9s ease-in-out; }
+.robo.cheer .r-arm-r { animation: cheerR .9s ease-in-out; }
+@keyframes cheerL { 30%, 70% { transform: rotate(140deg); } }
+@keyframes cheerR { 30%, 70% { transform: rotate(-140deg); } }
+.robo.hop .r-jump { animation: hop .7s cubic-bezier(.3,1.6,.5,1); }
+.robo .r-jump { transform-box: view-box; transform-origin: 60px 150px; }
+@keyframes hop { 0% { transform: scale(1.05, .9); } 35% { transform: translateY(-26px) scale(.95, 1.06); } 70% { transform: translateY(0) scale(1.06, .92); } 100% { transform: none; } }
+.robo.spin .r-jump { animation: spin 1s cubic-bezier(.4,1.5,.5,1); }
+@keyframes spin { 0% { transform: none; } 40% { transform: translateY(-30px) rotate(200deg); } 100% { transform: rotate(360deg); } }
+.robo.sad .r-head { animation: sad 1.2s ease-in-out; transform-box: view-box; transform-origin: 60px 100px; }
+@keyframes sad { 25% { transform: rotate(-9deg) translateY(3px); } 50% { transform: rotate(7deg) translateY(3px); } 75% { transform: rotate(-4deg) translateY(2px); } }
+.robo .r-smile, .robo .r-o { transition: opacity .2s; }
+.robo .r-o { opacity: 0; }
+.robo.sad .r-smile { opacity: 0; } .robo.sad .r-o { opacity: 1; }
+.robo .r-face-glow { opacity: 0; }
+.robo.boot .r-face-glow { animation: boot 1.1s steps(6) both; }
+@keyframes boot { 0% { opacity: 1; } 30% { opacity: .2; } 45% { opacity: .9; } 70% { opacity: .1; } 100% { opacity: 0; } }
+
+.robo-say { position: absolute; z-index: 5; min-width: 180px; max-width: 250px; padding: 12px 14px; border-radius: 16px; background: var(--surface); color: var(--text);
+  font: 700 .92rem/1.35 var(--font-body); box-shadow: 0 16px 34px -12px rgba(0,0,0,.55); border: 2px solid var(--gold);
+  opacity: 0; transform: translateY(8px) scale(.92); transform-origin: 85% 100%; pointer-events: none; transition: opacity .25s, transform .35s cubic-bezier(.3,1.6,.5,1); }
+.robo-say.on { opacity: 1; transform: none; pointer-events: auto; }
+.robo-say a { color: var(--accent); }
+.robo-say::after { content: ""; position: absolute; right: 30px; bottom: -9px; width: 16px; height: 16px; background: inherit; border-right: 2px solid var(--gold); border-bottom: 2px solid var(--gold); transform: rotate(45deg); }
+
+/* in the home hero */
+.robo-slot { position: absolute; right: clamp(16px, 7vw, 120px); bottom: clamp(70px, 12%, 140px); width: clamp(150px, 15vw, 210px); z-index: 2; }
+.robo-slot .robo { animation: dropIn 1.2s cubic-bezier(.3,1.4,.5,1) .9s both; }
+@keyframes dropIn { 0% { opacity: 0; transform: translateY(-120px) rotate(-12deg); } 60% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+.robo-slot .robo-say { right: 40%; bottom: 100%; margin-bottom: 4px; }
+@media (max-width: 760px) {
+  .robo-slot { width: 92px; right: 12px; bottom: 26px; }
+  .robo-slot .robo-say { right: 10%; min-width: 170px; }
+  .hero-hint { display: none; }
+}
+
+/* elsewhere: a buddy peeking up from the corner */
+.robo-buddy { position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: 0; width: 78px; z-index: 60; transform: translateY(58%); transition: transform .6s cubic-bezier(.3,1.4,.5,1); }
+.robo-buddy:hover, .robo-buddy.up, .robo-buddy:focus-within { transform: translateY(6%); }
+.robo-buddy .robo-say { right: 20%; bottom: 100%; margin-bottom: 2px; }
+.robo-buddy.hidden { transform: translateY(110%); }
+.robo-buddy .r-x { position: absolute; top: -6px; left: -10px; width: 26px; height: 26px; border-radius: 50%; border: 0; background: var(--band); color: #fff; font: 700 14px/26px var(--font-body); cursor: pointer; opacity: 0; transition: opacity .2s; }
+.robo-buddy:hover .r-x, .robo-buddy:focus-within .r-x { opacity: 1; }
+@media (max-width: 560px) { .robo-buddy { width: 60px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-h .kg, .robo-slot .robo, .robo .r-all, .robo .r-bulb { animation: none !important; }
+  .rv { opacity: 1; transform: none; }
+  .ccard.tilt:hover, .cat-tile.tilt:hover, .lang-card.tilt:hover, .aud-card.tilt:hover { transform: translateY(-4px); }
+}

@@ -124,6 +124,7 @@ function render(v, h) {
   window.scrollTo(0, 0);
   $$('canvas.topo', main).forEach(drawTopoCard);
   v.mount && v.mount(main);
+  dispatchEvent(new CustomEvent('mgt:route', { detail: { hash: h, area: v.area || 'public' } }));
   bindHeader();
 }
 
@@ -180,6 +181,11 @@ function footer() {
 }
 
 /* ---------- shared bits ---------- */
+// Headline letters that grow up out of the landscape; the last word gets the highlight.
+function kinetic(words, hlFrom) {
+  let i = 0;
+  return words.map((w, wi) => `<span class="kw${wi >= hlFrom ? ' hl' : ''}">${[...w].map(ch => `<span class="kg" aria-hidden="true" style="--i:${i++}">${ch}</span>`).join('')}</span>`).join(' ');
+}
 function ring(p, size = 40) {
   const r = size / 2 - 4, C = 2 * Math.PI * r;
   return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="${Math.round(p * 100)}% complete"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" class="ring-bg"/><circle cx="${size / 2}" cy="${size / 2}" r="${r}" class="ring-fg" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - p)}" style="--c:${C}"/><text x="50%" y="50%" dy=".35em">${Math.round(p * 100)}</text></svg>`;
@@ -253,11 +259,12 @@ function viewHome() {
       <canvas id="hero-topo" aria-hidden="true"></canvas>
       <div class="wrap hero-in">
         <p class="eyebrow rise" style="--d:0">Free learning from the Deal's Aid non-profit</p>
-        <h1 class="hero-h"><span class="rise" style="--d:1">Grow your</span> <span class="rise" style="--d:2">mental</span> <span class="rise hl" style="--d:3">landscape.</span></h1>
+        <h1 class="hero-h" aria-label="Grow your mental landscape.">${kinetic(['Grow', 'your', 'mental', 'landscape.'], 3)}</h1>
         <p class="hero-p rise" style="--d:4">Welcome, fellow learners. Reading, writing and math, cooking and money, film, first aid, languages and more. Courses for kids, teens and adults, and every one of them is free.</p>
         <div class="row rise" style="--d:5"><a class="btn big" href="#signup">Create a free account</a><a class="btn ghost big on-dark" href="#driving">Try Driving Test Review, no sign-up</a></div>
         <dl class="hero-stats rise" style="--d:6"><div><dt>Courses</dt><dd>${COURSES.length}</dd></div><div><dt>Lessons</dt><dd>${TOTAL_LESSONS}</dd></div><div><dt>Games &amp; quizzes</dt><dd>${TOTAL_GAMES + TOTAL_LESSONS}</dd></div><div><dt>Cost</dt><dd>$0</dd></div></dl>
       </div>
+      <div class="robo-slot"></div>
       <p class="hero-hint" aria-hidden="true">Move across the map. The landscape rises to meet you.</p>
     </section>
     <div class="ticker" aria-label="Course list"><div class="ticker-track">${tick}${tick}</div></div>
@@ -629,7 +636,7 @@ function viewLesson(c, n) {
     ${footer()}`,
     mount: el => {
       const btn = $('[data-complete]', el);
-      const mark = () => { if (prog.done(c.id, n)) return; prog.complete(c.id, n); btn.textContent = 'Completed'; btn.disabled = true; btn.classList.add('ghost'); pop(btn); updateTop(); if (prog.count(c) === total) confetti(); };
+      const mark = () => { if (prog.done(c.id, n)) return; prog.complete(c.id, n); dispatchEvent(new CustomEvent('mgt:complete')); btn.textContent = 'Completed'; btn.disabled = true; btn.classList.add('ghost'); pop(btn); updateTop(); if (prog.count(c) === total) confetti(); };
       const updateTop = () => { $('.lesson-progress span', el).style.width = prog.pct(c) * 100 + '%'; $('.lesson-progress .mono', el).textContent = prog.count(c) + '/' + total + ' done'; const a = $('.lesson-nav a.cur', el); a && a.classList.add('done'); };
       btn.onclick = mark;
       const q = $('.quiz', el);
@@ -650,6 +657,7 @@ function mountQuiz(el, qs, onDone) {
       fs.dataset.done = 1; answered++;
       const j = +b.dataset.j, q = qs[i], right = j === q[2];
       if (right) score++;
+      dispatchEvent(new CustomEvent('mgt:answer', { detail: { right } }));
       $$('.opt', fs).forEach((o, k) => { o.disabled = true; if (k === q[2]) o.classList.add('right'); });
       if (!right) b.classList.add('wrong');
       const why = $('.why', fs); why.hidden = false;
@@ -696,6 +704,7 @@ function viewGame(c, n) {
   };
 }
 function finishPanel(el, msg, again) {
+  dispatchEvent(new CustomEvent('mgt:win'));
   const d = document.createElement('div'); d.className = 'g-done'; d.setAttribute('role', 'status');
   d.innerHTML = `<strong>${msg}</strong><button class="btn sm" type="button">Play again</button>`;
   $('button', d).onclick = again; el.appendChild(d); confetti(0.7);

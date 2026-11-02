@@ -191,3 +191,11 @@ body[data-tab="safety"] #portals{display:grid}
 .learn-link{color:var(--turq)!important;font-family:'Figtree',sans-serif;font-weight:700;text-decoration:none}
 .learn-link:hover{color:var(--foam)!important;border-bottom-color:var(--turq)!important}
 #mobile-menu .learn-link:hover{background:rgba(79,224,224,.08)!important}
+
+/* clickable sea life: a fact card where you tapped */
+body.over-fish, body.over-fish *{cursor:pointer!important}
+.fishfact{position:fixed;z-index:70;width:280px;padding:12px 14px;border-radius:14px;pointer-events:none;
+  background:rgba(2,20,38,.94);border:1.5px solid var(--turq);color:var(--foam);font:500 .92rem/1.45 'Figtree',sans-serif;
+  box-shadow:0 0 30px -6px rgba(79,224,224,.55);opacity:0;transform:translateY(10px) scale(.94);transition:opacity .25s,transform .4s cubic-bezier(.3,1.5,.5,1)}
+.fishfact.on{opacity:1;transform:none}
+.fishfact b{display:block;color:var(--turq);font:700 1rem 'Fraunces',Georgia,serif;margin-bottom:2px}

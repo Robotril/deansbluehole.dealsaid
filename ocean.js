@@ -3,7 +3,7 @@
   // Load the stylesheet from here so index.html only needs the one script line.
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'ocean.css';
+  css.href = 'ocean.css?v=4';
   document.head.appendChild(css);
   // Motion layer: its script waits for its stylesheet so the intro never flashes.
   // Hold the hero title back until it can surface (released by ocean-motion.js, or after 2.5 s regardless).
@@ -207,13 +207,13 @@
   function school(layer) {
     var fr = layer === 'front', grp = Math.random() > .62, dir = Math.random() < .5 ? 1 : -1;
     var s = (fr ? 2 : 1.15) * (grp ? 1.25 : 1), n = grp ? (fr ? 3 : 2) : (fr ? 9 : 8), m = [];
-    for (var k = 0; k < n; k++) m.push({ dx: -k * (grp ? 60 : 26) * s * dir + Math.random() * 18, dy: (Math.random() - .5) * (grp ? 40 : 90) * s, p: Math.random() * 6 });
-    things.push({ layer: layer, kind: 'school', fn: grp ? grouper : snapper, x: dir > 0 ? -160 : W + 160,
+    for (var k = 0; k < n; k++) m.push({ dx: -k * (grp ? 60 : 26) * s * dir + Math.random() * 18, dy: (Math.random() - .5) * (grp ? 40 : 90) * s, p: Math.random() * 6, ox: 0, oy: 0, vx: 0, vy: 0 });
+    things.push({ layer: layer, kind: 'school', species: grp ? 'grouper' : 'snapper', fn: grp ? grouper : snapper, boost: 1, x: dir > 0 ? -160 : W + 160,
       y: H * (.15 + Math.random() * .65), dir: dir, v: (fr ? 6.5 : 2.4) * (grp ? .7 : 1), s: s, a: fr ? .97 : .6, m: m });
   }
   function bigShark(layer) {
     var fr = layer === 'front', dir = Math.random() < .5 ? 1 : -1;
-    things.push({ layer: layer, kind: 'shark', x: dir > 0 ? -400 : W + 400, y: H * (.25 + Math.random() * .5),
+    things.push({ layer: layer, kind: 'shark', species: 'shark', boost: 1, x: dir > 0 ? -400 : W + 400, y: H * (.25 + Math.random() * .5),
       dir: dir, v: fr ? 5 : 1.4, s: fr ? 3.4 : 1.9, a: fr ? .93 : .3, m: [], ph: 0 });
   }
   // Tab switches send fish across. Capped so fast tab switching never clogs the screen:
@@ -230,6 +230,7 @@
   setTimeout(function () { school('back'); }, 700);
   setTimeout(function () { school('back'); }, 4200);
 
+  var puffs = [];                                  // bubble bursts from clicked fish
   (function loop() {
     var d = parseFloat(root.style.getPropertyValue('--depth')) || 0;
     frame++;
@@ -250,15 +251,80 @@
     if (frame % 1500 === 0 && d > .25) bigShark('back');
     things = things.filter(function (t) {
       var c = t.layer === 'front' ? fx : bx;
-      t.x += t.v * t.dir; t.ph = (t.ph || 0) + (t.kind === 'shark' ? .06 : .25);
+      t.boost = 1 + (t.boost - 1) * .975;
+      t.x += t.v * t.dir * t.boost; t.ph = (t.ph || 0) + (t.kind === 'shark' ? .06 : .25) * t.boost;
       if (t.kind === 'school') {
         t.m.forEach(function (f) {
-          f.p += .28;
-          put(c, t.fn, t.x + f.dx, t.y + f.dy + Math.sin(f.p * .6) * 5, t.s, t.dir, t.a, f.p);
+          f.p += .28 * t.boost;
+          f.ox += f.vx; f.oy += f.vy; f.vx *= .94; f.vy *= .94;
+          f.sx = t.x + f.dx + f.ox; f.sy = t.y + f.dy + f.oy + Math.sin(f.p * .6) * 5;
+          put(c, t.fn, f.sx, f.sy, t.s, f.vx ? (f.vx > 1.5 ? 1 : f.vx < -1.5 ? -1 : t.dir) : t.dir, t.a, f.p);
         });
       } else put(c, shark, t.x, t.y, t.s, t.dir, t.a, t.ph);
       return t.x > -700 && t.x < W + 700;
     });
+    puffs = puffs.filter(function (b) {
+      b.y += b.vy; b.x += b.vx; b.vy *= .97; b.vx *= .95; b.life -= .016;
+      fx.beginPath(); fx.arc(b.x, b.y, b.r, 0, 6.283);
+      fx.strokeStyle = 'rgba(220,250,255,' + Math.max(0, b.life) + ')'; fx.lineWidth = 1.4; fx.stroke();
+      return b.life > 0;
+    });
     requestAnimationFrame(loop);
   })();
+
+  // Click a fish or shark: it reacts, bubbles burst, and you learn something about it.
+  var facts = {
+    snapper: ['Red snapper can live for more than 50 years.', 'Red snapper often school around reefs and wrecks.', 'Young red snapper hide in seagrass before moving to the reef.'],
+    grouper: ['Nassau groupers are critically endangered. The Bahamas protects them with a closed season from December to February.', 'Nassau groupers can change colour in seconds.', 'Groupers swallow prey whole by opening their huge mouths fast.'],
+    shark: ['Great hammerheads use their wide head to pin stingrays to the sand.', 'The Bahamas has been a shark sanctuary since 2011.', 'A hammerhead\'s eyes sit on the ends of its head, giving it a wide field of view.']
+  }, names = { snapper: 'Red snapper', grouper: 'Nassau grouper', shark: 'Great hammerhead' }, factN = {};
+  function hit(x, y) {
+    for (var i = things.length - 1; i >= 0; i--) {
+      var t = things[i];
+      if (t.kind === 'shark') {
+        if (Math.abs(x - (t.x + 15 * t.s * t.dir)) < 70 * t.s && Math.abs(y - t.y) < 24 * t.s) return { t: t };
+      } else for (var j = 0; j < t.m.length; j++) {
+        var f = t.m[j]; if (f.sx === undefined) continue;
+        if (Math.abs(x - f.sx) < 34 * t.s && Math.abs(y - f.sy) < 16 * t.s) return { t: t, f: f };
+      }
+    }
+    return null;
+  }
+  var tip = document.createElement('div'); tip.className = 'fishfact'; tip.setAttribute('role', 'status'); tip.setAttribute('aria-live', 'polite');
+  document.body.appendChild(tip);
+  var tipT;
+  function fact(sp, x, y) {
+    var list = facts[sp]; factN[sp] = ((factN[sp] || 0) + 1) % list.length;
+    tip.innerHTML = '<b>' + names[sp] + '</b>' + list[factN[sp]];
+    tip.style.left = Math.max(12, Math.min(innerWidth - 292, x - 140)) + 'px';
+    tip.style.top = Math.max(76, y - 110) + 'px';
+    tip.classList.remove('on'); void tip.offsetWidth; tip.classList.add('on');
+    clearTimeout(tipT); tipT = setTimeout(function () { tip.classList.remove('on'); }, 4200);
+  }
+  function burst(x, y) {
+    for (var k = 0; k < 12; k++) {
+      var a = Math.random() * 6.283, sp = 1 + Math.random() * 3;
+      puffs.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.6, r: 2 + Math.random() * 5, life: 1 });
+    }
+  }
+  addEventListener('pointerdown', function (e) {
+    if (e.target.closest && e.target.closest('a,button,input,textarea,select,label,[onclick],[role="button"],#imageModal')) return;
+    var h = hit(e.clientX, e.clientY); if (!h) return;
+    var t = h.t; burst(e.clientX, e.clientY); fact(t.species, e.clientX, e.clientY);
+    if (t.kind === 'shark') {                         // whips its tail, turns away and bolts
+      t.dir = e.clientX < t.x ? 1 : -1; t.boost = 3.2;
+    } else {                                          // the school scatters away from your finger
+      t.boost = 2.8;
+      t.m.forEach(function (f) {
+        var dx = f.sx - e.clientX, dy = f.sy - e.clientY, d = Math.hypot(dx, dy) || 1, kick = (t.layer === 'front' ? 11 : 6) * (0.6 + Math.random() * .8);
+        f.vx += dx / d * kick; f.vy += dy / d * kick;
+      });
+    }
+  }, true);
+  // Show a pointer over fish so people know they can tap them.
+  var hoverQ = false;
+  addEventListener('pointermove', function (e) {
+    if (hoverQ) return; hoverQ = true;
+    requestAnimationFrame(function () { hoverQ = false; document.body.classList.toggle('over-fish', !!hit(e.clientX, e.clientY) && !(e.target.closest && e.target.closest('a,button,input,textarea'))); });
+  }, { passive: true });
 })();

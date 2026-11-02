@@ -120,6 +120,64 @@
     });
   }
 
+  /* ---------- 4b. dive buddy: the logo's robot, snorkelling in the hero ---------- */
+  if (hero) {
+    var tips = [
+      ['Never dive alone', 'Use a buddy who stays at the surface if you go deep.'],
+      ['Rip currents', 'If one catches you, swim parallel to the shore.'],
+      ['Know your limits', 'Don\'t swim out farther than you can comfortably return.'],
+      ['Monitor buoyancy', 'In a blue hole you can descend faster than expected.'],
+      ['Keep the exit in sight', 'Vertical walls can mess with your sense of direction.'],
+      ['Snorkelers', 'Stay above the rim. Strong pulls can happen near the centre.'],
+      ['Untrained?', 'The safest area is the outer shallow basin.'],
+      ['Marine life', 'Shuffle your feet for stingrays, and don\'t touch coral.'],
+      ['Drowning CPR', 'Give 2 rescue breaths first, then compressions.']
+    ];
+    var dive = document.createElement('div');
+    dive.className = 'dive-robo';
+    dive.innerHTML = '<div class="robo-say" role="status" aria-live="polite"></div>' +
+      '<div class="robo" role="button" tabindex="0" aria-label="Dive buddy robot. Press for a safety tip."><svg viewBox="0 0 120 156" aria-hidden="true">' +
+      '<g class="r-all"><g class="r-jump">' +
+      '<g class="r-arm-l"><path d="M28 114 L17 136" stroke="#3F86A8" stroke-width="7" stroke-linecap="round"/><circle cx="16" cy="139" r="6" fill="#5BA9CC"/></g>' +
+      '<g class="r-arm-r"><path d="M92 114 L103 136" stroke="#3F86A8" stroke-width="7" stroke-linecap="round"/><circle cx="104" cy="139" r="6" fill="#5BA9CC"/></g>' +
+      '<rect x="52" y="98" width="16" height="12" fill="#3F86A8"/><rect x="30" y="106" width="60" height="42" rx="9" fill="#EE7A3C"/>' +
+      '<rect x="43" y="116" width="34" height="18" rx="4" fill="rgba(0,0,0,.16)"/><circle cx="51" cy="125" r="3" fill="#F2B705"/><circle cx="60" cy="125" r="3" fill="#4fe0e0"/><circle cx="69" cy="125" r="3" fill="#fff" opacity=".8"/>' +
+      '<g class="r-head"><path d="M46 32 L38 10 M74 32 L82 10" stroke="#6B4A3A" stroke-width="3.2" stroke-linecap="round"/><circle class="r-bulb" cx="38" cy="9" r="5"/><circle class="r-bulb" cx="82" cy="9" r="5"/>' +
+      '<rect x="14" y="27" width="92" height="76" rx="13" fill="#5BA9CC"/><rect x="24" y="37" width="72" height="57" rx="8" fill="#F6A93B"/>' +
+      '<circle cx="46" cy="58" r="10" fill="#fff" stroke="#1B2433" stroke-width="3"/><circle cx="74" cy="58" r="10" fill="#fff" stroke="#1B2433" stroke-width="3"/>' +
+      '<g class="r-pupils"><circle cx="46" cy="58" r="5" fill="#1B2433"/><circle cx="74" cy="58" r="5" fill="#1B2433"/><circle cx="47.8" cy="56.2" r="1.6" fill="#fff"/><circle cx="75.8" cy="56.2" r="1.6" fill="#fff"/></g>' +
+      '<rect class="r-lid" x="34" y="46" width="24" height="24" fill="#F6A93B"/><rect class="r-lid" x="62" y="46" width="24" height="24" fill="#F6A93B"/>' +
+      // mask: tinted lens over both eyes, strap, nose bridge
+      '<path d="M8 52 H22 M98 52 H112" stroke="#1B2433" stroke-width="5" stroke-linecap="round"/>' +
+      '<path d="M26 46 Q26 40 34 40 H86 Q94 40 94 46 V64 Q94 72 84 72 Q74 72 68 64 Q64 60 60 60 Q56 60 52 64 Q46 72 36 72 Q26 72 26 64 Z" fill="rgba(80,170,240,.38)" stroke="#12A9D9" stroke-width="5" stroke-linejoin="round"/>' +
+      '<path d="M33 46 L44 46" stroke="rgba(255,255,255,.75)" stroke-width="3" stroke-linecap="round"/>' +
+      '<g class="r-smile"><path d="M40 78 Q60 95 80 78 Q60 85 40 78Z" fill="#1B2433"/><path d="M46 80 Q60 85 74 80 L73 82.5 Q60 87 47 82.5Z" fill="#fff"/></g><ellipse class="r-o" cx="60" cy="83" rx="4.5" ry="5" fill="#1B2433"/>' +
+      // snorkel tube rising beside the head
+      '<path d="M40 84 Q22 86 22 66 V12" fill="none" stroke="#F7A8E8" stroke-width="7" stroke-linecap="round"/><path d="M18 30 H26 M18 34 H26" stroke="#1B2433" stroke-width="1.6"/>' +
+      '</g></g></g></svg></div>' +
+      '<span class="bub" style="--b:0"></span><span class="bub" style="--b:1"></span><span class="bub" style="--b:2"></span><span class="bub" style="--b:3"></span>';
+    hero.appendChild(dive);
+    var robo = dive.querySelector('.robo'), say = dive.querySelector('.robo-say'), pupils = dive.querySelector('.r-pupils'), t = {};
+    function act(cls, ms) { if (reduce) return; robo.classList.remove(cls); void robo.offsetWidth; robo.classList.add(cls); clearTimeout(t[cls]); t[cls] = setTimeout(function () { robo.classList.remove(cls); }, ms); }
+    function speak(html, ms) { say.innerHTML = html; say.classList.add('on'); clearTimeout(t.say); t.say = setTimeout(function () { say.classList.remove('on'); }, ms); }
+    var tipN = Math.floor(Math.random() * tips.length);
+    function tip() { var x = tips[tipN++ % tips.length]; speak('<b>' + x[0] + '.</b> ' + x[1], 5200); act(Math.random() < .5 ? 'wave' : 'hop', 1300); }
+    robo.addEventListener('click', tip);
+    robo.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tip(); } });
+    setTimeout(function () { act('wave', 1300); speak(innerWidth < 640 ? 'Hi! Tap me for a safety tip.' : 'Hi! I\'m your dive buddy. Click me for a safety tip.', 4800); }, reduce ? 400 : 2600);
+    (function blink() { if (!reduce && !document.hidden) act('blink', 200); t.blink = setTimeout(blink, 2400 + Math.random() * 3600); })();
+    if (!reduce) {
+      var px = innerWidth / 2, py = innerHeight / 3, ox = 0, oy = 0, run = false;
+      var look = function () {
+        var b = robo.getBoundingClientRect(), dx = px - (b.left + b.width / 2), dy = py - (b.top + b.height * .37), d = Math.hypot(dx, dy) || 1, m = Math.min(1, d / 260);
+        var tx = dx / d * 3.4 * m, ty = dy / d * 3 * m; ox += (tx - ox) * .18; oy += (ty - oy) * .18;
+        pupils.setAttribute('transform', 'translate(' + ox.toFixed(2) + ' ' + oy.toFixed(2) + ')');
+        if (Math.abs(tx - ox) > .02 || Math.abs(ty - oy) > .02) requestAnimationFrame(look); else run = false;
+      };
+      addEventListener('pointermove', function (e) { px = e.clientX; py = e.clientY; if (!run) { run = true; requestAnimationFrame(look); } }, { passive: true });
+    }
+  }
+
   /* ---------- 5. reveal on scroll + start the cross-section when it is seen ---------- */
   if (reduce || !('IntersectionObserver' in window)) { if (fig) fig.classList.add('go'); return; }
   var io = new IntersectionObserver(function (es) {

@@ -12,6 +12,10 @@
   const SVG = `<svg viewBox="0 0 120 156" aria-hidden="true">
     <ellipse cx="60" cy="152" rx="30" ry="4" fill="rgba(0,0,0,.28)"/>
     <g class="r-all"><g class="r-jump">
+      <g class="r-pack"><rect x="20" y="100" width="15" height="34" rx="5" fill="#8C97A8"/><rect x="85" y="100" width="15" height="34" rx="5" fill="#8C97A8"/>
+        <rect x="22" y="104" width="11" height="4" rx="2" fill="#F2B705"/><rect x="87" y="104" width="11" height="4" rx="2" fill="#F2B705"/>
+        <g class="r-flame"><path d="M22 134 Q27.5 160 33 134Z" fill="#FF8A3D"/><path d="M24.5 134 Q27.5 151 30.5 134Z" fill="#FFE27A"/>
+          <path d="M87 134 Q92.5 160 98 134Z" fill="#FF8A3D"/><path d="M89.5 134 Q92.5 151 95.5 134Z" fill="#FFE27A"/></g></g>
       <g class="r-arm-l"><path d="M28 114 L17 136" stroke="var(--robo-frame-dark)" stroke-width="7" stroke-linecap="round"/><circle cx="16" cy="139" r="6" fill="var(--robo-frame)"/></g>
       <g class="r-arm-r"><path d="M92 114 L103 136" stroke="var(--robo-frame-dark)" stroke-width="7" stroke-linecap="round"/><circle cx="104" cy="139" r="6" fill="var(--robo-frame)"/></g>
       <rect x="52" y="98" width="16" height="12" fill="var(--robo-frame-dark)"/>
@@ -93,7 +97,66 @@
     hero = makeRobo('Robot helper. Press for a course idea.');
     slot.append(hero.say, hero.el);
     setTimeout(() => { hero.act('boot', 1200); }, reduce ? 0 : 1900);
-    setTimeout(() => { hero.act('wave', 1300); hero.speak(innerWidth < 560 ? 'Hi! Tap me for a course idea.' : 'Hi! I\'m your study buddy. Click me for a course idea.', 4600); }, reduce ? 300 : 2500);
+    setTimeout(() => { hero.act('wave', 1300); hero.speak(innerWidth < 560 ? 'Hi! Tap me for a course idea.' : (fine ? 'Hi! I\'m your study buddy. Move your mouse around, I\'ll follow. Click me for a course idea.' : 'Hi! I\'m your study buddy. Click me for a course idea.'), 5200); }, reduce ? 300 : 2500);
+    countUp();
+    if (!reduce && fine) fly(slot);
+  }
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches && innerWidth > 760;
+
+  /* hero numbers count up once the headline has grown */
+  function countUp() {
+    $$('#view .hero-stats dd').forEach((dd, k) => {
+      const end = parseInt(dd.textContent, 10); if (!end || reduce) return;
+      const t0 = performance.now() + 1100 + k * 120;
+      dd.textContent = '0';
+      const step = t => { const p = Math.max(0, Math.min((t - t0) / 1400, 1)); dd.textContent = Math.round(end * (1 - Math.pow(1 - p, 4))); if (p < 1 && dd.isConnected) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* jetpack flight: the robot chases the pointer around the right side of the hero, then flies home */
+  function fly(slot) {
+    const heroEl = slot.closest('.hero'); if (!heroEl) return;
+    let x = 0, y = 0, vx = 0, vy = 0, tx = 0, ty = 0, raf = 0, idle = 0, flying = false, lastSpark = 0, ready = false;
+    setTimeout(() => { ready = true; }, 3400);            // let it land and say hi first
+    const home = () => { tx = 0; ty = 0; };
+    const sparks = [];
+    function spark() {
+      const hb = heroEl.getBoundingClientRect(), sb = slot.getBoundingClientRect();
+      const s = document.createElement('span'); s.className = 'spark';
+      s.style.left = (sb.left - hb.left + sb.width * (Math.random() < .5 ? .23 : .77)) + 'px';
+      s.style.top = (sb.top - hb.top + sb.height * .93) + 'px';
+      s.style.setProperty('--dx', (Math.random() * 30 - 15 - vx * 4).toFixed(1) + 'px');
+      heroEl.appendChild(s); sparks.push(s);
+      setTimeout(() => { s.remove(); sparks.splice(sparks.indexOf(s), 1); }, 800);
+    }
+    function tick(now) {
+      raf = 0;
+      if (!slot.isConnected) return;
+      vx += (tx - x) * .045; vy += (ty - y) * .045; vx *= .86; vy *= .86; x += vx; y += vy;
+      const speed = Math.hypot(vx, vy), away = Math.hypot(x, y);
+      slot.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`; hero.el.style.rotate = `${Math.max(-18, Math.min(18, vx * 1.6)).toFixed(1)}deg`; // only the robot tilts, its speech bubble stays level
+      const nowFlying = speed > .35 || away > 6;
+      if (nowFlying !== flying) { flying = nowFlying; hero.el.classList.toggle('fly', flying); if (!flying) hero.act('hop', 750); }
+      if (flying && speed > 1.2 && now - lastSpark > 40 && sparks.length < 26) { lastSpark = now; spark(); }
+      if (now - idle > 2600 && (tx || ty)) home();
+      if (speed > .02 || away > .5 || tx || ty) raf = requestAnimationFrame(tick);
+    }
+    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    heroEl.addEventListener('pointermove', e => {
+      if (!ready) return;
+      const hb = heroEl.getBoundingClientRect(), w = slot.offsetWidth, h = slot.offsetHeight;
+      const hx = slot.offsetLeft, hy = slot.offsetTop;                       // home position inside the hero
+      const px = e.clientX - hb.left, py = e.clientY - hb.top;
+      const wantX = Math.max(hb.width * .56, Math.min(hb.width - w - 48, px + 70));
+      const wantY = Math.max(200, Math.min(hb.height - h - 24, py - h * .45)); // leave headroom for the speech bubble
+      tx = wantX - hx; ty = wantY - hy; idle = performance.now(); kick();
+    });
+    heroEl.addEventListener('pointerleave', () => { home(); kick(); });
+    /* hero parallax: the headline drifts up and fades as you scroll */
+    const inner = $('.hero-in', heroEl);
+    const onScroll = () => { if (!heroEl.isConnected) { removeEventListener('scroll', onScroll); return; } const s = Math.min(scrollY, 700); inner.style.transform = `translateY(${(s * .28).toFixed(1)}px)`; inner.style.opacity = (1 - s / 820).toFixed(3); };
+    addEventListener('scroll', onScroll, { passive: true });
   }
 
   /* ---------- corner buddy on every other page ---------- */
@@ -119,8 +182,23 @@
   addEventListener('mgt:win', () => { if (!buddy || closed) return; pop(2800); buddy.act('cheer', 950); buddy.act('hop', 750); buddy.speak(pick(['You did it!', 'Game over… and you won.', 'Champion move!']), 2600); });
 
   /* ---------- per-route setup: hero/buddy, tilt, reveals ---------- */
-  let io = null;
+  let io = null, firstRoute = true, lastKind = '';
+  function wipe() {
+    const w = document.createElement('div'); w.className = 'wipe'; w.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(w); setTimeout(() => w.remove(), 900);
+  }
+  function kineticHeadings(observe) {
+    $$('#view :is(.sec-head h2, .split h2, .cta-band h2, .m-cat-h h2)').forEach(h => {
+      if (h.children.length || h.classList.contains('kin')) return;
+      if (h.getBoundingClientRect().top + scrollY < innerHeight) return;
+      h.innerHTML = h.textContent.trim().split(/\s+/).map((wd, i) => `<span class="wm"><span class="wi" style="--wi:${i}">${wd}</span></span>`).join(' ');
+      h.classList.add('kin'); observe(h);
+    });
+  }
   function onRoute() {
+    const hash = location.hash.slice(1) || 'home', kind = /-(g?\d+)$/.test(hash) ? 'detail' : hash.replace(/-.*/, '');
+    if (!firstRoute && !reduce && kind !== 'detail' && kind !== lastKind) wipe();
+    firstRoute = false; lastKind = kind;
     const isHome = !!$('#view .robo-slot');
     if (isHome) { mountHero(); if (wrap) wrap.classList.add('hidden'); }
     else { ensureBuddy(); if (wrap && !closed) { wrap.classList.remove('hidden'); } }
@@ -129,7 +207,8 @@
 
     if (reduce || !('IntersectionObserver' in window)) return;
     if (io) io.disconnect();
-    io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('rv-in'); io.unobserve(en.target); } }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+    io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add(en.target.classList.contains('kin') ? 'kin-in' : 'rv-in'); io.unobserve(en.target); } }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+    kineticHeadings(h => io.observe(h));
     const vh = innerHeight, groups = new Map();
     $$('#view :is(.aud-card, .cat-tile, .steps li, .values article, .big-stats > div, .ccard, .lessons li, .catalog li, .faq details, .lang-card, .game-card, .roles .card, .plan, .plan-side .card, .drive-feature > *, .sec-head, .split > *)').forEach(el => {
       if (el.closest('.rv')) return;

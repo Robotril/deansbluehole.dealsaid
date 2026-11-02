@@ -5,6 +5,20 @@
   css.rel = 'stylesheet';
   css.href = 'ocean.css';
   document.head.appendChild(css);
+  // Motion layer: its script waits for its stylesheet so the intro never flashes.
+  // Hold the hero title back until it can surface (released by ocean-motion.js, or after 2.5 s regardless).
+  var hold = document.createElement('style');
+  hold.id = 'motion-hold';
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) hold.textContent = '#hero h2,#hero .hero-where,#hero .hero-depth{opacity:0}';
+  document.head.appendChild(hold);
+  setTimeout(function () { hold.remove(); }, 2500);
+  var mcss = document.createElement('link');
+  mcss.rel = 'stylesheet';
+  mcss.href = 'ocean-motion.css?v=1';
+  mcss.onload = mcss.onerror = function () {
+    var ms = document.createElement('script'); ms.src = 'ocean-motion.js?v=1'; document.body.appendChild(ms);
+  };
+  document.head.appendChild(mcss);
 
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var main = document.querySelector('main');

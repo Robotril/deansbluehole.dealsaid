@@ -827,28 +827,34 @@
                         </div>
                     </div>
 
+                    <!-- Essay instructions: one or both -->
+                    <div id="essayNote" class="bg-teal-50 border border-teal-100 p-4 rounded-xl text-sm text-slate-700">
+                        <p class="font-semibold text-slate-900"><i class="fas fa-pen-nib mr-1"></i> Essay questions: choose one, or answer both <span class="text-red-500">*</span></p>
+                        <p class="mt-1">You must answer <strong>at least one</strong> of the two questions below. You're welcome to answer both. Each answer you write must be <strong class="whitespace-nowrap">250–300 words</strong>.</p>
+                    </div>
+
                     <!-- Question 1: Sea Animal -->
                     <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 space-y-3">
                         <label for="seaAnimal" class="block text-sm font-semibold text-slate-900">
-                            If you could be any sea animal, which one would you be and why? <span class="text-red-500">*</span>
+                            If you could be any sea animal, which one would you be and why?
                         </label>
                         <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-800 font-medium">
-                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answer must be <strong>at least 250 words</strong>.
+                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answers must be <strong class="whitespace-nowrap">250–300 words</strong>.
                         </div>
-                        <textarea id="seaAnimal" name="Sea Animal Essay" required rows="9" data-wordmin="250" placeholder="Write your response here (at least 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
-                        <p id="seaAnimalCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words minimum</p>
+                        <textarea id="seaAnimal" name="Sea Animal Essay" rows="9" data-essay placeholder="Write your response here (250–300 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
+                        <p id="seaAnimalCount" class="text-xs font-semibold text-slate-500 text-right">0 words (aim for 250–300)</p>
                     </div>
 
                     <!-- Question 2: Prime Minister -->
                     <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 space-y-3">
                         <label for="primeMinister" class="block text-sm font-semibold text-slate-900">
-                            What would your Bahamas look like if you were Prime Minister? <span class="text-red-500">*</span>
+                            What would your Bahamas look like if you were Prime Minister?
                         </label>
                         <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-800 font-medium">
-                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answer must be <strong>at least 250 words</strong>.
+                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answers must be <strong class="whitespace-nowrap">250–300 words</strong>.
                         </div>
-                        <textarea id="primeMinister" name="Prime Minister Essay" required rows="9" data-wordmin="250" placeholder="Write your response here (at least 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
-                        <p id="primeMinisterCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words minimum</p>
+                        <textarea id="primeMinister" name="Prime Minister Essay" rows="9" data-essay placeholder="Write your response here (250–300 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
+                        <p id="primeMinisterCount" class="text-xs font-semibold text-slate-500 text-right">0 words (aim for 250–300)</p>
                     </div>
 
                     <!-- Proof of School Age Link -->
@@ -1050,23 +1056,32 @@
             document.querySelectorAll('[onclick^="switchTab"]').forEach(b => b.addEventListener('click', () => { if (timer) stop(); }));
         })();
 
-        // Scholarship essay word counters (minimum 250 words)
-        const MIN_WORDS = 250;
+        // Giveaway essays: answer at least one; each answer given must be 250-300 words
+        const MIN_WORDS = 250, MAX_WORDS = 300;
         function countWords(t) { const m = t.trim().match(/\S+/g); return m ? m.length : 0; }
-        document.querySelectorAll('textarea[data-wordmin]').forEach(ta => {
-            const counter = document.getElementById(ta.id + 'Count');
-            const update = () => {
-                const n = countWords(ta.value);
-                const short = n < MIN_WORDS;
-                counter.textContent = short ? n + ' / ' + MIN_WORDS + ' words minimum (' + (MIN_WORDS - n) + ' to go)' : n + ' words ✓ minimum reached';
-                counter.classList.toggle('text-red-300', short && n > 0);
-                counter.classList.toggle('text-green-300', !short);
+        const essays = [...document.querySelectorAll('textarea[data-essay]')];
+        function checkEssays() {
+            const counts = essays.map(ta => countWords(ta.value));
+            const anyAnswered = counts.some(n => n > 0);
+            essays.forEach((ta, i) => {
+                const n = counts[i], counter = document.getElementById(ta.id + 'Count');
+                const short = n > 0 && n < MIN_WORDS, over = n > MAX_WORDS, good = n >= MIN_WORDS && n <= MAX_WORDS;
+                counter.textContent = n === 0 ? (anyAnswered ? '0 words (optional, you answered the other question)' : '0 words (aim for 250–300)')
+                    : short ? n + ' words (' + (MIN_WORDS - n) + ' more to reach 250)'
+                    : over ? n + ' words (' + (n - MAX_WORDS) + ' over the 300 limit)'
+                    : n + ' words ✓ within 250–300';
+                counter.classList.toggle('text-red-300', short || over);
+                counter.classList.toggle('text-green-300', good);
                 counter.classList.toggle('text-slate-500', n === 0);
-                ta.setCustomValidity(short ? 'Please write at least ' + MIN_WORDS + ' words. You have ' + n + ' so far.' : '');
-            };
-            ta.addEventListener('input', update);
-            update();
-        });
+                let msg = '';
+                if (short) msg = 'This answer needs at least ' + MIN_WORDS + ' words. You have ' + n + '.';
+                else if (over) msg = 'This answer must be ' + MAX_WORDS + ' words or fewer. You have ' + n + '.';
+                else if (!anyAnswered && i === 0) msg = 'Please answer at least one of the two essay questions (250–300 words).';
+                ta.setCustomValidity(msg);
+            });
+        }
+        essays.forEach(ta => ta.addEventListener('input', checkEssays));
+        checkEssays();
 
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 

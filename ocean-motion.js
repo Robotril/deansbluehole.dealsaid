@@ -11,10 +11,17 @@
   if (h2 && h2.firstChild && h2.firstChild.nodeType === 3) {
     var text = h2.firstChild.nodeValue, frag = document.createDocumentFragment();
     h2.setAttribute('aria-label', h2.textContent.replace(/\s+/g, ' ').trim());
-    text.split('').forEach(function (ch, i) {
-      var s = document.createElement('span');
-      s.className = 'kl'; s.textContent = ch; s.style.setProperty('--i', i); s.setAttribute('aria-hidden', 'true');
-      frag.appendChild(s);
+    // Letters are grouped into words so the title only ever wraps between words, never mid-word.
+    var li = 0;
+    text.split(' ').forEach(function (word, wi) {
+      if (wi) frag.appendChild(document.createTextNode(' '));
+      var w = document.createElement('span'); w.className = 'kw';
+      word.split('').forEach(function (ch) {
+        var s = document.createElement('span');
+        s.className = 'kl'; s.textContent = ch; s.style.setProperty('--i', li++); s.setAttribute('aria-hidden', 'true');
+        w.appendChild(s);
+      });
+      frag.appendChild(w);
     });
     h2.replaceChild(frag, h2.firstChild);
   }
@@ -177,6 +184,62 @@
       addEventListener('pointermove', function (e) { px = e.clientX; py = e.clientY; if (!run) { run = true; requestAnimationFrame(look); } }, { passive: true });
     }
   }
+
+
+  /* ---------- 4c. gallery viewer: swipe, arrows and keys to move between photos and videos ---------- */
+  (function () {
+    var modal = document.getElementById('imageModal');
+    var grid = document.querySelector('#gallery');
+    if (!modal || !grid || !window.openModal) return;
+    var box = modal.firstElementChild, img = document.getElementById('modalImg'), vid = document.getElementById('modalVideo');
+    function items() {
+      return Array.prototype.map.call(grid.querySelectorAll('[onclick^="openModal"],[onclick^="openVideo"]'), function (el) {
+        var m = el.getAttribute('onclick').match(/^(openModal|openVideo)\('([^']+)'\)/);
+        return m ? { video: m[1] === 'openVideo', src: m[2] } : null;
+      }).filter(Boolean);
+    }
+    var list = [], idx = -1, origImg = window.openModal, origVid = window.openVideo;
+    var nav = document.createElement('div'); nav.className = 'gnav';
+    nav.innerHTML = '<button type="button" class="gnav-btn prev" aria-label="Previous photo"><i class="fas fa-chevron-left"></i></button>' +
+      '<span class="gnav-count" aria-live="polite"></span>' +
+      '<button type="button" class="gnav-btn next" aria-label="Next photo"><i class="fas fa-chevron-right"></i></button>';
+    box.appendChild(nav);
+    var hint = document.createElement('p'); hint.className = 'gnav-hint'; hint.textContent = 'Swipe to see more'; box.appendChild(hint);
+    var count = nav.querySelector('.gnav-count');
+    function find(src) { for (var i = 0; i < list.length; i++) if (decodeURI(list[i].src) === decodeURI(src)) return i; return -1; }
+    function update() { nav.hidden = list.length < 2 || idx < 0; count.textContent = (idx + 1) + ' / ' + list.length; }
+    window.openModal = function (src) { origImg(src); list = items(); idx = find(src); update(); };
+    window.openVideo = function (src) { origVid(src); list = items(); idx = find(src); update(); };
+    function show(step) {
+      if (idx < 0 || list.length < 2) return;
+      idx = (idx + step + list.length) % list.length;
+      var it = list[idx]; (it.video ? origVid : origImg)(it.src); update();
+      var el = it.video ? vid : img;
+      if (!reduce) { el.classList.remove('gslide-l', 'gslide-r'); void el.offsetWidth; el.classList.add(step > 0 ? 'gslide-r' : 'gslide-l'); }
+    }
+    nav.querySelector('.prev').addEventListener('click', function (e) { e.stopPropagation(); show(-1); });
+    nav.querySelector('.next').addEventListener('click', function (e) { e.stopPropagation(); show(1); });
+    addEventListener('keydown', function (e) {
+      if (modal.classList.contains('hidden')) return;
+      if (e.key === 'ArrowRight') show(1); else if (e.key === 'ArrowLeft') show(-1); else if (e.key === 'Escape' && window.closeModal) window.closeModal();
+    });
+    // swipe: the photo follows your finger, then slides to the next one
+    var sx = 0, sy = 0, dragging = false, swiped = false;
+    modal.addEventListener('touchstart', function (e) { if (e.touches.length !== 1) return; sx = e.touches[0].clientX; sy = e.touches[0].clientY; dragging = true; swiped = false; }, { passive: true });
+    modal.addEventListener('touchmove', function (e) {
+      if (!dragging) return;
+      var dx = e.touches[0].clientX - sx, dy = e.touches[0].clientY - sy;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) { var el = list[idx] && list[idx].video ? vid : img; el.style.transform = 'translateX(' + dx * .6 + 'px)'; el.style.opacity = String(1 - Math.min(Math.abs(dx) / 600, .4)); }
+    }, { passive: true });
+    modal.addEventListener('touchend', function (e) {
+      if (!dragging) return; dragging = false;
+      var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      img.style.transform = vid.style.transform = ''; img.style.opacity = vid.style.opacity = '';
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.2) { swiped = true; show(dx < 0 ? 1 : -1); }
+    });
+    // a swipe must not count as a tap on the dark background (which closes the viewer)
+    modal.addEventListener('click', function (e) { if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; } }, true);
+  })();
 
   /* ---------- 5. reveal on scroll + start the cross-section when it is seen ---------- */
   if (reduce || !('IntersectionObserver' in window)) { if (fig) fig.classList.add('go'); return; }

@@ -833,10 +833,10 @@
                             If you could be any sea animal, which one would you be and why? <span class="text-red-500">*</span>
                         </label>
                         <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-800 font-medium">
-                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answer must be <strong>250 words or fewer</strong>.
+                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answer must be <strong>at least 250 words</strong>.
                         </div>
-                        <textarea id="seaAnimal" name="Sea Animal Essay" required rows="9" data-wordlimit="250" placeholder="Write your response here (up to 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
-                        <p id="seaAnimalCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words</p>
+                        <textarea id="seaAnimal" name="Sea Animal Essay" required rows="9" data-wordmin="250" placeholder="Write your response here (at least 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
+                        <p id="seaAnimalCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words minimum</p>
                     </div>
 
                     <!-- Question 2: Prime Minister -->
@@ -845,10 +845,10 @@
                             What would your Bahamas look like if you were Prime Minister? <span class="text-red-500">*</span>
                         </label>
                         <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-800 font-medium">
-                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answer must be <strong>250 words or fewer</strong>.
+                            <i class="fas fa-robot mr-1"></i> <strong>Disclaimer:</strong> We are checking for AI usage. Please submit original thoughts. No AI usage allowed! Answer must be <strong>at least 250 words</strong>.
                         </div>
-                        <textarea id="primeMinister" name="Prime Minister Essay" required rows="9" data-wordlimit="250" placeholder="Write your response here (up to 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
-                        <p id="primeMinisterCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words</p>
+                        <textarea id="primeMinister" name="Prime Minister Essay" required rows="9" data-wordmin="250" placeholder="Write your response here (at least 250 words)..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></textarea>
+                        <p id="primeMinisterCount" class="text-xs font-semibold text-slate-500 text-right">0 / 250 words minimum</p>
                     </div>
 
                     <!-- Proof of School Age Link -->
@@ -1050,18 +1050,19 @@
             document.querySelectorAll('[onclick^="switchTab"]').forEach(b => b.addEventListener('click', () => { if (timer) stop(); }));
         })();
 
-        // Scholarship essay word counters (max 250 words)
-        const MAX_WORDS = 250;
+        // Scholarship essay word counters (minimum 250 words)
+        const MIN_WORDS = 250;
         function countWords(t) { const m = t.trim().match(/\S+/g); return m ? m.length : 0; }
-        document.querySelectorAll('textarea[data-wordlimit]').forEach(ta => {
+        document.querySelectorAll('textarea[data-wordmin]').forEach(ta => {
             const counter = document.getElementById(ta.id + 'Count');
             const update = () => {
                 const n = countWords(ta.value);
-                counter.textContent = n + ' / ' + MAX_WORDS + ' words';
-                const over = n > MAX_WORDS;
-                counter.classList.toggle('text-red-600', over);
-                counter.classList.toggle('text-slate-500', !over);
-                ta.setCustomValidity(over ? 'Please keep your answer to ' + MAX_WORDS + ' words or fewer.' : '');
+                const short = n < MIN_WORDS;
+                counter.textContent = short ? n + ' / ' + MIN_WORDS + ' words minimum (' + (MIN_WORDS - n) + ' to go)' : n + ' words ✓ minimum reached';
+                counter.classList.toggle('text-red-300', short && n > 0);
+                counter.classList.toggle('text-green-300', !short);
+                counter.classList.toggle('text-slate-500', n === 0);
+                ta.setCustomValidity(short ? 'Please write at least ' + MIN_WORDS + ' words. You have ' + n + ' so far.' : '');
             };
             ta.addEventListener('input', update);
             update();

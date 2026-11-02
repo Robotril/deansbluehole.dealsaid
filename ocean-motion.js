@@ -163,10 +163,10 @@
       '<path d="M40 84 Q22 86 22 66 V12" fill="none" stroke="#F7A8E8" stroke-width="7" stroke-linecap="round"/><path d="M18 30 H26 M18 34 H26" stroke="#1B2433" stroke-width="1.6"/>' +
       '</g></g></g></svg></div>' +
       '<span class="bub" style="--b:0"></span><span class="bub" style="--b:1"></span><span class="bub" style="--b:2"></span><span class="bub" style="--b:3"></span>';
-    hero.appendChild(dive);
+    document.body.appendChild(dive);                     // peeks up from the corner of the screen
     var robo = dive.querySelector('.robo'), say = dive.querySelector('.robo-say'), pupils = dive.querySelector('.r-pupils'), t = {};
     function act(cls, ms) { if (reduce) return; robo.classList.remove(cls); void robo.offsetWidth; robo.classList.add(cls); clearTimeout(t[cls]); t[cls] = setTimeout(function () { robo.classList.remove(cls); }, ms); }
-    function speak(html, ms) { say.innerHTML = html; say.classList.add('on'); clearTimeout(t.say); t.say = setTimeout(function () { say.classList.remove('on'); }, ms); }
+    function speak(html, ms) { say.innerHTML = html; say.classList.add('on'); dive.classList.add('up'); clearTimeout(t.say); t.say = setTimeout(function () { say.classList.remove('on'); dive.classList.remove('up'); }, ms); }
     var tipN = Math.floor(Math.random() * tips.length);
     function tip() { var x = tips[tipN++ % tips.length]; speak('<b>' + x[0] + '.</b> ' + x[1], 5200); act(Math.random() < .5 ? 'wave' : 'hop', 1300); }
     robo.addEventListener('click', tip);

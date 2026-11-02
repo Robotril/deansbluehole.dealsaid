@@ -14,9 +14,9 @@
   setTimeout(function () { hold.remove(); }, 2500);
   var mcss = document.createElement('link');
   mcss.rel = 'stylesheet';
-  mcss.href = 'ocean-motion.css?v=2';
+  mcss.href = 'ocean-motion.css?v=3';
   mcss.onload = mcss.onerror = function () {
-    var ms = document.createElement('script'); ms.src = 'ocean-motion.js?v=2'; document.body.appendChild(ms);
+    var ms = document.createElement('script'); ms.src = 'ocean-motion.js?v=3'; document.body.appendChild(ms);
   };
   document.head.appendChild(mcss);
 

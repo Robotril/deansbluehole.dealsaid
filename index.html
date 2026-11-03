@@ -9,10 +9,14 @@
     <link rel="apple-touch-icon" href="oceanfavicon.png">
     
     <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Security: only this site's own files, Google Fonts and Formspree may load -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://formspree.io; form-action https://formspree.io; base-uri 'self'; object-src 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <!-- Styles are built and stored in this repo, not loaded live from a third party -->
+    <link rel="stylesheet" href="tailwind.css?v=1">
     
     <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
 
     <style>
         /* Custom Animations */
@@ -67,7 +71,7 @@
                 </div>
 
                 <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-1 h-full">
+                <nav class="hidden md:flex space-x-1 h-full" aria-label="Main">
                     <button onclick="switchTab('safety')" class="tab-btn active px-3 py-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors h-full flex items-center border-b-2 border-transparent">
                         Safety
                     </button>
@@ -505,7 +509,7 @@
                     <img src="WhatsApp Image 2025-11-25 at 8.54.27 PM (5).jpeg" alt="Dean's Blue Hole" class="w-full h-full object-cover">
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                         <div class="text-white">
-                            <h3 class="text-2xl font-bold">The World's Deepest Blue Hole (Second Deepest)</h3>
+                            <h3 class="text-2xl font-bold">The World's Second-Deepest Known Blue Hole</h3>
                             <p class="opacity-90">Long Island, Bahamas</p>
                         </div>
                     </div>
@@ -814,6 +818,8 @@
                     
                     <!-- Hidden configuration field for email subject -->
                     <input type="hidden" name="_subject" value="New Giveaway Application Submission">
+                    <!-- Spam trap: hidden from people, bots fill it in and Formspree discards the entry -->
+                    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
 
                     <!-- Full Name & Age -->
                     <div class="grid md:grid-cols-2 gap-6">
@@ -893,6 +899,18 @@
                         </div>
                     </div>
 
+                    <!-- Consent -->
+                    <div class="bg-blue-50 p-5 rounded-xl border border-blue-200 space-y-3">
+                        <label class="flex gap-3 items-start text-sm text-slate-700">
+                            <input type="checkbox" id="consentGuardian" name="Parent or guardian consent" value="Yes" required class="mt-1 h-4 w-4 shrink-0">
+                            <span>I am the applicant's parent or guardian (or the applicant is 18 or older), and I give Deal's Aid permission to use the information in this application to run the giveaway and contact us. <span class="text-red-500">*</span></span>
+                        </label>
+                        <label class="flex gap-3 items-start text-sm text-slate-700">
+                            <input type="checkbox" id="consentPrivacy" name="Agreed to privacy policy and rules" value="Yes" required class="mt-1 h-4 w-4 shrink-0">
+                            <span>I have read the <a href="privacy.html" class="text-blue-600 underline font-semibold">Privacy Policy</a> and the <a href="terms.html#giveaway" class="text-blue-600 underline font-semibold">Giveaway Rules</a>. <span class="text-red-500">*</span></span>
+                        </label>
+                    </div>
+
                     <!-- Submit Button -->
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
                         <i class="fas fa-paper-plane"></i> Submit Application
@@ -912,7 +930,7 @@
     <!-- Gallery Image Lightbox Modal -->
     <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4" onclick="closeModal()">
         <div class="relative max-w-4xl max-h-full" onclick="event.stopPropagation()">
-            <button class="absolute -top-10 right-0 text-white text-3xl hover:text-slate-300 focus:outline-none" onclick="closeModal()">
+            <button type="button" aria-label="Close" class="absolute -top-10 right-0 text-white text-3xl hover:text-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300 rounded" onclick="closeModal()">
                 <i class="fas fa-times"></i>
             </button>
             <img id="modalImg" src="" class="max-h-[85vh] max-w-full rounded-lg shadow-2xl object-contain bg-black">
@@ -922,8 +940,11 @@
 
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-8 mt-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p>Deans Blue Hole Safety and History a site created by Deal's Aid</p>
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>Dean's Blue Hole Safety and History, a site created by <strong>Deal's Aid</strong>, a youth-led non-profit organization registered in The Bahamas (2024).</p>
+            <p>Contact: <a href="mailto:dealsaid54@gmail.com" class="underline">dealsaid54@gmail.com</a> · Text or call <a href="tel:+12428143630" class="underline">+1 (242) 814-3630</a></p>
+            <p class="text-sm"><a href="privacy.html" class="underline">Privacy Policy</a> · <a href="terms.html" class="underline">Terms &amp; Giveaway Rules</a> · <a href="learn/index.html" class="underline">Learn Free</a></p>
+            <p class="text-sm">© 2024–2026 Deal's Aid</p>
         </div>
     </footer>
 
@@ -1088,6 +1109,6 @@
         // Initialize first tab on page load
         switchTab('safety');
     </script>
-    <script src="ocean.js?v=6"></script>
+    <script src="ocean.js?v=7"></script>
 </body>
 </html>

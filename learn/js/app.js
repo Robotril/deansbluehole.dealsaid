@@ -62,7 +62,13 @@ const auth = {
     if (!u || u.pw !== await hash(pw)) throw new Error("That email and password don't match an account in this browser. Check them, or create a free account.");
     store.set('mgt.session', email);
   },
-  logout() { store.set('mgt.session', null); }
+  logout() { store.set('mgt.session', null); },
+  remove() {                                   // delete this account and everything stored for it on this device
+    const e = store.get('mgt.session', null); if (!e) return;
+    const users = store.get('mgt.users', {}); delete users[e]; store.set('mgt.users', users);
+    try { Object.keys(localStorage).filter(k => k === 'mgt.progress.' + e || k.startsWith('mgt.cele.mgt.progress.' + e)).forEach(k => localStorage.removeItem(k)); } catch (x) { /* storage unavailable */ }
+    store.set('mgt.session', null);
+  }
 };
 
 /* ---------- progress ---------- */
@@ -176,8 +182,8 @@ function footer() {
     <p class="foot-note">Grow your mental landscape. Free courses for all ages, built by the Deal's Aid non-profit organization.</p></div>
     <div><p class="foot-h">Explore</p><a href="#about">About</a><a href="#services">Services</a><a href="#driving">Driving Test Review</a><a href="#members">Premium Learning</a></div>
     <div><p class="foot-h">Get involved</p><a href="#volunteer">Volunteer</a><a href="#contact">Contact</a><a href="#signup">Create a free account</a><a href="../index.html">Dean's Blue Hole site</a></div>
-    <div><p class="foot-h">Reach us</p><a href="mailto:${EMAIL}">${EMAIL}</a><a href="tel:${TEL}">${PHONE}</a><span class="foot-small">Text or call</span></div>
-  </div><div class="wrap foot-base"><span>© ${new Date().getFullYear()} Deal's Aid · MGT</span><span>Preview build: accounts and progress are saved in this browser only.</span></div></footer>`;
+    <div><p class="foot-h">Reach us</p><a href="mailto:${EMAIL}">${EMAIL}</a><a href="tel:${TEL}">${PHONE}</a><span class="foot-small">Text or call</span><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a></div>
+  </div><div class="wrap foot-base"><span>© ${new Date().getFullYear()} Deal's Aid, a youth-led non-profit registered in The Bahamas · MGT</span><span>Accounts and progress are saved in this browser only. <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></span></div></footer>`;
 }
 
 /* ---------- shared bits ---------- */
@@ -215,6 +221,7 @@ function msgForm(kind) {
       <label><input type="checkbox" name="role" value="Tutoring"> Tutoring</label>
       <label><input type="checkbox" name="role" value="Teaching a course"> Teaching a course</label></div></fieldset>` : ''}
     <div class="field"><label for="mf-msg">${vol ? 'When are you free, and what do you enjoy?' : 'Message'}</label><textarea id="mf-msg" name="message" rows="5" required></textarea></div>
+    <label class="consent" for="mf-consent"><input type="checkbox" id="mf-consent" name="consent" value="Agreed to privacy policy"> <span>I agree that Deal's Aid can use these details to reply to me, as described in the <a href="../privacy.html">Privacy Policy</a>.</span></label>
     <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
     <p class="form-err" role="alert" hidden></p>
     <button class="btn" type="submit">${vol ? 'Send my application' : 'Send message'}</button>
@@ -229,6 +236,7 @@ function mountMsgForm(el, kind) {
     const d = new FormData(f), err = $('.form-err', f), btn = $('button[type="submit"]', f);
     const name = (d.get('name') || '').trim(), email = (d.get('email') || '').trim(), msg = (d.get('message') || '').trim();
     if (!name || !/^\S+@\S+\.\S+$/.test(email) || !msg) { err.hidden = false; err.textContent = 'Fill in your name, a valid email and a message, then try again.'; return; }
+    if (!d.get('consent')) { err.hidden = false; err.textContent = 'Tick the box to agree to the Privacy Policy, then send again.'; return; }
     err.hidden = true;
     const roles = d.getAll('role'); d.delete('role');
     if (vol) d.set('interested in', roles.join(', ') || 'Not specified');
@@ -451,7 +459,7 @@ function viewAuth(mode, notice) {
           <p class="form-err" role="alert" hidden></p>
           <button class="btn big" type="submit">${up ? 'Create account' : 'Log in'}</button>
           <p class="switch">${up ? 'Already a member? <a href="#login">Log in</a>' : 'New here? <a href="#signup">Create a free account</a>'}</p>
-          <p class="demo-note">Preview build: accounts are saved in this browser only, not on a server.</p>
+          <p class="demo-note">Accounts are saved in this browser only, never sent to us. See our <a href="../privacy.html">Privacy Policy</a>.${up ? ' Under 13? Ask a parent or guardian before signing up.' : ''}</p>
         </form>
       </div>
     </section>`,
@@ -557,6 +565,10 @@ function viewAccount() {
         <button class="btn ghost" data-reset>Reset my progress</button>
         <div class="confirm" hidden><p><strong>Reset all progress?</strong> This can't be undone.</p><div class="row"><button class="btn danger" data-yes>Yes, reset</button><button class="btn ghost" data-no>Keep my progress</button></div></div>
       </div>
+      <div class="card danger-zone"><h2>Delete my account</h2><p>Remove your name, email, password and progress from this browser. Your account only ever lived on this device, so this deletes it completely.</p>
+        <button class="btn ghost" data-del>Delete my account</button>
+        <div class="confirm" data-del-confirm hidden><p><strong>Delete your account and all progress?</strong> This can't be undone.</p><div class="row"><button class="btn danger" data-del-yes>Yes, delete everything</button><button class="btn ghost" data-del-no>Keep my account</button></div></div>
+      </div>
     </section>
     ${footer()}`,
     mount: el => {
@@ -564,6 +576,10 @@ function viewAccount() {
       $('[data-reset]', el).onclick = () => c.hidden = false;
       $('[data-no]', el).onclick = () => c.hidden = true;
       $('[data-yes]', el).onclick = () => { prog.reset(); route(); };
+      const dc = $('[data-del-confirm]', el);
+      $('[data-del]', el).onclick = () => dc.hidden = false;
+      $('[data-del-no]', el).onclick = () => dc.hidden = true;
+      $('[data-del-yes]', el).onclick = () => { auth.remove(); location.hash = '#home'; };
     }
   };
 }

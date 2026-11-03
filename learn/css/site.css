@@ -12,7 +12,7 @@
   --on-band: #EAF4F2;
   --on-band-muted: #A7C3C0;
   --aqua: #12B5B0;
-  --accent: #0A8F8B;
+  --accent: #066B67;  /* deep enough for 4.5:1 text contrast on the light page */
   --gold: #F2B705;
   --ok: #1E8A4F;
   --bad: #C2352B;
@@ -103,7 +103,7 @@ body[data-area="member"] .logo-mark, .foot .logo-mark { stroke: var(--aqua); }
 .nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
 .nav > a:not(.btn), .mega summary { text-decoration: none; padding: .55em .8em; border-radius: 999px; font-weight: 700; font-size: .95rem; color: inherit; opacity: .82; transition: opacity .2s, background .2s; cursor: pointer; }
 .nav > a:not(.btn):hover, .mega summary:hover { opacity: 1; background: color-mix(in srgb, currentColor 8%, transparent); }
-.nav > a[aria-current="page"] { opacity: 1; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+.nav > a[aria-current="page"] { opacity: 1; background: color-mix(in srgb, var(--accent) 9%, transparent); color: var(--accent); }
 body[data-area="member"] .nav > a[aria-current="page"] { color: var(--gold); background: rgba(242,183,5,.12); }
 .nav .quiet { font-weight: 400 !important; }
 .nav-sep { width: 1px; height: 22px; background: currentColor; opacity: .18; margin: 0 8px; }
@@ -281,7 +281,7 @@ input[type="range"] { padding: 0; accent-color: var(--accent); border: 0; backgr
 .plan-side { display: grid; gap: 16px; }
 @media (max-width: 820px) { .plan-sec { grid-template-columns: 1fr; } }
 .cat-block { display: grid; grid-template-columns: 1fr 2fr; gap: 28px; padding: 32px 0; border-top: 1px solid var(--line); }
-.cat-block-h h3 { font-size: 1.5rem; color: var(--cc); }
+.cat-block-h h3 { font-size: 1.5rem; color: var(--text); border-left: 6px solid var(--cc); padding-left: 12px; }  /* colour as a bar, text stays readable */
 .cat-block-h p { color: var(--muted); font-size: .95rem; }
 .catalog { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .catalog a { display: grid; grid-template-columns: 220px 1fr auto; gap: 16px; align-items: baseline; text-decoration: none; padding: 14px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); transition: border-color .2s, transform .25s var(--ease); }
@@ -581,3 +581,12 @@ input[type="range"] { padding: 0; accent-color: var(--accent); border: 0; backgr
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .ticker-track { animation: none; }
 }
+
+/* privacy consent on forms */
+.consent { display: flex; gap: 10px; align-items: flex-start; font-size: .92rem; color: var(--muted); }
+.consent input { margin-top: .3em; flex: none; width: 18px; height: 18px; }
+.consent a, .demo-note a, .foot-base a { color: var(--accent); }
+.foot-base a { color: inherit; text-decoration: underline; }
+
+/* game label sits on the light page here, so use the darker accent */
+.game-head .g-type { color: var(--accent); }

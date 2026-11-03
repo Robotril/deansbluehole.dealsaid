@@ -208,12 +208,27 @@
     var count = nav.querySelector('.gnav-count');
     function find(src) { for (var i = 0; i < list.length; i++) if (decodeURI(list[i].src) === decodeURI(src)) return i; return -1; }
     function update() { nav.hidden = list.length < 2 || idx < 0; count.textContent = (idx + 1) + ' / ' + list.length; }
-    window.openModal = function (src) { origImg(src); list = items(); idx = find(src); update(); };
+    // keyboard: every gallery photo/video can be focused with Tab and opened with Enter or Space
+    var lastFocus = null;
+    Array.prototype.forEach.call(grid.querySelectorAll('[onclick^="openModal"],[onclick^="openVideo"]'), function (el) {
+      var pic = el.querySelector('img'), isVid = /^openVideo/.test(el.getAttribute('onclick'));
+      el.tabIndex = 0; el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', (isVid ? 'Play video: ' : 'View photo: ') + ((pic && pic.alt) || "Dean's Blue Hole"));
+      el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lastFocus = el; el.click(); } });
+      el.addEventListener('click', function () { lastFocus = el; });
+    });
+    function altFor(src) {
+      var hit = Array.prototype.find.call(grid.querySelectorAll('[onclick^="openModal"] img'), function (im) { return decodeURI(im.getAttribute('src') || '') === decodeURI(src); });
+      return hit && hit.alt ? hit.alt : "Photo of Dean's Blue Hole";
+    }
+    var origClose = window.closeModal;
+    if (origClose) window.closeModal = function () { origClose(); if (lastFocus) lastFocus.focus(); };
+    window.openModal = function (src) { origImg(src); img.alt = altFor(src); list = items(); idx = find(src); update(); nav.querySelector('.next').focus({ preventScroll: true }); };
     window.openVideo = function (src) { origVid(src); list = items(); idx = find(src); update(); };
     function show(step) {
       if (idx < 0 || list.length < 2) return;
       idx = (idx + step + list.length) % list.length;
-      var it = list[idx]; (it.video ? origVid : origImg)(it.src); update();
+      var it = list[idx]; (it.video ? origVid : origImg)(it.src); if (!it.video) img.alt = altFor(it.src); update();
       var el = it.video ? vid : img;
       if (!reduce) { el.classList.remove('gslide-l', 'gslide-r'); void el.offsetWidth; el.classList.add(step > 0 ? 'gslide-r' : 'gslide-l'); }
     }

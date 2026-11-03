@@ -182,8 +182,8 @@ function footer() {
     <p class="foot-note">Grow your mental landscape. Free courses for all ages, built by the Deal's Aid non-profit organization.</p></div>
     <div><p class="foot-h">Explore</p><a href="#about">About</a><a href="#services">Services</a><a href="#driving">Driving Test Review</a><a href="#members">Premium Learning</a></div>
     <div><p class="foot-h">Get involved</p><a href="#volunteer">Volunteer</a><a href="#contact">Contact</a><a href="#signup">Create a free account</a><a href="../index.html">Dean's Blue Hole site</a></div>
-    <div><p class="foot-h">Reach us</p><a href="mailto:${EMAIL}">${EMAIL}</a><a href="tel:${TEL}">${PHONE}</a><span class="foot-small">Text or call</span><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a></div>
-  </div><div class="wrap foot-base"><span>© ${new Date().getFullYear()} Deal's Aid, a youth-led non-profit registered in The Bahamas · MGT</span><span>Accounts and progress are saved in this browser only. <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></span></div></footer>`;
+    <div><p class="foot-h">Reach us</p><a href="mailto:${EMAIL}">${EMAIL}</a><a href="tel:${TEL}">${PHONE}</a><span class="foot-small">Text or call</span><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a><a href="../accessibility.html">Accessibility</a></div>
+  </div><div class="wrap foot-base"><span>© ${new Date().getFullYear()} Deal's Aid, a youth-led non-profit registered in The Bahamas · MGT</span><span>Accounts and progress are saved in this browser only. <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a> · <a href="../accessibility.html">Accessibility</a></span></div></footer>`;
 }
 
 /* ---------- shared bits ---------- */

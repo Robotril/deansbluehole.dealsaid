@@ -3,7 +3,7 @@
   // Load the stylesheet from here so index.html only needs the one script line.
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'ocean.css?v=4';
+  css.href = 'ocean.css?v=5';
   document.head.appendChild(css);
   // Motion layer: its script waits for its stylesheet so the intro never flashes.
   // Hold the hero title back until it can surface (released by ocean-motion.js, or after 2.5 s regardless).

@@ -221,6 +221,7 @@ function msgForm(kind) {
       <label><input type="checkbox" name="role" value="Tutoring"> Tutoring</label>
       <label><input type="checkbox" name="role" value="Teaching a course"> Teaching a course</label></div></fieldset>` : ''}
     <div class="field"><label for="mf-msg">${vol ? 'When are you free, and what do you enjoy?' : 'Message'}</label><textarea id="mf-msg" name="message" rows="5" required></textarea></div>
+    <label class="consent" for="mf-age"><input type="checkbox" id="mf-age" name="age_check" value="13 or older, or a parent/guardian is helping"> <span>I'm 13 or older, or a parent or guardian is helping me send this.</span></label>
     <label class="consent" for="mf-consent"><input type="checkbox" id="mf-consent" name="consent" value="Agreed to privacy policy"> <span>I agree that Deal's Aid can use these details to reply to me, as described in the <a href="../privacy.html">Privacy Policy</a>.</span></label>
     <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
     <p class="form-err" role="alert" hidden></p>
@@ -236,6 +237,7 @@ function mountMsgForm(el, kind) {
     const d = new FormData(f), err = $('.form-err', f), btn = $('button[type="submit"]', f);
     const name = (d.get('name') || '').trim(), email = (d.get('email') || '').trim(), msg = (d.get('message') || '').trim();
     if (!name || !/^\S+@\S+\.\S+$/.test(email) || !msg) { err.hidden = false; err.textContent = 'Fill in your name, a valid email and a message, then try again.'; return; }
+    if (!d.get('age_check')) { err.hidden = false; err.textContent = 'Under 13? Please ask a parent or guardian to send this with you, then tick the age box.'; return; }
     if (!d.get('consent')) { err.hidden = false; err.textContent = 'Tick the box to agree to the Privacy Policy, then send again.'; return; }
     err.hidden = true;
     const roles = d.getAll('role'); d.delete('role');

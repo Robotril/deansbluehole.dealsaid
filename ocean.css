@@ -1,5 +1,5 @@
 /* Dean's Blue Hole: "The Descent" skin. Content untouched; load after Tailwind. */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Figtree:wght@400;500;600;700&display=swap');
+@import url('fonts/dive.css');
 
 :root{
   --abyss:#020d1c; --deep:#04223f; --lagoon:#0b6e8f; --turq:#4fe0e0; --foam:#f4fdff; --mist:#d9f1f8;

@@ -3,7 +3,7 @@
   // Load the stylesheet from here so index.html only needs the one script line.
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'ocean.css?v=5';
+  css.href = 'ocean.css?v=6';
   document.head.appendChild(css);
   // Motion layer: its script waits for its stylesheet so the intro never flashes.
   // Hold the hero title back until it can surface (released by ocean-motion.js, or after 2.5 s regardless).
@@ -14,9 +14,9 @@
   setTimeout(function () { hold.remove(); }, 2500);
   var mcss = document.createElement('link');
   mcss.rel = 'stylesheet';
-  mcss.href = 'ocean-motion.css?v=5';
+  mcss.href = 'ocean-motion.css?v=6';
   mcss.onload = mcss.onerror = function () {
-    var ms = document.createElement('script'); ms.src = 'ocean-motion.js?v=5'; document.body.appendChild(ms);
+    var ms = document.createElement('script'); ms.src = 'ocean-motion.js?v=6'; document.body.appendChild(ms);
   };
   document.head.appendChild(mcss);
 
@@ -47,9 +47,14 @@
   // Track which tab is showing so the hero only crowns the first page.
   var lx = innerWidth / 2, ly = innerHeight / 3, root = document.documentElement;
   addEventListener('pointerdown', function (e) { lx = e.clientX; ly = e.clientY; }, true);
+  // Torch follows the pointer. Writing a variable on <html> restyles the whole page, so do it at most once a
+  // frame, and not at all on lighter tiers (where the torch is switched off).
+  var mx = 0, my = 0, mq = false;
   addEventListener('pointermove', function (e) {
-    root.style.setProperty('--mx', e.clientX + 'px');
-    root.style.setProperty('--my', e.clientY + 'px');
+    if (window.FX && window.FX.tier !== 'full') return;
+    mx = e.clientX; my = e.clientY;
+    if (mq) return; mq = true;
+    requestAnimationFrame(function () { mq = false; root.style.setProperty('--mx', mx + 'px'); root.style.setProperty('--my', my + 'px'); });
   }, { passive: true });
   function ripple() {
     if (reduce) return;
@@ -106,14 +111,18 @@
   var caus = document.createElement('div'); caus.id = 'caustics'; document.body.appendChild(caus);
   var val = document.getElementById('gaugeVal');
 
+  // Depth gauge: at most one update per frame; the page-wide --depth variable only changes in visible steps.
+  var dq = false, lastDepth = -1, lastM = -1;
   function depth() {
+    dq = false;
     var max = document.documentElement.scrollHeight - innerHeight;
     var p = max > 0 ? Math.min(scrollY / max, 1) : 0;
-    document.documentElement.style.setProperty('--depth', p.toFixed(3));
+    var stepSize = window.FX && window.FX.tier !== 'full' ? 0.05 : 0.01, q = Math.round(p / stepSize) * stepSize;
+    if (q !== lastDepth) { lastDepth = q; document.documentElement.style.setProperty('--depth', q.toFixed(2)); }
     val.style.top = p * 100 + '%';
-    val.textContent = Math.round(p * 202) + ' m';
+    var m = Math.round(p * 202); if (m !== lastM) { lastM = m; val.textContent = m + ' m'; }
   }
-  addEventListener('scroll', depth, { passive: true });
+  addEventListener('scroll', function () { if (!dq) { dq = true; requestAnimationFrame(depth); } }, { passive: true });
   addEventListener('resize', depth);
   depth();
 
@@ -126,11 +135,20 @@
   }
   var back = mk(1), front = mk(45), bx = back.getContext('2d'), fx = front.getContext('2d');
   var W, H, bubbles = [], snow = [], things = [], frame = 0;
-  function size() { W = back.width = front.width = innerWidth; H = back.height = front.height = innerHeight; }
+  var FXo = window.FX || { tier: 'full', scale: 1, skip: function () { return false; }, onChange: function () {} };
+  // Canvases render at FX.scale of the screen's pixels (lower on slow devices); drawing code keeps using CSS pixels.
+  function size() {
+    var sc = FXo.scale; W = innerWidth; H = innerHeight;
+    [back, front].forEach(function (c) { c.width = Math.round(W * sc); c.height = Math.round(H * sc); });
+    bx.setTransform(sc, 0, 0, sc, 0, 0); fx.setTransform(sc, 0, 0, sc, 0, 0);
+  }
   size(); addEventListener('resize', size);
+  // Fewer particles on lighter tiers.
+  function budget() { return FXo.tier === 'full' ? { b: 30, s: 70 } : { b: 12, s: 24 }; }
+  FXo.onChange(function () { size(); var n = budget(); bubbles.length = Math.min(bubbles.length, n.b); snow.length = Math.min(snow.length, n.s); });
   function spawn(y) { return { x: Math.random() * W, y: y, r: 1.5 + Math.random() * 5, s: .25 + Math.random() * .7, w: Math.random() * 6.28 }; }
-  for (var i = 0; i < 30; i++) bubbles.push(spawn(Math.random() * innerHeight));
-  for (var j = 0; j < 70; j++) snow.push({ x: Math.random() * W, y: Math.random() * H, r: .6 + Math.random() * 1.4, s: .1 + Math.random() * .3 });
+  for (var i = 0; i < budget().b; i++) bubbles.push(spawn(Math.random() * innerHeight));
+  for (var j = 0; j < budget().s; j++) snow.push({ x: Math.random() * W, y: Math.random() * H, r: .6 + Math.random() * 1.4, s: .1 + Math.random() * .3 });
 
   // Red snapper, facing right, about 55 units long.
   function snapper(c, ph) {
@@ -231,32 +249,38 @@
   setTimeout(function () { school('back'); }, 4200);
 
   var puffs = [];                                  // bubble bursts from clicked fish
+  // On lighter tiers the sea life holds still while the page is being scrolled, so the scroll gets the processor.
+  var lastScroll = -1e9;
+  addEventListener('scroll', function () { lastScroll = performance.now(); }, { passive: true });
   (function loop() {
-    var d = parseFloat(root.style.getPropertyValue('--depth')) || 0;
     frame++;
+    // Lighter tiers draw every other frame; motion speed stays the same because each drawn frame moves twice as far.
+    if (FXo.skip(frame) || (FXo.tier !== 'full' && performance.now() - lastScroll < 180)) { requestAnimationFrame(loop); return; }
+    var k = FXo.tier === 'full' ? 1 : 2;
+    var d = lastDepth > 0 ? lastDepth : 0;
     bx.clearRect(0, 0, W, H); fx.clearRect(0, 0, W, H);
     snow.forEach(function (p) {
-      p.y += p.s; if (p.y > H) { p.y = -4; p.x = Math.random() * W; }
+      p.y += p.s * k; if (p.y > H) { p.y = -4; p.x = Math.random() * W; }
       bx.fillStyle = 'rgba(210,245,255,' + (.15 + d * .55) + ')'; bx.fillRect(p.x, p.y, p.r, p.r);
     });
     bubbles.forEach(function (b, i) {
-      b.y -= b.s; b.w += .02; b.x += Math.sin(b.w) * .35;
+      b.y -= b.s * k; b.w += .02 * k; b.x += Math.sin(b.w) * .35 * k;
       if (b.y < -10) bubbles[i] = spawn(H + 10);
       bx.beginPath(); bx.arc(b.x, b.y, b.r, 0, 6.283);
       bx.strokeStyle = 'rgba(190,240,255,.45)'; bx.lineWidth = 1; bx.stroke();
       bx.fillStyle = 'rgba(190,240,255,.07)'; bx.fill();
     });
     var nb = things.filter(function (t) { return t.layer === 'back'; }).length;
-    if (frame % 360 === 0 && nb < 3) school('back');
-    if (frame % 1500 === 0 && d > .25) bigShark('back');
+    if (frame % 360 < k && nb < 3) school('back');
+    if (frame % 1500 < k && d > .25) bigShark('back');
     things = things.filter(function (t) {
       var c = t.layer === 'front' ? fx : bx;
       t.boost = 1 + (t.boost - 1) * .975;
-      t.x += t.v * t.dir * t.boost; t.ph = (t.ph || 0) + (t.kind === 'shark' ? .06 : .25) * t.boost;
+      t.x += t.v * t.dir * t.boost * k; t.ph = (t.ph || 0) + (t.kind === 'shark' ? .06 : .25) * t.boost * k;
       if (t.kind === 'school') {
         t.m.forEach(function (f) {
-          f.p += .28 * t.boost;
-          f.ox += f.vx; f.oy += f.vy; f.vx *= .94; f.vy *= .94;
+          f.p += .28 * t.boost * k;
+          f.ox += f.vx * k; f.oy += f.vy * k; f.vx *= .94; f.vy *= .94;
           f.sx = t.x + f.dx + f.ox; f.sy = t.y + f.dy + f.oy + Math.sin(f.p * .6) * 5;
           put(c, t.fn, f.sx, f.sy, t.s, f.vx ? (f.vx > 1.5 ? 1 : f.vx < -1.5 ? -1 : t.dir) : t.dir, t.a, f.p);
         });
@@ -264,7 +288,7 @@
       return t.x > -700 && t.x < W + 700;
     });
     puffs = puffs.filter(function (b) {
-      b.y += b.vy; b.x += b.vx; b.vy *= .97; b.vx *= .95; b.life -= .016;
+      b.y += b.vy * k; b.x += b.vx * k; b.vy *= .97; b.vx *= .95; b.life -= .016 * k;
       fx.beginPath(); fx.arc(b.x, b.y, b.r, 0, 6.283);
       fx.strokeStyle = 'rgba(220,250,255,' + Math.max(0, b.life) + ')'; fx.lineWidth = 1.4; fx.stroke();
       return b.life > 0;

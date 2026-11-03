@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lite = () => !window.FX || window.FX.tier !== 'full';   // perf.js: slower devices get the calm version
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -138,7 +139,7 @@
       slot.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`; hero.el.style.rotate = `${Math.max(-18, Math.min(18, vx * 1.6)).toFixed(1)}deg`; // only the robot tilts, its speech bubble stays level
       const nowFlying = speed > .35 || away > 6;
       if (nowFlying !== flying) { flying = nowFlying; hero.el.classList.toggle('fly', flying); if (!flying) hero.act('hop', 750); }
-      if (flying && speed > 1.2 && now - lastSpark > 40 && sparks.length < 26) { lastSpark = now; spark(); }
+      if (flying && !lite() && speed > 1.2 && now - lastSpark > 40 && sparks.length < 26) { lastSpark = now; spark(); }
       if (now - idle > 2600 && (tx || ty)) home();
       if (speed > .02 || away > .5 || tx || ty) raf = requestAnimationFrame(tick);
     }
@@ -148,15 +149,18 @@
       const hb = heroEl.getBoundingClientRect(), w = slot.offsetWidth, h = slot.offsetHeight;
       const hx = slot.offsetLeft, hy = slot.offsetTop;                       // home position inside the hero
       const px = e.clientX - hb.left, py = e.clientY - hb.top;
-      const wantX = Math.max(hb.width * .56, Math.min(hb.width - w - 48, px + 70));
-      const wantY = Math.max(200, Math.min(hb.height - h - 24, py - h * .45)); // leave headroom for the speech bubble
+      const band = $('.hx-band', heroEl), maxY = band ? band.offsetHeight - h * .55 : hb.height - h - 24;
+      const wantX = Math.max(band ? 16 : hb.width * .56, Math.min(hb.width - w - 48, px + 70));
+      const wantY = Math.max(band ? 40 : 200, Math.min(maxY, py - h * .45)); // stay over the photo band, clear of the headline
       tx = wantX - hx; ty = wantY - hy; idle = performance.now(); kick();
     });
     heroEl.addEventListener('pointerleave', () => { home(); kick(); });
     /* hero parallax: the headline drifts up and fades as you scroll */
     const inner = $('.hero-in', heroEl);
+    if (inner) {
     const onScroll = () => { if (!heroEl.isConnected) { removeEventListener('scroll', onScroll); return; } const s = Math.min(scrollY, 700); inner.style.transform = `translateY(${(s * .28).toFixed(1)}px)`; inner.style.opacity = (1 - s / 820).toFixed(3); };
-    addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('scroll', onScroll, { passive: true });
+    }
   }
 
   /* ---------- corner buddy on every other page ---------- */
@@ -188,7 +192,7 @@
     document.body.appendChild(w); setTimeout(() => w.remove(), 900);
   }
   function kineticHeadings(observe) {
-    $$('#view :is(.sec-head h2, .split h2, .cta-band h2, .m-cat-h h2)').forEach(h => {
+    $$('#view :is(.sec-head h2, .split h2, .cta-band h2, .m-cat-h h2, .chap h2, .close h2, .grow h2, .pick h2, .mo-h)').forEach(h => {
       if (h.children.length || h.classList.contains('kin')) return;
       if (h.getBoundingClientRect().top + scrollY < innerHeight) return;
       h.innerHTML = h.textContent.trim().split(/\s+/).map((wd, i) => `<span class="wm"><span class="wi" style="--wi:${i}">${wd}</span></span>`).join(' ');
@@ -197,7 +201,7 @@
   }
   function onRoute() {
     const hash = location.hash.slice(1) || 'home', kind = /-(g?\d+)$/.test(hash) ? 'detail' : hash.replace(/-.*/, '');
-    if (!firstRoute && !reduce && kind !== 'detail' && kind !== lastKind) wipe();
+    if (!firstRoute && !reduce && !lite() && kind !== 'detail' && kind !== lastKind) wipe();
     firstRoute = false; lastKind = kind;
     const isHome = !!$('#view .robo-slot');
     if (isHome) { mountHero(); if (wrap) wrap.classList.add('hidden'); }
@@ -207,10 +211,10 @@
 
     if (reduce || !('IntersectionObserver' in window)) return;
     if (io) io.disconnect();
-    io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add(en.target.classList.contains('kin') ? 'kin-in' : 'rv-in'); io.unobserve(en.target); } }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+    io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('rv-in'); if (en.target.classList.contains('kin')) en.target.classList.add('kin-in'); io.unobserve(en.target); } }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
     kineticHeadings(h => io.observe(h));
     const vh = innerHeight, groups = new Map();
-    $$('#view :is(.aud-card, .cat-tile, .steps li, .values article, .big-stats > div, .ccard, .lessons li, .catalog li, .faq details, .lang-card, .game-card, .roles .card, .plan, .plan-side .card, .drive-feature > *, .sec-head, .split > *)').forEach(el => {
+    $$('#view :is(.aud-card, .cat-tile, .steps li, .values article, .big-stats > div, .ccard, .lessons li, .catalog li, .faq details, .lang-card, .game-card, .roles .card, .plan, .plan-side .card, .drive-feature > *, .sec-head, .split > *, .chap-head p, .chap-list li, .mo, .duo-row, .gt, .grow-steps li, .stair-pics > div, .stair-note, .pick-btns, .close-row)').forEach(el => {
       if (el.closest('.rv')) return;
       const top = el.getBoundingClientRect().top + scrollY; if (top < vh) return; // measured from page top: the view scrolls up smoothly on route change
       const n = groups.get(el.parentNode) || 0; groups.set(el.parentNode, n + 1);
@@ -219,13 +223,34 @@
   }
   addEventListener('mgt:route', onRoute);
 
+  /* homepage extras: the large robot in the showcase, and the one moving picture */
+  function homeExtras() {
+    $$('#view .robo-art').forEach(a => { if (!a.firstChild) a.innerHTML = SVG.replace('<svg ', '<svg class="robo-svg" '); });
+    const cell = $('#view .m-vid'), vid = cell && $('video', cell);
+    if (!vid || reduce || lite()) return;          // slower devices and reduced motion keep the still frame
+    const io2 = new IntersectionObserver(es => es.forEach(en => {
+      if (en.isIntersecting) { if (!vid.getAttribute('src')) vid.src = vid.dataset.src; vid.play().then(() => cell.classList.add('playing')).catch(() => {}); }
+      else vid.pause();
+    }), { threshold: .2 });
+    io2.observe(cell);
+  }
+  addEventListener('mgt:route', homeExtras);
+  document.addEventListener('click', e => {
+    const t = e.target.closest && e.target.closest('[data-top]');
+    if (t) { e.preventDefault(); scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }
+  });
+  addEventListener('mgt:picked', e => {
+    if (hero && hero.el.isConnected) { hero.act('hop', 750); hero.speak('Nice! ' + e.detail.first + ' is a great first pick.', 3600); }
+  });
+
   /* tilt + light, shared handler */
   if (!reduce) document.addEventListener('pointermove', e => {
+    if (lite()) return;
     const c = e.target.closest && e.target.closest('.tilt'); if (!c) return;
     const b = c.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
     c.style.setProperty('--ry', ((x - .5) * 10).toFixed(2) + 'deg'); c.style.setProperty('--rx', ((.5 - y) * 8).toFixed(2) + 'deg');
     c.style.setProperty('--sx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--sy', (y * 100).toFixed(1) + '%');
   }, { passive: true });
 
-  onRoute(); // app.js rendered the first view before this file loaded
+  onRoute(); homeExtras(); // app.js rendered the first view before this file loaded
 })();

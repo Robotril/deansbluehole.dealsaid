@@ -152,3 +152,8 @@ body:not([data-tab="safety"]) .dive-robo{transform:translateY(110%);pointer-even
   #portals button::before{animation:none}
   .hero-depth b::before,.hero-depth b::after{display:none}
 }
+
+/* adaptive graphics: on lighter tiers the wave edge, sonar ping and portal water stand still */
+[data-fx="lite"] #hero .waves svg, [data-fx="lite"] .hero-depth b::before, [data-fx="lite"] .hero-depth b::after,
+[data-fx="lite"] #portals button::before, [data-fx="lite"] .dive-robo .bub { animation: none !important; }
+[data-fx="lite"] .hero-depth b::before, [data-fx="lite"] .hero-depth b::after, [data-fx="lite"] .dive-robo .bub { display: none; }

@@ -159,7 +159,7 @@ function header(area, h) {
       <a href="#home"${on('home')}>Home</a>
       <a href="#about"${on('about')}>About</a>
       <a href="#services"${on('services')}>Services</a>
-      <a href="#driving"${on('driving')}>Driving Test Review</a>
+      <a href="#driving"${on('driving')}>Driver's Test Review</a>
       <a href="#volunteer"${on('volunteer')}>Volunteer</a>
       <a href="#contact"${on('contact')}>Contact</a>
       <a href="../index.html" class="quiet">Dean's Blue Hole</a>
@@ -177,15 +177,24 @@ function logoMark() {
   return `<svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M3 30c6-9 10-13 15-13s8 6 12 6 5-3 7-5" /><path d="M3 23c5-8 9-12 14-12s9 6 13 6 5-3 7-5" opacity=".55"/><path d="M3 36c7-6 11-9 16-9s7 4 11 4 5-2 7-3" opacity=".3"/></svg>`;
 }
 function footer() {
-  return `<footer class="foot"><div class="wrap foot-grid">
-    <div><a class="logo" href="#home">${logoMark()}<span class="logo-word">MGT</span></a>
-    <p class="foot-note">Grow your mental landscape. Free courses for all ages, built by the Deal's Aid non-profit organization.</p></div>
-    <div><p class="foot-h">Explore</p><a href="#about">About</a><a href="#services">Services</a><a href="#driving">Driving Test Review</a><a href="#members">Premium Learning</a></div>
-    <div><p class="foot-h">Get involved</p><a href="#volunteer">Volunteer</a><a href="#contact">Contact</a><a href="#signup">Create a free account</a><a href="../index.html">Dean's Blue Hole site</a></div>
-    <div><p class="foot-h">Reach us</p><a href="mailto:${EMAIL}">${EMAIL}</a><a href="tel:${TEL}">${PHONE}</a><span class="foot-small">Text or call</span><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a><a href="../accessibility.html">Accessibility</a></div>
-  </div><div class="wrap foot-base"><span>© ${new Date().getFullYear()} Deal's Aid, a youth-led non-profit registered in The Bahamas · MGT</span><span>Accounts and progress are saved in this browser only. <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a> · <a href="../accessibility.html">Accessibility</a></span></div></footer>`;
+  // Name first, ways to reach us under it, small links to the right. Same on every page.
+  return `<footer class="foot"><div class="wrap">
+    <div class="foot-name" aria-hidden="true"></div>
+    <div class="foot-row">
+      <ul class="foot-places">
+        <li><a href="mailto:${EMAIL}">${EMAIL}</a></li>
+        <li><a href="tel:${TEL}">${PHONE}</a></li>
+        <li><a href="../index.html">Dean's Blue Hole site</a></li>
+      </ul>
+      <nav class="foot-links" aria-label="Footer">
+        <div><p class="foot-h">Learn</p><a href="#about">About</a><a href="#services">Services</a><a href="#driving">Driver's Test Review</a><a href="#members">Premium Learning</a></div>
+        <div><p class="foot-h">Get involved</p><a href="#volunteer">Volunteer</a><a href="#contact">Contact</a><a href="#signup">Create a free account</a></div>
+        <div><p class="foot-h">Policies</p><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a><a href="../accessibility.html">Accessibility</a></div>
+      </nav>
+    </div>
+    <div class="foot-base"><span>© ${new Date().getFullYear()} Deal's Aid, a youth-led non-profit registered in The Bahamas. Accounts and progress stay in this browser.</span><a href="#home" data-top>Back to top</a></div>
+  </div></footer>`;
 }
-
 /* ---------- shared bits ---------- */
 // Headline letters that grow up out of the landscape; the last word gets the highlight.
 function kinetic(words, hlFrom) {
@@ -260,69 +269,144 @@ function mountMsgForm(el, kind) {
 
 /* ================= PUBLIC VIEWS ================= */
 function viewHome() {
-  const tick = COURSES.map(c => `<span><b>${c.title}</b> ${c.tag}</span>`).join('');
-  const drive = byId.driving;
+  const chapters = [
+    ['youth', 'Youth', 'Math and English for elementary and primary students. Short lessons and games that make practice feel like play.'],
+    ['wellness', 'Cooking & diet', 'Food safety, flavour and sauces, then diets, workouts and what actually builds muscle.'],
+    ['money', 'Money', 'Investing from the first dollar, and building a small business from the first idea.'],
+    ['creative', 'Life skills', 'First aid, IT, film, stories, the road, the garden, the hive and the henhouse.'],
+    ['lang', 'Languages', 'Spanish, French and American Sign Language, with real phrases from day one.']
+  ];
+  const courseRow = c => `<li data-ages="${esc(c.ages)}"><h3 class="cr-t"><a href="#${base(c)}">${c.title}</a></h3><p class="cr-d">${c.tag} <span class="cr-m">${plural(c.flat.length, 'lesson')}, ${plural(c.games.length, 'game')}, ${c.ages.toLowerCase().replace(/^(grades|ages|learners)/, 'for $1')}.</span></p><p class="cr-pick">Good first pick</p></li>`;
+  const chapterHTML = chapters.map(([id, name, line], i) => {
+    const cs = COURSES.filter(c => c.cat === id);
+    return `<section class="chap chap-${id}" id="ch-${id}" aria-labelledby="ch-${id}-h">
+      <div class="wrap chap-in">
+        <div class="chap-head"><h2 id="ch-${id}-h">${name}</h2><p>${line}</p></div>
+        <ul class="chap-list">${cs.map(courseRow).join('')}</ul>
+      </div></section>`;
+  }).join('');
+  const lead = byId.math, firstLesson = lead.flat[0];
   return {
-    area: 'public', title: 'Grow your mental landscape',
+    area: 'public', title: 'Free courses for every age',
     html: `
-    <section class="hero band">
-      <canvas id="hero-topo" aria-hidden="true"></canvas>
-      <div class="wrap hero-in">
-        <p class="eyebrow rise" style="--d:0">Free learning from the Deal's Aid non-profit</p>
-        <h1 class="hero-h" aria-label="Grow your mental landscape.">${kinetic(['Grow', 'your', 'mental', 'landscape.'], 3)}</h1>
-        <p class="hero-p rise" style="--d:4">Welcome, fellow learners. Reading, writing and math, cooking and money, film, first aid, languages and more. Courses for kids, teens and adults, and every one of them is free.</p>
-        <div class="row rise" style="--d:5"><a class="btn big" href="#signup">Create a free account</a><a class="btn ghost big on-dark" href="#driving">Try Driving Test Review, no sign-up</a></div>
-        <dl class="hero-stats rise" style="--d:6"><div><dt>Courses</dt><dd>${COURSES.length}</dd></div><div><dt>Lessons</dt><dd>${TOTAL_LESSONS}</dd></div><div><dt>Games &amp; quizzes</dt><dd>${TOTAL_GAMES + TOTAL_LESSONS}</dd></div><div><dt>Cost</dt><dd>$0</dd></div></dl>
+    <section class="hero hx" aria-labelledby="hx-title">
+      <div class="hx-band" aria-hidden="true">
+        <img class="m-a" src="img/hole.jpg" alt="" width="1400" height="1050">
+        <span class="m-t t-gold"></span>
+        <img class="m-b" src="img/diver.jpg" alt="" width="1200" height="675">
+        <span class="m-t t-aqua"></span>
+        <div class="m-c m-vid"><img src="img/turtle-loop.jpg" alt="" width="640" height="360"><video muted loop playsinline preload="none" poster="img/turtle-loop.jpg" data-src="img/turtle-loop.mp4"></video></div>
+        <span class="m-t t-coral"></span>
+        <img class="m-d" src="img/snapper.jpg" alt="" width="1200" height="675">
+        <span class="m-t t-lime"></span>
+        <span class="m-t t-conch"></span>
+        <span class="m-t t-ink"></span>
+      </div>
+      <div class="wrap hx-body">
+        <p class="hx-stand">Reading, math, money, first aid, languages and more, made by Deal's Aid in The Bahamas. No fees, no card, no catch.</p>
+        <div class="hx-main">
+          <h1 id="hx-title" class="hx-title"><span class="ml"><span>Free courses</span></span> <span class="ml"><span>for every age</span></span></h1>
+          <div class="hx-act"><a class="btn big" href="#signup">Create a free account</a><a class="tlink" href="#driving">Try Driver's Test Review, no sign-up</a></div>
+        </div>
       </div>
       <div class="robo-slot"></div>
-      <p class="hero-hint" aria-hidden="true">Move across the map. The landscape rises to meet you.</p>
-    </section>
-    <div class="ticker" aria-label="Course list"><div class="ticker-track">${tick}${tick}</div></div>
-
-    <section class="wrap sec split">
-      <div><p class="eyebrow">Start your educational journey today</p>
-      <h2>Learning that fits every age, and costs nothing.</h2></div>
-      <div class="prose"><p>Investing your time in MGT builds real skills. Join and you can master reading, writing and mathematics. Our interactive, AI-assisted programs are written for children, teenagers and adults, so success is within reach for everyone.</p>
-      <p>Beyond the core subjects there are courses on cooking, money, health, technology and more. Every lesson ends with a quick check, and every course has games to practise with.</p>
-      <a class="link-arrow" href="#services">See every course on the Services page</a></div>
     </section>
 
-    <section class="wrap sec">
-      <div class="aud">
-        <article class="aud-card"><span class="aud-n">5–11</span><h3>Kids</h3><p>Elementary and primary math, nouns and verbs, sentences and paragraphs. Short lessons and games that make practice feel like play.</p></article>
-        <article class="aud-card"><span class="aud-n">12–18</span><h3>Teens</h3><p>Essays, storytelling, driving test review, first aid, IT and a first look at investing and small business.</p></article>
-        <article class="aud-card"><span class="aud-n">18+</span><h3>Adults</h3><p>Diet and fitness, cooking, investing, languages, gardening, beekeeping and chickens. Learn for your family, your work or yourself.</p></article>
+    <section class="stair" aria-labelledby="stair-h">
+      <div class="wrap stair-in">
+        <h2 id="stair-h" class="stair-h">Who makes MGT</h2>
+        <p class="stair-text"><span>We started with food</span> <span>at Retirement Park,</span> <span>built a library</span> <span>off Market Street.</span> <span>Now school is online.</span></p>
+        <figure class="stair-pics">
+          <div><img src="img/robert.jpg" alt="Robert Deal III on a boat in The Bahamas" width="900" height="1200" loading="lazy"><figcaption>Robert Deal III, president</figcaption></div>
+          <div><img src="img/rickia.jpg" alt="Rickia Johnson smiling" width="900" height="1114" loading="lazy"><figcaption>Rickia Johnson, secretary</figcaption></div>
+        </figure>
+        <p class="stair-note">Deal's Aid is a youth-led non-profit registered in The Bahamas in 2024. MGT is its free school, open to anyone with a browser.</p>
       </div>
     </section>
 
-    <section class="band-soft"><div class="wrap sec">
-      <div class="sec-head"><p class="eyebrow">Premium Learning, free with an account</p><h2>Five areas, ${COURSES.length} courses</h2></div>
-      <div class="cat-grid">${CATS.map(cat => { const cs = COURSES.filter(c => c.cat === cat.id); return `<a class="cat-tile" href="#services" style="--cc:var(--c-${cat.id})"><span class="cat-count">${cs.length}</span><h3>${cat.name}</h3><p>${cs.map(c => c.title).join(' · ')}</p></a>`; }).join('')}</div>
-    </div></section>
+    <section class="pick" aria-labelledby="pick-h">
+      <div class="wrap pick-in">
+        <h2 id="pick-h">Who's learning?</h2>
+        <div class="pick-btns" role="group" aria-label="Show courses for">
+          <button type="button" class="pk" data-learner="kid" aria-pressed="false">A kid, 5 to 11</button>
+          <button type="button" class="pk" data-learner="teen" aria-pressed="false">A teen</button>
+          <button type="button" class="pk" data-learner="adult" aria-pressed="false">An adult</button>
+        </div>
+        <p class="pick-out" role="status" aria-live="polite">Pick one and the five chapters below sort themselves, best fits first.</p>
+      </div>
+    </section>
+    <div class="chapters" id="chapters">${chapterHTML}</div>
 
-    <section class="wrap sec drive-feature">
-      <div class="drive-art" aria-hidden="true">${signSVG('stop')}${signSVG('giveway')}${signSVG('roundabout')}</div>
-      <div><p class="eyebrow">Open to everyone</p><h2>Driver's Test Review</h2>
-      <p class="lead">Learn the basics of driving, road conduct and procedures in The Bahamas. Keep left, master the roundabout, know your signs. ${drive ? plural(drive.flat.length, 'lesson') : ''}, quizzes after every lesson and a road-sign game. No account needed.</p>
-      <a class="btn" href="#driving">Start the review</a></div>
+    <section class="mosaic" aria-labelledby="mos-h">
+      <div class="wrap mos-grid">
+        <h2 id="mos-h" class="mo mo-h">Inside every course</h2>
+        <figure class="mo mo-pic"><img src="img/wreck.jpg" alt="A shipwreck on the sandy sea floor, photographed on a Deal's Aid dive" width="1400" height="788" loading="lazy"><figcaption>Photographed on one of our dives</figcaption></figure>
+        <div class="mo mo-fig"><b>${TOTAL_LESSONS}</b><span>lessons across ${COURSES.length} courses</span></div>
+        <ul class="mo mo-list"><li>Read the lesson</li><li>Pass the quick check</li><li>Play the game</li><li>Pick up where you left off</li></ul>
+        <p class="mo mo-s1">A quiz closes every lesson. Score 60% and it's done.</p>
+        <p class="mo mo-s2">Matching, flashcards, sorting, sprints: ${TOTAL_GAMES} games to practise with.</p>
+        <p class="mo mo-s3">Free. No card, no trial, no ads.</p>
+      </div>
     </section>
 
-    <section class="wrap sec">
-      <div class="sec-head"><p class="eyebrow">How it works</p><h2>From sign-up to mentor in four steps</h2></div>
-      <ol class="steps">
-        <li><h3>Create a free account</h3><p>Just a name, an email and a password. No payment details, ever.</p></li>
-        <li><h3>Pick a course</h3><p>Start anywhere. Your progress is saved lesson by lesson.</p></li>
-        <li><h3>Learn, check, play</h3><p>Read the lesson, answer the quick check, then lock it in with a game.</p></li>
-        <li><h3>Teach someone</h3><p>Study alone or as a group, then use what you learned to mentor the youth around you.</p></li>
-      </ol>
+    <section class="duo" aria-labelledby="duo-h">
+      <div class="duo-p duo-a">
+        <h2 id="duo-h">Two ways to start</h2>
+        <div class="duo-obj">${signSVG('stop')}</div>
+        <div class="duo-row"><div><p class="duo-name">Driver's Test Review</p><p class="duo-fact">Bahamas road rules in ${byId.driving.flat.length} lessons, open to everyone</p></div>
+          <div class="duo-act"><a class="btn sm" href="#driving">Start the review</a><a class="btn sm ghost" href="#driving-g1">Play the sign game</a></div></div>
+      </div>
+      <div class="duo-p duo-b">
+        <div class="duo-obj robo-art" aria-hidden="true"></div>
+        <div class="duo-row"><div><p class="duo-name">Premium Learning</p><p class="duo-fact">All ${COURSES.length} courses and a robot that cheers you on</p></div>
+          <div class="duo-act"><a class="btn sm" href="#signup">Create a free account</a><a class="btn sm ghost" href="#login">Log in</a></div></div>
+      </div>
     </section>
 
-    <section class="band"><div class="wrap sec split cta-band">
-      <div><h2>Let's connect.</h2><p class="on-dark-p">Need help with the website or a course? We're here every step of the way.</p></div>
-      <div class="contact-mini"><a href="mailto:${EMAIL}"><span>Email</span>${EMAIL}</a><a href="tel:${TEL}"><span>Text or call</span>${PHONE}</a><a href="#volunteer"><span>Students</span>Volunteer with Deal's Aid</a></div>
-    </div></section>
+    <section class="grow" aria-labelledby="grow-h">
+      <div class="wrap grow-in">
+        <h2 id="grow-h">How a lesson goes</h2>
+        <div class="grow-tiles">
+          <div class="gt gt-1"><div class="ui ui-read" data-ui><b>${firstLesson.t}</b><span></span><span></span><span class="short"></span></div></div>
+          <div class="gt gt-2"><div class="ui ui-quiz" data-ui><b>${firstLesson.q[0][0]}</b><span>${firstLesson.q[0][1][0]}</span><span class="ok">${firstLesson.q[0][1][1]}<i class="tick" aria-label="correct"></i></span><span>${firstLesson.q[0][1][2]}</span></div></div>
+          <div class="gt gt-3"><div class="ui ui-game" data-ui>${lead.games[1].pairs.slice(0, 6).map((p, i) => `<span class="${i % 3 === 1 ? 'ok' : ''}">${i % 2 ? p[1] : p[0]}</span>`).join('')}</div></div>
+        </div>
+        <ol class="grow-steps">
+          <li><b>Read it</b><span>Short lessons with examples from Bahamian life, in plain words.</span></li>
+          <li><b>Check it</b><span>A quick quiz tells you what stuck, and explains what didn't.</span></li>
+          <li><b>Play it</b><span>A game locks it in. Your progress saves on this device.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="close" aria-labelledby="close-h">
+      <div class="wrap close-in">
+        <h2 id="close-h">Start free, at any age</h2>
+        <div class="close-row"><p>Make an account in under a minute. Every course, every game, nothing to pay.</p><a class="btn big" href="#signup">Create a free account</a></div>
+      </div>
+    </section>
     ${footer()}`,
-    mount: el => heroTopo($('#hero-topo', el), $('.hero', el))
+    mount: el => {
+      const AGES = { kid: ['Grades 1–6', 'All ages', 'Ages 10+'], teen: ['Ages 10+', 'Ages 12+', 'Learners 16+', 'Teens & adults', 'All ages'], adult: ['Ages 12+', 'Learners 16+', 'Teens & adults', 'All ages', 'Ages 10+'] };
+      const out = $('.pick-out', el), wrap = $('#chapters', el);
+      $$('.pk', el).forEach(b => b.onclick = () => {
+        const who = b.dataset.learner, fits = AGES[who];
+        $$('.pk', el).forEach(x => x.setAttribute('aria-pressed', x === b));
+        wrap.dataset.learner = who;
+        const picks = [];
+        $$('.chap-list', el).forEach(ul => {
+          const lis = $$('li', ul);
+          lis.sort((a, b2) => (fits.includes(b2.dataset.ages) ? 1 : 0) - (fits.includes(a.dataset.ages) ? 1 : 0)).forEach(li => ul.appendChild(li));
+          lis.forEach(li => { const ok = fits.includes(li.dataset.ages); li.classList.toggle('fit', ok); li.classList.toggle('nofit', !ok); });
+          const first = lis.find(li => fits.includes(li.dataset.ages)); if (first) picks.push(first);
+        });
+        $$('.chap-list li', el).forEach(li => li.classList.remove('first'));
+        picks.forEach(li => li.classList.add('first'));
+        const names = picks.slice(0, 3).map(li => $('.cr-t', li).textContent);
+        out.textContent = `For ${b.textContent.toLowerCase()}: start with ${names[0]}, then try ${names[1]} or ${names[2]}. Each chapter now shows its best fits first.`;
+        dispatchEvent(new CustomEvent('mgt:picked', { detail: { who, first: names[0] } }));
+      });
+    }
   };
 }
 

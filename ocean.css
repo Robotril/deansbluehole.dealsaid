@@ -199,3 +199,13 @@ body.over-fish, body.over-fish *{cursor:pointer!important}
   box-shadow:0 0 30px -6px rgba(79,224,224,.55);opacity:0;transform:translateY(10px) scale(.94);transition:opacity .25s,transform .4s cubic-bezier(.3,1.5,.5,1)}
 .fishfact.on{opacity:1;transform:none}
 .fishfact b{display:block;color:var(--turq);font:700 1rem 'Fraunces',Georgia,serif;margin-bottom:2px}
+
+/* ===== adaptive graphics (perf.js sets data-fx) =====
+   lite: keep the fish and the look, drop the full-screen layers that software-rendered Chromebooks pay for every frame */
+[data-fx="lite"] #caustics, [data-fx="off"] #caustics { display: none; }
+[data-fx="lite"] body::before, [data-fx="off"] body::before { animation: none; }
+[data-fx="lite"] body::after, [data-fx="off"] body::after { background: radial-gradient(circle 46vmax at 50% 38%, transparent 0, rgba(0,5,12,calc(var(--depth,0)*.62)) 100%); }
+[data-fx="lite"] #hero img, [data-fx="off"] #hero img { animation: none; }
+[data-fx="lite"] *, [data-fx="off"] * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+[data-fx="lite"] header.bg-white { background: rgba(2,18,34,.94) !important; }
+[data-fx="lite"] main .bg-white.rounded-2xl { background: rgba(2,20,38,.92) !important; }

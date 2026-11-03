@@ -1,0 +1,5 @@
+# Found a security problem on dealsaid.org? Please tell us privately first.
+Contact: mailto:dealsaid54@gmail.com
+Expires: 2027-11-03T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://dealsaid.org/.well-known/security.txt

@@ -126,6 +126,10 @@ body:not([data-tab="safety"]) .dive-robo{transform:translateY(110%);pointer-even
 @media(max-width:760px){.dive-robo{width:74px}.dive-robo .robo-say{min-width:170px;max-width:230px}}
 
 
+/* video description under the player */
+.gdesc{max-width:56ch;margin:12px auto 0;color:var(--mist);font-size:.95rem;line-height:1.55;text-align:center}
+.gdesc[hidden]{display:none}
+
 /* ---------- 8. gallery viewer: arrows, counter, swipe ---------- */
 .gnav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:14px}
 .gnav[hidden]{display:none}

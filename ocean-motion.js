@@ -192,6 +192,19 @@
     var grid = document.querySelector('#gallery');
     if (!modal || !grid || !window.openModal) return;
     var box = modal.firstElementChild, img = document.getElementById('modalImg'), vid = document.getElementById('modalVideo');
+    // Written descriptions for the videos. They have no speech (only natural underwater sound), so no captions are needed.
+    var VIDEO_DESC = {
+      'videos/dive-1.mp4': 'A sunken shipwreck rests on white sand. The camera glides along its deck, past pipes and railings covered in sea growth, while divers swim above.',
+      'videos/dive-2.mp4': 'A sea turtle swims through deep blue water, then glides along a reef wall covered in sea fans and coral.',
+      'videos/dive-3.mp4': 'A sea turtle rests on the sandy bottom among sea rods and coral, then lifts off and swims slowly away over the sand.',
+      'videos/dive-4.mp4': 'A shark cruises through open blue water. A diver in a mask breathes out a stream of bubbles as small blue fish swim past, then the camera explores the reef, where long lobster antennae poke out of a crevice.'
+    };
+    var desc = document.createElement('p'); desc.id = 'gdesc'; desc.className = 'gdesc'; desc.hidden = true;
+    vid.setAttribute('aria-describedby', 'gdesc');
+    function describe(src, isVideo) {
+      var t = isVideo && VIDEO_DESC[decodeURI(src)];
+      desc.hidden = !t; desc.textContent = t ? t + ' Natural underwater sound, no speech.' : '';
+    }
     function items() {
       return Array.prototype.map.call(grid.querySelectorAll('[onclick^="openModal"],[onclick^="openVideo"]'), function (el) {
         var m = el.getAttribute('onclick').match(/^(openModal|openVideo)\('([^']+)'\)/);
@@ -203,6 +216,7 @@
     nav.innerHTML = '<button type="button" class="gnav-btn prev" aria-label="Previous photo"><i class="fas fa-chevron-left"></i></button>' +
       '<span class="gnav-count" aria-live="polite"></span>' +
       '<button type="button" class="gnav-btn next" aria-label="Next photo"><i class="fas fa-chevron-right"></i></button>';
+    box.appendChild(desc);
     box.appendChild(nav);
     var hint = document.createElement('p'); hint.className = 'gnav-hint'; hint.textContent = 'Swipe to see more'; box.appendChild(hint);
     var count = nav.querySelector('.gnav-count');
@@ -223,12 +237,12 @@
     }
     var origClose = window.closeModal;
     if (origClose) window.closeModal = function () { origClose(); if (lastFocus) lastFocus.focus(); };
-    window.openModal = function (src) { origImg(src); img.alt = altFor(src); list = items(); idx = find(src); update(); nav.querySelector('.next').focus({ preventScroll: true }); };
-    window.openVideo = function (src) { origVid(src); list = items(); idx = find(src); update(); };
+    window.openModal = function (src) { origImg(src); describe(src, false); img.alt = altFor(src); list = items(); idx = find(src); update(); nav.querySelector('.next').focus({ preventScroll: true }); };
+    window.openVideo = function (src) { origVid(src); describe(src, true); list = items(); idx = find(src); update(); };
     function show(step) {
       if (idx < 0 || list.length < 2) return;
       idx = (idx + step + list.length) % list.length;
-      var it = list[idx]; (it.video ? origVid : origImg)(it.src); if (!it.video) img.alt = altFor(it.src); update();
+      var it = list[idx]; (it.video ? origVid : origImg)(it.src); describe(it.src, it.video); if (!it.video) img.alt = altFor(it.src); update();
       var el = it.video ? vid : img;
       if (!reduce) { el.classList.remove('gslide-l', 'gslide-r'); void el.offsetWidth; el.classList.add(step > 0 ? 'gslide-r' : 'gslide-l'); }
     }
